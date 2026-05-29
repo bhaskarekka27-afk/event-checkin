@@ -3,26 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Event Check-in Scanner</title>
+  <title>Event Check-in</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #07080f;
-      --card: #0f1118;
-      --card2: #181c28;
-      --border: rgba(255,255,255,0.06);
-      --green: #00e5a0;
-      --blue: #3b82f6;
-      --red: #ff4d6d;
-      --yellow: #fbbf24;
-      --text: #eef0f8;
-      --muted: #525870;
+      /* CLAT Mentorship Dashboard Theme Colors */
+      --primary: #5c58f6;       /* The distinct Indigo/Purple */
+      --primary-hover: #4641d4;
+      --primary-light: #eff0fe;
+      --green: #00b075;         /* Completed/Done Green */
+      --green-light: #e6f7f1;
+      --red: #ef4444;           /* Missed Red */
+      --red-light: #fef2f2;
+      --amber: #f59e0b;
+      --amber-light: #fffbeb;
+      --gray-50: #f8f9fa;       /* Dashboard background */
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-400: #94a3b8;
+      --gray-600: #475569;
+      --gray-800: #1e293b;
+      --gray-900: #0f172a;
+      --white: #ffffff;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 16px rgba(92, 88, 246, 0.08), 0 1px 4px rgba(0,0,0,0.04);
+      --shadow-lg: 0 8px 32px rgba(92, 88, 246, 0.12), 0 2px 8px rgba(0,0,0,0.06);
+      --radius: 12px;
+      --radius-sm: 8px;
     }
 
     html, body {
@@ -30,56 +42,50 @@
     }
 
     body {
-      font-family: 'Sora', sans-serif;
-      background: var(--bg);
-      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      background: var(--gray-50);
+      color: var(--gray-800);
       display: flex;
       flex-direction: column;
       min-height: 100dvh;
-      overflow-x: hidden;
     }
 
-    /* ── TOP BAR ── */
+    /* ── TOPBAR ── */
     .topbar {
-      flex-shrink: 0;
-      padding: 14px 20px;
+      background: var(--white);
+      border-bottom: 1px solid var(--gray-200);
+      padding: 0 20px;
+      height: 60px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid var(--border);
-      background: var(--card);
+      flex-shrink: 0;
+      box-shadow: var(--shadow-sm);
     }
 
-    .brand { display: flex; align-items: center; gap: 10px; }
-
-    .brand-dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-      animation: breathe 2s ease-in-out infinite;
-    }
-
-    @keyframes breathe {
-      0%,100% { box-shadow: 0 0 8px var(--green); }
-      50%      { box-shadow: 0 0 18px var(--green); }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .brand-name {
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--gray-900);
     }
 
-    .scan-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.7rem;
-      color: var(--green);
-      background: rgba(0,229,160,0.08);
-      border: 1px solid rgba(0,229,160,0.15);
-      padding: 4px 10px;
-      border-radius: 20px;
+    .count-pill {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--white);
+      background: var(--primary);
+      padding: 6px 14px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(92, 88, 246, 0.3);
     }
 
     /* ── CONTENT ── */
@@ -88,186 +94,201 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 24px 20px;
-      gap: 20px;
+      padding: 24px 16px;
+      gap: 16px;
     }
 
-    /* ── CONFIG SCREEN ── */
-    #config-screen {
+    /* ── CONFIG / IDLE SCREEN ── */
+    #config-screen, #idle-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 16px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .config-card, .idle-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-200);
+      padding: 32px 24px;
+    }
+
+    .idle-card {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 20px;
-      width: 100%;
-      max-width: 380px;
+      text-align: center;
+      gap: 16px;
     }
 
-    .config-title {
-      font-size: 1.3rem;
+    .config-header { text-align: center; margin-bottom: 24px; }
+    
+    .config-title, .idle-title {
+      font-size: 1.4rem;
       font-weight: 800;
-      text-align: center;
-      line-height: 1.3;
+      color: var(--gray-900);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
     }
 
-    .config-sub {
-      font-size: 0.82rem;
-      color: var(--muted);
-      text-align: center;
-      line-height: 1.6;
+    .config-sub, .idle-sub {
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      margin-top: 8px;
+      line-height: 1.5;
     }
 
-    .input-group {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .input-group label {
+    .input-label {
       font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.07em;
-      text-transform: uppercase;
-      color: var(--muted);
+      font-weight: 700;
+      color: var(--gray-600);
+      margin-bottom: 8px;
+      display: block;
     }
 
-    .input-group input {
+    .url-input {
       width: 100%;
-      padding: 13px 14px;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      color: var(--text);
-      font-family: 'JetBrains Mono', monospace;
+      padding: 12px 14px;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', monospace;
       font-size: 0.8rem;
+      color: var(--gray-800);
+      background: var(--gray-50);
       outline: none;
-      transition: border-color 0.2s;
+      transition: all 0.2s;
     }
 
-    .input-group input:focus {
-      border-color: rgba(0,229,160,0.4);
-    }
-
-    .input-group input::placeholder { color: var(--muted); }
+    .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); background: var(--white); }
+    .url-input.error { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-light); }
 
     .btn-primary {
       width: 100%;
-      padding: 16px;
-      background: var(--green);
-      color: #07080f;
+      padding: 14px;
+      background: var(--primary);
+      color: var(--white);
       border: none;
-      border-radius: 12px;
-      font-family: 'Sora', sans-serif;
+      border-radius: var(--radius-sm);
+      font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-      transition: opacity 0.2s, transform 0.15s;
+      transition: all 0.15s;
+      box-shadow: 0 4px 12px rgba(92, 88, 246, 0.25);
     }
 
-    .btn-primary:active { transform: scale(0.97); opacity: 0.85; }
-    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 6px 16px rgba(92, 88, 246, 0.35); }
+    .btn-primary:active { transform: scale(0.98); }
 
-    /* ── IDLE SCREEN ── */
-    #idle-screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 24px;
-      width: 100%;
-      max-width: 340px;
-      text-align: center;
-    }
-
-    .qr-graphic {
-      position: relative;
-      width: 100px; height: 100px;
-    }
-
-    .qr-ring {
-      position: absolute;
-      inset: 0;
-      border-radius: 50%;
-      border: 1.5px solid var(--green);
-      opacity: 0;
-      animation: ringPulse 3s ease-out infinite;
-    }
-    .qr-ring:nth-child(2) { animation-delay: 1s; }
-    .qr-ring:nth-child(3) { animation-delay: 2s; }
-
-    @keyframes ringPulse {
-      0%   { opacity: 0; transform: scale(0.8); }
-      30%  { opacity: 0.25; }
-      100% { opacity: 0; transform: scale(1.8); }
-    }
-
-    .qr-center {
-      position: absolute;
-      inset: 20px;
-      background: var(--card2);
-      border-radius: 50%;
-      border: 1px solid rgba(0,229,160,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .idle-title { font-size: 1.4rem; font-weight: 800; }
-    .idle-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-top: 8px; }
-
-    .server-pill {
+    .server-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 8px 14px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.68rem;
-      color: var(--muted);
-      max-width: 100%;
-      overflow: hidden;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 10px 14px;
+      width: 100%;
     }
 
-    .server-pill span {
+    .dot-live {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 2px var(--green-light);
+    }
+
+    .server-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--gray-400);
+    }
+
+    .server-url {
+      font-size: 0.75rem;
+      color: var(--gray-600);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .dot-connected {
-      width: 6px; height: 6px;
-      border-radius: 50%;
-      background: var(--green);
-      flex-shrink: 0;
+    .btn-secondary {
+      width: 100%;
+      padding: 12px;
+      background: transparent;
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      color: var(--gray-600);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
     }
+
+    .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
 
     /* ── SCANNER SCREEN ── */
     #scanner-screen {
       display: none;
       flex-direction: column;
-      align-items: center;
+      align-items: stretch;
       gap: 16px;
       width: 100%;
+      max-width: 420px;
     }
 
-    .cam-wrap {
-      position: relative;
-      width: 100%;
-      max-width: 380px;
-      border-radius: 20px;
+    .scan-status-strip {
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .strip-left { display: flex; align-items: center; gap: 10px; }
+
+    .live-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: blink 1s ease-in-out infinite;
+    }
+    .live-dot.scanning { background: var(--green); }
+    .live-dot.paused   { background: var(--amber); animation: none; }
+
+    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    .strip-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--gray-800);
+    }
+
+    .strip-count {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--gray-600);
+    }
+
+    /* Camera viewport */
+    .cam-card {
+      background: var(--gray-900);
+      border-radius: var(--radius);
       overflow: hidden;
-      background: #000;
-      /* Square on mobile, slightly taller on desktop */
+      position: relative;
       aspect-ratio: 1 / 1;
-      flex-shrink: 0;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--gray-200);
     }
 
     #cam-video {
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       object-fit: cover;
       display: block;
     }
@@ -277,270 +298,235 @@
     .vignette {
       position: absolute;
       inset: 0;
-      box-shadow: inset 0 0 70px 25px rgba(7,8,15,0.75);
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(15,23,42,0.5) 100%);
       pointer-events: none;
     }
 
-    .frame-overlay {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-    .frame-overlay svg { width: 100%; height: 100%; }
+    .corners { position: absolute; inset: 0; pointer-events: none; }
+    .corners svg { width: 100%; height: 100%; }
 
-    .scan-beam {
+    .scan-line {
       position: absolute;
-      left: 14%; right: 14%;
+      left: 16%; right: 16%;
       height: 2px;
-      background: linear-gradient(90deg, transparent, var(--green), transparent);
-      box-shadow: 0 0 10px 2px rgba(0,229,160,0.5);
-      animation: beamScan 2.2s ease-in-out infinite;
-      top: 14%;
+      background: var(--primary);
+      box-shadow: 0 0 10px 2px rgba(92, 88, 246, 0.6);
+      animation: scanMove 2s ease-in-out infinite;
     }
+    .scan-line.paused { display: none; }
 
-    @keyframes beamScan {
-      0%   { top: 14%; opacity: 0; }
+    @keyframes scanMove {
+      0%   { top: 16%; opacity: 0; }
       8%   { opacity: 1; }
       92%  { opacity: 1; }
-      100% { top: 86%; opacity: 0; }
+      100% { top: 84%; opacity: 0; }
     }
 
-    .hint-text {
-      font-size: 0.78rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-weight: 600;
+    .cam-hint {
+      position: absolute;
+      bottom: 16px;
+      left: 0; right: 0;
       text-align: center;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: rgba(255,255,255,0.8);
+      background: rgba(0,0,0,0.4);
+      padding: 6px 0;
     }
+
+    /* Freeze overlay — shown while verifying */
+    .freeze-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15,23,42,0.4);
+      backdrop-filter: blur(2px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .freeze-overlay.visible { display: flex; }
+
+    .freeze-spinner {
+      width: 48px; height: 48px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── STATUS CARD ── */
     .status-card {
-      width: 100%;
-      max-width: 380px;
-      border-radius: 14px;
-      padding: 15px 18px;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      padding: 16px;
       display: none;
       align-items: center;
-      gap: 13px;
-      animation: slideUp 0.25s ease;
+      gap: 16px;
+      box-shadow: var(--shadow-md);
+      animation: slideUp 0.2s ease;
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(10px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .status-card.success   { background: rgba(0,229,160,0.07);   border: 1px solid rgba(0,229,160,0.2); }
-    .status-card.error     { background: rgba(255,77,109,0.07);   border: 1px solid rgba(255,77,109,0.2); }
-    .status-card.warning   { background: rgba(251,191,36,0.07);   border: 1px solid rgba(251,191,36,0.2); }
-    .status-card.processing{ background: var(--card2);            border: 1px solid var(--border); }
+    .status-card.success { border-left: 6px solid var(--green); }
+    .status-card.error   { border-left: 6px solid var(--red); }
+    .status-card.warning { border-left: 6px solid var(--amber); }
 
-    .s-icon {
-      width: 36px; height: 36px;
+    .s-dot {
+      width: 40px; height: 40px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem; flex-shrink: 0;
+      font-size: 1.2rem;
+      flex-shrink: 0;
     }
 
-    .success .s-icon   { background: rgba(0,229,160,0.12); }
-    .error .s-icon     { background: rgba(255,77,109,0.12); }
-    .warning .s-icon   { background: rgba(251,191,36,0.12); }
-    .processing .s-icon{ background: rgba(255,255,255,0.04); }
+    .success .s-dot { background: var(--green-light); color: var(--green); }
+    .error   .s-dot { background: var(--red-light); color: var(--red); }
+    .warning .s-dot { background: var(--amber-light); color: var(--amber); }
 
-    .s-title { font-size: 0.88rem; font-weight: 700; }
-    .success .s-title   { color: var(--green); }
-    .error .s-title     { color: var(--red); }
-    .warning .s-title   { color: var(--yellow); }
-    .processing .s-title{ color: var(--text); }
-
-    .s-detail { font-size: 0.76rem; color: var(--muted); margin-top: 1px; }
-
-    .spin {
-      width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,0.08);
-      border-top-color: var(--blue);
-      border-radius: 50%;
-      animation: sp 0.65s linear infinite;
+    .s-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: var(--gray-900);
+      margin-bottom: 2px;
     }
-    @keyframes sp { to { transform: rotate(360deg); } }
+    .s-detail { font-size: 0.8rem; color: var(--gray-600); }
 
     .btn-stop {
-      width: 100%; max-width: 380px;
-      padding: 13px;
-      background: transparent;
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--muted);
-      font-family: 'Sora', sans-serif;
-      font-size: 0.85rem; font-weight: 600;
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .btn-stop:active { border-color: var(--red); color: var(--red); }
-
-    /* ── CAMERA ERROR ── */
-    #error-screen {
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-      max-width: 320px;
-      text-align: center;
-    }
-
-    .err-steps {
       width: 100%;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 16px 16px 16px 20px;
-      text-align: left;
-    }
-
-    .err-steps li {
-      font-size: 0.82rem; color: var(--muted);
-      line-height: 1.9; list-style: decimal;
-      padding-left: 4px;
-    }
-
-    .btn-ghost {
-      width: 100%;
-      padding: 13px;
-      background: var(--card2);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-family: 'Sora', sans-serif;
-      font-size: 0.9rem; font-weight: 600;
+      padding: 14px;
+      background: var(--white);
+      border: 1px solid var(--gray-200);
+      border-radius: var(--radius-sm);
+      color: var(--red);
+      font-weight: 700;
       cursor: pointer;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.15s;
     }
+    .btn-stop:hover { background: var(--red-light); border-color: var(--red); }
+
   </style>
 </head>
 <body>
 
   <div class="topbar">
     <div class="brand">
-      <div class="brand-dot"></div>
-      <span class="brand-name">Check-in</span>
+      <span class="brand-name">CLAT Mentorship Check-in</span>
     </div>
-    <span class="scan-badge" id="scan-badge">READY</span>
+    <div class="count-pill" id="scan-badge">System Ready</div>
   </div>
 
   <div class="content">
 
-    <!-- STEP 1: Configure GAS URL -->
     <div id="config-screen">
-      <div>
-        <div class="config-title">Connect to<br>Your Event</div>
-        <div class="config-sub" style="margin-top:10px;">
-          Paste your Google Apps Script Web App URL below to link this scanner to your attendance sheet.
+      <div class="config-card">
+        <div class="config-header">
+          <div class="config-title">Connect Backend</div>
+          <div class="config-sub">Enter your Apps Script deployment URL.</div>
         </div>
-      </div>
-      <div class="input-group">
-        <label>Apps Script Web App URL</label>
-        <input type="url" id="gas-url-input"
-          placeholder="https://script.google.com/macros/s/.../exec"
-          autocomplete="off" autocorrect="off" spellcheck="false">
-      </div>
-      <button class="btn-primary" id="btn-connect">Connect &amp; Open Scanner</button>
-      <div class="config-sub" style="font-size:0.76rem;">
-        This URL is saved in your browser and never shared.
+        <div style="margin-bottom:20px">
+          <label class="input-label" for="gas-url-input">Web App URL</label>
+          <input type="url" id="gas-url-input" class="url-input" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+        </div>
+        <button class="btn-primary" id="btn-connect">Connect & Save</button>
       </div>
     </div>
 
-    <!-- STEP 2: Ready to scan -->
     <div id="idle-screen">
-      <div class="qr-graphic">
-        <div class="qr-ring"></div><div class="qr-ring"></div><div class="qr-ring"></div>
-        <div class="qr-center">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="1.8">
-            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="17" width="3" height="3"/>
-            <path d="M14 14h3v3"/><path d="M17 14h3v6h-3"/><path d="M14 20h3"/>
-          </svg>
-        </div>
-      </div>
-      <div>
+      <div class="idle-card">
         <div class="idle-title">Ready to Scan</div>
-        <div class="idle-sub">Tap below to open the camera and begin checking in guests.</div>
+        <div class="idle-sub">Open the camera to begin processing attendee QR codes.</div>
+        
+        <div class="server-row">
+          <div class="dot-live"></div>
+          <span class="server-label">Link</span>
+          <span class="server-url" id="server-url-display">—</span>
+        </div>
+        <button class="btn-primary" id="btn-open-camera">📷 Start Camera Feed</button>
       </div>
-      <div class="server-pill">
-        <div class="dot-connected"></div>
-        <span id="server-url-display">—</span>
-      </div>
-      <button class="btn-primary" id="btn-open-camera">Open Camera</button>
-      <button class="btn-ghost" style="margin-top:-8px;" id="btn-change-url">Change URL</button>
+      <button class="btn-secondary" id="btn-change-url">Update Backend URL</button>
     </div>
 
-    <!-- SCANNER ACTIVE -->
     <div id="scanner-screen">
-      <div class="cam-wrap">
+
+      <div class="scan-status-strip">
+        <div class="strip-left">
+          <div class="live-dot scanning" id="live-dot"></div>
+          <span class="strip-label" id="strip-label">Camera Active</span>
+        </div>
+        <span class="strip-count" id="strip-count">0 Scanned</span>
+      </div>
+
+      <div class="cam-card">
         <video id="cam-video" autoplay playsinline muted></video>
         <div class="vignette"></div>
-        <div class="frame-overlay">
+
+        <div class="corners">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M15 26 L15 15 L26 15" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M74 15 L85 15 L85 26" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M85 74 L85 85 L74 85" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M26 85 L15 85 L15 74" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M18 28 L18 18 L28 18" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M72 18 L82 18 L82 28" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M82 72 L82 82 L72 82" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M28 82 L18 82 L18 72" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
           </svg>
         </div>
-        <div class="scan-beam"></div>
+
+        <div class="scan-line" id="scan-line"></div>
+        <canvas id="qr-canvas"></canvas>
+        <div class="cam-hint" id="cam-hint">Align QR code within the frame</div>
+
+        <div class="freeze-overlay" id="freeze-overlay">
+          <div class="freeze-spinner"></div>
+        </div>
       </div>
 
-      <canvas id="qr-canvas"></canvas>
-      <div class="hint-text">Align QR code within the frame</div>
-
       <div id="status-card" class="status-card">
-        <div class="s-icon" id="s-icon"></div>
+        <div class="s-dot" id="s-dot"></div>
         <div>
           <div class="s-title" id="s-title"></div>
           <div class="s-detail" id="s-detail"></div>
         </div>
       </div>
 
-      <button class="btn-stop" id="btn-stop">✕ &nbsp;Stop Scanner</button>
+      <button class="btn-stop" id="btn-stop">Close Camera</button>
     </div>
 
-    <!-- CAMERA BLOCKED -->
-    <div id="error-screen">
-      <div style="font-size:2.8rem">📷</div>
-      <div style="font-size:1.1rem;font-weight:700;color:var(--red)">Camera Blocked</div>
-      <div style="font-size:0.85rem;color:var(--muted);line-height:1.6;text-align:center">
-        Allow camera access and reload.
-      </div>
-      <ul class="err-steps">
-        <li>Tap the lock / <strong>aA</strong> icon in your browser address bar</li>
-        <li>Find <strong>Camera</strong> → set to <strong>Allow</strong></li>
-        <li>Reload this page</li>
-      </ul>
-      <button class="btn-ghost" onclick="location.reload()">Reload Page</button>
-    </div>
-
-  </div><!-- /content -->
+  </div>
 
   <script>
   (function () {
     'use strict';
 
-    const STORAGE_KEY = 'gas_checkin_url';
+    const STORAGE_KEY = 'gas_checkin_url_v2';
 
-    // ── Elements ──
-    const configScreen  = document.getElementById('config-screen');
-    const idleScreen    = document.getElementById('idle-screen');
-    const scanScreen    = document.getElementById('scanner-screen');
-    const errScreen     = document.getElementById('error-screen');
-    const gasUrlInput   = document.getElementById('gas-url-input');
-    const serverDisplay = document.getElementById('server-url-display');
-    const badge         = document.getElementById('scan-badge');
-    const video         = document.getElementById('cam-video');
-    const canvas        = document.getElementById('qr-canvas');
-    const ctx           = canvas.getContext('2d');
-    const statusCard    = document.getElementById('status-card');
-    const sIcon         = document.getElementById('s-icon');
-    const sTitle        = document.getElementById('s-title');
-    const sDetail       = document.getElementById('s-detail');
+    const configScreen = document.getElementById('config-screen');
+    const idleScreen   = document.getElementById('idle-screen');
+    const scanScreen   = document.getElementById('scanner-screen');
+    const gasInput     = document.getElementById('gas-url-input');
+    const serverDisp   = document.getElementById('server-url-display');
+    const badge        = document.getElementById('scan-badge');
+    const video        = document.getElementById('cam-video');
+    const canvas       = document.getElementById('qr-canvas');
+    const ctx          = canvas.getContext('2d');
+    const statusCard   = document.getElementById('status-card');
+    const sDot         = document.getElementById('s-dot');
+    const sTitle       = document.getElementById('s-title');
+    const sDetail      = document.getElementById('s-detail');
+    const liveDot      = document.getElementById('live-dot');
+    const stripLabel   = document.getElementById('strip-label');
+    const stripCount   = document.getElementById('strip-count');
+    const scanLine     = document.getElementById('scan-line');
+    const freezeOverlay= document.getElementById('freeze-overlay');
+    const camHint      = document.getElementById('cam-hint');
 
     let gasUrl        = '';
     let stream        = null;
@@ -549,82 +535,55 @@
     let scanCount     = 0;
     let statusTimeout = null;
 
-    // ── Init: check for saved URL ──
+    // Init
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) {
-      gasUrl = saved;
-      showIdle();
-    } else {
-      show(configScreen);
-    }
+    if (saved) { gasUrl = saved; showIdle(); }
+    else { show(configScreen); }
 
-    // ── Config screen ──
+    // Config Events
     document.getElementById('btn-connect').addEventListener('click', () => {
-      const val = gasUrlInput.value.trim();
+      const val = gasInput.value.trim();
       if (!val.startsWith('https://script.google.com')) {
-        gasUrlInput.style.borderColor = 'rgba(255,77,109,0.5)';
-        gasUrlInput.placeholder = '⚠ Must be a script.google.com URL';
+        gasInput.classList.add('error');
         return;
       }
+      gasInput.classList.remove('error');
       gasUrl = val;
       localStorage.setItem(STORAGE_KEY, gasUrl);
       showIdle();
     });
 
     document.getElementById('btn-change-url').addEventListener('click', () => {
-      gasUrlInput.value = gasUrl;
-      show(configScreen);
-      hide(idleScreen);
+      gasInput.value = gasUrl;
+      hide(idleScreen); show(configScreen);
     });
 
     document.getElementById('btn-open-camera').addEventListener('click', openCamera);
     document.getElementById('btn-stop').addEventListener('click', stopCamera);
 
-    // ── Show idle ──
     function showIdle() {
-      hide(configScreen);
-      show(idleScreen);
-      const short = gasUrl.replace('https://script.google.com/macros/s/', '…/').substring(0, 48);
-      serverDisplay.textContent = short;
+      hide(configScreen); show(idleScreen);
+      const short = gasUrl.replace('https://script.google.com/macros/s/', '…/').replace('https://script.google.com/a/macros/', '…/');
+      serverDisp.textContent = short.length > 40 ? short.substring(0,40)+'…' : short;
     }
 
-    // ── Camera ──
     async function openCamera() {
-      hide(idleScreen);
-      show(scanScreen);
-      hide(errScreen);
+      hide(idleScreen); show(scanScreen);
+      statusCard.style.display = 'none';
+      setScanState('scanning');
 
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: {
-            facingMode: { ideal: 'environment' },
-            width: { ideal: 1280 },
-            height: { ideal: 720 }
-          },
-          audio: false
+          video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 } }, audio: false
         });
         video.srcObject = stream;
         await video.play();
-        canvas.width  = video.videoWidth  || 640;
+        canvas.width  = video.videoWidth || 640;
         canvas.height = video.videoHeight || 480;
         decodeLoop();
       } catch (err) {
-        console.error('getUserMedia error:', err);
-        // Retry without facingMode on desktop/constrained devices
-        if (err.name === 'OverconstrainedError') {
-          try {
-            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
-            video.srcObject = stream;
-            await video.play();
-            canvas.width  = video.videoWidth  || 640;
-            canvas.height = video.videoHeight || 480;
-            decodeLoop();
-          } catch (e2) {
-            showCamError();
-          }
-        } else {
-          showCamError();
-        }
+        alert("Camera blocked or unavailable. Please check permissions.");
+        stopCamera();
       }
     }
 
@@ -634,40 +593,34 @@
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null;
       isProcessing = false;
-      statusCard.style.display = 'none';
-      hide(scanScreen);
-      showIdle();
+      hide(scanScreen); showIdle();
     }
 
-    function showCamError() {
-      hide(scanScreen);
-      show(errScreen);
-    }
-
-    // ── Decode loop ──
     function decodeLoop() {
       if (!stream) return;
-      if (video.readyState >= video.HAVE_ENOUGH_DATA && !isProcessing) {
-        // Update canvas size if video dimensions changed
+      if (!isProcessing && video.readyState >= video.HAVE_ENOUGH_DATA) {
         if (video.videoWidth && video.videoWidth !== canvas.width) {
-          canvas.width  = video.videoWidth;
-          canvas.height = video.videoHeight;
+          canvas.width  = video.videoWidth; canvas.height = video.videoHeight;
         }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const code = jsQR(imgData.data, imgData.width, imgData.height, {
-          inversionAttempts: 'dontInvert'
-        });
-        if (code && code.data) handleQR(code.data);
+        const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
+        
+        if (code && code.data) {
+          handleQR(code.data);
+          return; // Stop requesting frames while handling
+        }
       }
       rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 100));
     }
 
-    // ── QR detected ──
     function handleQR(raw) {
       if (isProcessing) return;
       isProcessing = true;
-      showStatus('processing', 'Verifying…', 'Checking with server');
+      
+      // Physically pause the video feed so the UI freezes
+      video.pause();
+      setScanState('verifying');
 
       let id, token;
       try {
@@ -677,50 +630,63 @@
         token = parts[1].split(':')[1];
         if (!id || !token) throw new Error('missing fields');
       } catch (e) {
-        showStatus('error', 'Invalid QR Code', 'Not a valid event ticket');
+        showResult('error', 'Invalid QR Code', 'Not recognized as an event ticket');
         scheduleReset(3000);
         return;
       }
 
-      // GAS Workspace domains block standard POST with JSON content-type (CORS preflight fails).
-      // Workaround: send as form-encoded POST — GAS accepts this without a preflight OPTIONS request.
-      const formBody = 'payload=' + encodeURIComponent(JSON.stringify({ id, token }));
-
       fetch(gasUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formBody,
+        body: 'payload=' + encodeURIComponent(JSON.stringify({ id, token })),
         redirect: 'follow'
       })
-      .then(r => {
-        if (!r.ok) throw new Error('HTTP ' + r.status);
-        return r.text();
-      })
+      .then(r => r.text())
       .then(text => {
-        // GAS sometimes wraps response — strip any leading/trailing whitespace or BOM
-        const clean = text.trim().replace(/^\uFEFF/, '');
-        const res = JSON.parse(clean);
+        const res = JSON.parse(text.trim());
         if (res.success) {
           scanCount++;
-          badge.textContent = scanCount + ' CHECKED IN';
-          showStatus('success', 'Welcome! ✓', res.message);
+          badge.textContent = scanCount + ' Processed';
+          stripCount.textContent = scanCount + ' Scanned';
+          showResult('success', 'Checked In', res.message);
         } else {
-          const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
-          showStatus(type, 'Check-in Denied', res.message);
+          const type = res.message.includes('already') ? 'warning' : 'error';
+          showResult(type, 'Check-in Denied', res.message);
         }
         scheduleReset(3500);
       })
-      .catch(err => {
-        showStatus('error', 'Server Unreachable', 'Check your URL or connection');
+      .catch(() => {
+        showResult('error', 'Network Error', 'Check your connection or URL');
         scheduleReset(3000);
       });
     }
 
-    // ── Helpers ──
-    function showStatus(type, title, detail) {
+    function setScanState(state) {
+      if (state === 'verifying') {
+        liveDot.className = 'live-dot paused';
+        stripLabel.textContent = 'Verifying Record...';
+        scanLine.classList.add('paused');
+        freezeOverlay.classList.add('visible');
+        camHint.style.opacity = '0';
+      } else {
+        liveDot.className = 'live-dot scanning';
+        stripLabel.textContent = 'Camera Active';
+        scanLine.classList.remove('paused');
+        freezeOverlay.classList.remove('visible');
+        camHint.style.opacity = '1';
+        
+        // Ensure video resumes playing
+        if (video.paused && stream) video.play(); 
+        
+        // Resume continuous decoding
+        if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
+      }
+    }
+
+    function showResult(type, title, detail) {
       clearTimeout(statusTimeout);
-      const icons = { success: '✅', error: '❌', warning: '⚠️', processing: '<div class="spin"></div>' };
-      sIcon.innerHTML = icons[type] || '';
+      const icons = { success: '✔', error: '✖', warning: '⚠' };
+      sDot.textContent = icons[type] || '';
       sTitle.textContent  = title;
       sDetail.textContent = detail;
       statusCard.className = 'status-card ' + type;
@@ -731,6 +697,7 @@
       statusTimeout = setTimeout(() => {
         statusCard.style.display = 'none';
         isProcessing = false;
+        setScanState('scanning'); // Unfreezes the video and restarts loop
       }, ms);
     }
 
