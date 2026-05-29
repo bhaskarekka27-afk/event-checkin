@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Event Check-in Scanner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #07080f;
+      --card: #0f1118;
+      --card2: #181c28;
+      --border: rgba(255,255,255,0.06);
+      --green: #00e5a0;
+      --blue: #3b82f6;
+      --red: #ff4d6d;
+      --yellow: #fbbf24;
+      --text: #eef0f8;
+      --muted: #525870;
+    }
+
+    html, body {
+      width: 100%; height: 100%;
+    }
+
+    body {
+      font-family: 'Sora', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── TOP BAR ── */
+    .topbar {
+      flex-shrink: 0;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      background: var(--card);
+    }
+
+    .brand { display: flex; align-items: center; gap: 10px; }
+
+    .brand-dot {
+      width: 9px; height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: breathe 2s ease-in-out infinite;
+    }
+
+    @keyframes breathe {
+      0%,100% { box-shadow: 0 0 8px var(--green); }
+      50%      { box-shadow: 0 0 18px var(--green); }
+    }
+
+    .brand-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .scan-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--green);
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.15);
+      padding: 4px 10px;
+      border-radius: 20px;
+    }
+
+    /* ── CONTENT ── */
+    .content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 20px;
+      gap: 20px;
+    }
+
+    /* ── CONFIG SCREEN ── */
+    #config-screen {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      width: 100%;
+      max-width: 380px;
+    }
+
+    .config-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .config-sub {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .input-group {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-group label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 13px 14px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: rgba(0,229,160,0.4);
+    }
+
+    .input-group input::placeholder { color: var(--muted); }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: var(--green);
+      color: #07080f;
+      border: none;
+      border-radius: 12px;
+      font-family: 'Sora', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      transition: opacity 0.2s, transform 0.15s;
+    }
+
+    .btn-primary:active { transform: scale(0.97); opacity: 0.85; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── IDLE SCREEN ── */
+    #idle-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      width: 100%;
+      max-width: 340px;
+      text-align: center;
+    }
+
+    .qr-graphic {
+      position: relative;
+      width: 100px; height: 100px;
+    }
+
+    .qr-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1.5px solid var(--green);
+      opacity: 0;
+      animation: ringPulse 3s ease-out infinite;
+    }
+    .qr-ring:nth-child(2) { animation-delay: 1s; }
+    .qr-ring:nth-child(3) { animation-delay: 2s; }
+
+    @keyframes ringPulse {
+      0%   { opacity: 0; transform: scale(0.8); }
+      30%  { opacity: 0.25; }
+      100% { opacity: 0; transform: scale(1.8); }
+    }
+
+    .qr-center {
+      position: absolute;
+      inset: 20px;
+      background: var(--card2);
+      border-radius: 50%;
+      border: 1px solid rgba(0,229,160,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .idle-title { font-size: 1.4rem; font-weight: 800; }
+    .idle-sub { font-size: 0.85rem; color: var(--muted); line-height: 1.6; margin-top: 8px; }
+
+    .server-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--muted);
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .server-pill span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dot-connected {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--green);
+      flex-shrink: 0;
+    }
+
+    /* ── SCANNER SCREEN ── */
+    #scanner-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      width: 100%;
+    }
+
+    .cam-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 380px;
+      border-radius: 20px;
+      overflow: hidden;
+      background: #000;
+      /* Square on mobile, slightly taller on desktop */
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+    }
+
+    #cam-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    #qr-canvas { display: none; }
+
+    .vignette {
+      position: absolute;
+      inset: 0;
+      box-shadow: inset 0 0 70px 25px rgba(7,8,15,0.75);
+      pointer-events: none;
+    }
+
+    .frame-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+    .frame-overlay svg { width: 100%; height: 100%; }
+
+    .scan-beam {
+      position: absolute;
+      left: 14%; right: 14%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      box-shadow: 0 0 10px 2px rgba(0,229,160,0.5);
+      animation: beamScan 2.2s ease-in-out infinite;
+      top: 14%;
+    }
+
+    @keyframes beamScan {
+      0%   { top: 14%; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { top: 86%; opacity: 0; }
+    }
+
+    .hint-text {
+      font-size: 0.78rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* ── STATUS CARD ── */
+    .status-card {
+      width: 100%;
+      max-width: 380px;
+      border-radius: 14px;
+      padding: 15px 18px;
+      display: none;
+      align-items: center;
+      gap: 13px;
+      animation: slideUp 0.25s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .status-card.success   { background: rgba(0,229,160,0.07);   border: 1px solid rgba(0,229,160,0.2); }
+    .status-card.error     { background: rgba(255,77,109,0.07);   border: 1px solid rgba(255,77,109,0.2); }
+    .status-card.warning   { background: rgba(251,191,36,0.07);   border: 1px solid rgba(251,191,36,0.2); }
+    .status-card.processing{ background: var(--card2);            border: 1px solid var(--border); }
+
+    .s-icon {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+
+    .success .s-icon   { background: rgba(0,229,160,0.12); }
+    .error .s-icon     { background: rgba(255,77,109,0.12); }
+    .warning .s-icon   { background: rgba(251,191,36,0.12); }
+    .processing .s-icon{ background: rgba(255,255,255,0.04); }
+
+    .s-title { font-size: 0.88rem; font-weight: 700; }
+    .success .s-title   { color: var(--green); }
+    .error .s-title     { color: var(--red); }
+    .warning .s-title   { color: var(--yellow); }
+    .processing .s-title{ color: var(--text); }
+
+    .s-detail { font-size: 0.76rem; color: var(--muted); margin-top: 1px; }
+
+    .spin {
+      width: 18px; height: 18px;
+      border: 2px solid rgba(255,255,255,0.08);
+      border-top-color: var(--blue);
+      border-radius: 50%;
+      animation: sp 0.65s linear infinite;
+    }
+    @keyframes sp { to { transform: rotate(360deg); } }
+
+    .btn-stop {
+      width: 100%; max-width: 380px;
+      padding: 13px;
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--muted);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.85rem; font-weight: 600;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn-stop:active { border-color: var(--red); color: var(--red); }
+
+    /* ── CAMERA ERROR ── */
+    #error-screen {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      max-width: 320px;
+      text-align: center;
+    }
+
+    .err-steps {
+      width: 100%;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 16px 16px 20px;
+      text-align: left;
+    }
+
+    .err-steps li {
+      font-size: 0.82rem; color: var(--muted);
+      line-height: 1.9; list-style: decimal;
+      padding-left: 4px;
+    }
+
+    .btn-ghost {
+      width: 100%;
+      padding: 13px;
+      background: var(--card2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'Sora', sans-serif;
+      font-size: 0.9rem; font-weight: 600;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="brand">
+      <div class="brand-dot"></div>
+      <span class="brand-name">Check-in</span>
+    </div>
+    <span class="scan-badge" id="scan-badge">READY</span>
+  </div>
+
+  <div class="content">
+
+    <!-- STEP 1: Configure GAS URL -->
+    <div id="config-screen">
+      <div>
+        <div class="config-title">Connect to<br>Your Event</div>
+        <div class="config-sub" style="margin-top:10px;">
+          Paste your Google Apps Script Web App URL below to link this scanner to your attendance sheet.
+        </div>
+      </div>
+      <div class="input-group">
+        <label>Apps Script Web App URL</label>
+        <input type="url" id="gas-url-input"
+          placeholder="https://script.google.com/macros/s/.../exec"
+          autocomplete="off" autocorrect="off" spellcheck="false">
+      </div>
+      <button class="btn-primary" id="btn-connect">Connect &amp; Open Scanner</button>
+      <div class="config-sub" style="font-size:0.76rem;">
+        This URL is saved in your browser and never shared.
+      </div>
+    </div>
+
+    <!-- STEP 2: Ready to scan -->
+    <div id="idle-screen">
+      <div class="qr-graphic">
+        <div class="qr-ring"></div><div class="qr-ring"></div><div class="qr-ring"></div>
+        <div class="qr-center">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00e5a0" stroke-width="1.8">
+            <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+            <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="17" width="3" height="3"/>
+            <path d="M14 14h3v3"/><path d="M17 14h3v6h-3"/><path d="M14 20h3"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <div class="idle-title">Ready to Scan</div>
+        <div class="idle-sub">Tap below to open the camera and begin checking in guests.</div>
+      </div>
+      <div class="server-pill">
+        <div class="dot-connected"></div>
+        <span id="server-url-display">—</span>
+      </div>
+      <button class="btn-primary" id="btn-open-camera">Open Camera</button>
+      <button class="btn-ghost" style="margin-top:-8px;" id="btn-change-url">Change URL</button>
+    </div>
+
+    <!-- SCANNER ACTIVE -->
+    <div id="scanner-screen">
+      <div class="cam-wrap">
+        <video id="cam-video" autoplay playsinline muted></video>
+        <div class="vignette"></div>
+        <div class="frame-overlay">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15 26 L15 15 L26 15" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M74 15 L85 15 L85 26" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M85 74 L85 85 L74 85" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M26 85 L15 85 L15 74" stroke="#00e5a0" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          </svg>
+        </div>
+        <div class="scan-beam"></div>
+      </div>
+
+      <canvas id="qr-canvas"></canvas>
+      <div class="hint-text">Align QR code within the frame</div>
+
+      <div id="status-card" class="status-card">
+        <div class="s-icon" id="s-icon"></div>
+        <div>
+          <div class="s-title" id="s-title"></div>
+          <div class="s-detail" id="s-detail"></div>
+        </div>
+      </div>
+
+      <button class="btn-stop" id="btn-stop">✕ &nbsp;Stop Scanner</button>
+    </div>
+
+    <!-- CAMERA BLOCKED -->
+    <div id="error-screen">
+      <div style="font-size:2.8rem">📷</div>
+      <div style="font-size:1.1rem;font-weight:700;color:var(--red)">Camera Blocked</div>
+      <div style="font-size:0.85rem;color:var(--muted);line-height:1.6;text-align:center">
+        Allow camera access and reload.
+      </div>
+      <ul class="err-steps">
+        <li>Tap the lock / <strong>aA</strong> icon in your browser address bar</li>
+        <li>Find <strong>Camera</strong> → set to <strong>Allow</strong></li>
+        <li>Reload this page</li>
+      </ul>
+      <button class="btn-ghost" onclick="location.reload()">Reload Page</button>
+    </div>
+
+  </div><!-- /content -->
+
+  <script>
+  (function () {
+    'use strict';
+
+    const STORAGE_KEY = 'gas_checkin_url';
+
+    // ── Elements ──
+    const configScreen  = document.getElementById('config-screen');
+    const idleScreen    = document.getElementById('idle-screen');
+    const scanScreen    = document.getElementById('scanner-screen');
+    const errScreen     = document.getElementById('error-screen');
+    const gasUrlInput   = document.getElementById('gas-url-input');
+    const serverDisplay = document.getElementById('server-url-display');
+    const badge         = document.getElementById('scan-badge');
+    const video         = document.getElementById('cam-video');
+    const canvas        = document.getElementById('qr-canvas');
+    const ctx           = canvas.getContext('2d');
+    const statusCard    = document.getElementById('status-card');
+    const sIcon         = document.getElementById('s-icon');
+    const sTitle        = document.getElementById('s-title');
+    const sDetail       = document.getElementById('s-detail');
+
+    let gasUrl        = '';
+    let stream        = null;
+    let rafId         = null;
+    let isProcessing  = false;
+    let scanCount     = 0;
+    let statusTimeout = null;
+
+    // ── Init: check for saved URL ──
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      gasUrl = saved;
+      showIdle();
+    } else {
+      show(configScreen);
+    }
+
+    // ── Config screen ──
+    document.getElementById('btn-connect').addEventListener('click', () => {
+      const val = gasUrlInput.value.trim();
+      if (!val.startsWith('https://script.google.com')) {
+        gasUrlInput.style.borderColor = 'rgba(255,77,109,0.5)';
+        gasUrlInput.placeholder = '⚠ Must be a script.google.com URL';
+        return;
+      }
+      gasUrl = val;
+      localStorage.setItem(STORAGE_KEY, gasUrl);
+      showIdle();
+    });
+
+    document.getElementById('btn-change-url').addEventListener('click', () => {
+      gasUrlInput.value = gasUrl;
+      show(configScreen);
+      hide(idleScreen);
+    });
+
+    document.getElementById('btn-open-camera').addEventListener('click', openCamera);
+    document.getElementById('btn-stop').addEventListener('click', stopCamera);
+
+    // ── Show idle ──
+    function showIdle() {
+      hide(configScreen);
+      show(idleScreen);
+      const short = gasUrl.replace('https://script.google.com/macros/s/', '…/').substring(0, 48);
+      serverDisplay.textContent = short;
+    }
+
+    // ── Camera ──
+    async function openCamera() {
+      hide(idleScreen);
+      show(scanScreen);
+      hide(errScreen);
+
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({
+          video: {
+            facingMode: { ideal: 'environment' },
+            width: { ideal: 1280 },
+            height: { ideal: 720 }
+          },
+          audio: false
+        });
+        video.srcObject = stream;
+        await video.play();
+        canvas.width  = video.videoWidth  || 640;
+        canvas.height = video.videoHeight || 480;
+        decodeLoop();
+      } catch (err) {
+        console.error('getUserMedia error:', err);
+        // Retry without facingMode on desktop/constrained devices
+        if (err.name === 'OverconstrainedError') {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            video.srcObject = stream;
+            await video.play();
+            canvas.width  = video.videoWidth  || 640;
+            canvas.height = video.videoHeight || 480;
+            decodeLoop();
+          } catch (e2) {
+            showCamError();
+          }
+        } else {
+          showCamError();
+        }
+      }
+    }
+
+    function stopCamera() {
+      cancelAnimationFrame(rafId);
+      clearTimeout(statusTimeout);
+      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+      video.srcObject = null;
+      isProcessing = false;
+      statusCard.style.display = 'none';
+      hide(scanScreen);
+      showIdle();
+    }
+
+    function showCamError() {
+      hide(scanScreen);
+      show(errScreen);
+    }
+
+    // ── Decode loop ──
+    function decodeLoop() {
+      if (!stream) return;
+      if (video.readyState >= video.HAVE_ENOUGH_DATA && !isProcessing) {
+        // Update canvas size if video dimensions changed
+        if (video.videoWidth && video.videoWidth !== canvas.width) {
+          canvas.width  = video.videoWidth;
+          canvas.height = video.videoHeight;
+        }
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const code = jsQR(imgData.data, imgData.width, imgData.height, {
+          inversionAttempts: 'dontInvert'
+        });
+        if (code && code.data) handleQR(code.data);
+      }
+      rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 100));
+    }
+
+    // ── QR detected ──
+    function handleQR(raw) {
+      if (isProcessing) return;
+      isProcessing = true;
+      showStatus('processing', 'Verifying…', 'Checking with server');
+
+      let id, token;
+      try {
+        const parts = raw.split('|');
+        if (parts.length < 2) throw new Error('bad format');
+        id    = parts[0].split(':')[1];
+        token = parts[1].split(':')[1];
+        if (!id || !token) throw new Error('missing fields');
+      } catch (e) {
+        showStatus('error', 'Invalid QR Code', 'Not a valid event ticket');
+        scheduleReset(3000);
+        return;
+      }
+
+      // Call GAS via fetch (not google.script.run — this is a standalone page)
+      fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, token }),
+        redirect: 'follow'
+      })
+      .then(r => r.json())
+      .then(res => {
+        if (res.success) {
+          scanCount++;
+          badge.textContent = scanCount + ' CHECKED IN';
+          showStatus('success', 'Welcome! ✓', res.message);
+        } else {
+          const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
+          showStatus(type, 'Check-in Denied', res.message);
+        }
+        scheduleReset(3500);
+      })
+      .catch(err => {
+        showStatus('error', 'Server Unreachable', 'Check your URL or connection');
+        scheduleReset(3000);
+      });
+    }
+
+    // ── Helpers ──
+    function showStatus(type, title, detail) {
+      clearTimeout(statusTimeout);
+      const icons = { success: '✅', error: '❌', warning: '⚠️', processing: '<div class="spin"></div>' };
+      sIcon.innerHTML = icons[type] || '';
+      sTitle.textContent  = title;
+      sDetail.textContent = detail;
+      statusCard.className = 'status-card ' + type;
+      statusCard.style.display = 'flex';
+    }
+
+    function scheduleReset(ms) {
+      statusTimeout = setTimeout(() => {
+        statusCard.style.display = 'none';
+        isProcessing = false;
+      }, ms);
+    }
+
+    function show(el) { el.style.display = 'flex'; }
+    function hide(el) { el.style.display = 'none'; }
+
+  })();
+  </script>
+</body>
+</html>
