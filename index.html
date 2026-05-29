@@ -12,7 +12,7 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary: #5c58f6; 
+      --primary: #5c58f6;
       --primary-light: #eff0fe;
       --primary-dark: #4a46c6;
       --green: #00b075;
@@ -36,9 +36,7 @@
       --radius-sm: 10px;
     }
 
-    html, body {
-      width: 100%; height: 100%;
-    }
+    html, body { width: 100%; height: 100%; }
 
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -54,7 +52,7 @@
       background: var(--white);
       border-bottom: 1px solid var(--gray-200);
       padding: 0 20px;
-      height: 64px; /* Increased height slightly for better breathing room */
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -62,11 +60,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
+    .brand { display: flex; align-items: center; gap: 12px; }
 
     .brand-icon {
       width: 36px; height: 36px;
@@ -103,8 +97,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 32px 20px; /* Increased padding for better spacing */
-      gap: 24px; /* Increased gap between blocks */
+      padding: 32px 20px;
+      gap: 24px;
     }
 
     /* ── CONFIG SCREEN ── */
@@ -125,10 +119,7 @@
       padding: 36px 28px;
     }
 
-    .config-header {
-      text-align: center;
-      margin-bottom: 28px;
-    }
+    .config-header { text-align: center; margin-bottom: 28px; }
 
     .config-badge {
       display: inline-flex;
@@ -145,12 +136,7 @@
       margin-bottom: 16px;
     }
 
-    .config-title {
-      font-size: 1.5rem;
-      font-weight: 800;
-      color: var(--gray-900);
-      line-height: 1.2;
-    }
+    .config-title { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); line-height: 1.2; }
 
     .config-sub {
       font-size: 0.85rem;
@@ -167,10 +153,6 @@
       color: var(--gray-600);
       margin-bottom: 8px;
       display: block;
-    }
-
-    .input-wrap {
-      position: relative;
     }
 
     .url-input {
@@ -256,18 +238,9 @@
       border: 1.5px solid rgba(92, 88, 246, 0.15);
     }
 
-    .idle-title {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--gray-900);
-    }
+    .idle-title { font-size: 1.4rem; font-weight: 800; color: var(--gray-900); }
 
-    .idle-sub {
-      font-size: 0.9rem;
-      color: var(--gray-400);
-      line-height: 1.5;
-      margin-top: -8px;
-    }
+    .idle-sub { font-size: 0.9rem; color: var(--gray-400); line-height: 1.5; margin-top: -8px; }
 
     .server-row {
       display: flex;
@@ -328,12 +301,11 @@
       display: none;
       flex-direction: column;
       align-items: stretch;
-      gap: 20px; /* Increased gap between camera elements */
+      gap: 20px;
       width: 100%;
       max-width: 420px;
     }
 
-    /* Status strip above camera */
     .scan-status-strip {
       background: var(--white);
       border: 1px solid var(--gray-200);
@@ -345,11 +317,7 @@
       box-shadow: var(--shadow-sm);
     }
 
-    .strip-left {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
+    .strip-left { display: flex; align-items: center; gap: 10px; }
 
     .live-dot {
       width: 10px; height: 10px;
@@ -383,7 +351,6 @@
       border-radius: 12px;
     }
 
-    /* Camera viewport */
     .cam-card {
       background: var(--gray-900);
       border-radius: var(--radius);
@@ -393,12 +360,7 @@
       box-shadow: var(--shadow-lg);
     }
 
-    #cam-video {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
+    #cam-video { width: 100%; height: 100%; object-fit: cover; display: block; }
     #qr-canvas { display: none; }
 
     .vignette {
@@ -408,12 +370,7 @@
       pointer-events: none;
     }
 
-    .corners {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-    }
-
+    .corners { position: absolute; inset: 0; pointer-events: none; }
     .corners svg { width: 100%; height: 100%; }
 
     .scan-line {
@@ -510,23 +467,14 @@
     .error   .s-dot { background: rgba(239,68,68,0.12); }
     .warning .s-dot { background: rgba(245,158,11,0.12); }
 
-    .s-title {
-      font-size: 0.95rem;
-      font-weight: 700;
-      margin-bottom: 3px;
-    }
+    .s-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
 
     .success .s-title { color: #00875a; }
     .error   .s-title { color: #b91c1c; }
     .warning .s-title { color: #b45309; }
 
-    .s-detail {
-      font-size: 0.8rem;
-      color: var(--gray-600);
-      line-height: 1.4;
-    }
+    .s-detail { font-size: 0.8rem; color: var(--gray-600); line-height: 1.4; }
 
-    /* Stop button */
     .btn-stop {
       width: 100%;
       padding: 16px;
@@ -545,7 +493,6 @@
     }
 
     .btn-stop:hover { border-color: var(--red); color: var(--red); }
-
   </style>
 </head>
 <body>
@@ -566,6 +513,7 @@
 
   <div class="content">
 
+    <!-- CONFIG SCREEN -->
     <div id="config-screen">
       <div class="config-card">
         <div class="config-header">
@@ -579,19 +527,16 @@
 
         <div>
           <label class="input-label" for="gas-url-input">Apps Script Web App URL</label>
-          <div class="input-wrap">
-            <input type="url" id="gas-url-input" class="url-input"
-              placeholder="https://script.google.com/macros/s/.../exec"
-              autocomplete="off" autocorrect="off" spellcheck="false">
-          </div>
+          <input type="url" id="gas-url-input" class="url-input"
+            placeholder="https://script.google.com/macros/s/.../exec"
+            autocomplete="off" autocorrect="off" spellcheck="false">
         </div>
 
-        <button class="btn-primary" id="btn-connect">
-          Connect &amp; Start Scanning
-        </button>
+        <button class="btn-primary" id="btn-connect">Connect &amp; Start Scanning</button>
       </div>
     </div>
 
+    <!-- IDLE SCREEN -->
     <div id="idle-screen">
       <div class="idle-card">
         <div class="scanner-illustration">
@@ -610,7 +555,7 @@
           <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        <button class="btn-primary" id="btn-open-camera" style="margin-top: 8px;">
+        <button class="btn-primary" id="btn-open-camera" style="margin-top:8px;">
           <span style="display:flex;align-items:center;justify-content:center;gap:10px">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
             Open Camera
@@ -620,6 +565,7 @@
       <button class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
+    <!-- SCANNER SCREEN -->
     <div id="scanner-screen">
 
       <div class="scan-status-strip">
@@ -664,31 +610,33 @@
       <button class="btn-stop" id="btn-stop">Stop Scanner</button>
     </div>
 
-  </div><script>
+  </div>
+
+  <script>
   (function () {
     'use strict';
 
     const STORAGE_KEY = 'gas_checkin_url_v2';
 
-    const configScreen = document.getElementById('config-screen');
-    const idleScreen   = document.getElementById('idle-screen');
-    const scanScreen   = document.getElementById('scanner-screen');
-    const gasInput     = document.getElementById('gas-url-input');
-    const serverDisp   = document.getElementById('server-url-display');
-    const badge        = document.getElementById('scan-badge');
-    const video        = document.getElementById('cam-video');
-    const canvas       = document.getElementById('qr-canvas');
-    const ctx          = canvas.getContext('2d');
-    const statusCard   = document.getElementById('status-card');
-    const sDot         = document.getElementById('s-dot');
-    const sTitle       = document.getElementById('s-title');
-    const sDetail      = document.getElementById('s-detail');
-    const liveDot      = document.getElementById('live-dot');
-    const stripLabel   = document.getElementById('strip-label');
-    const stripCount   = document.getElementById('strip-count');
-    const scanLine     = document.getElementById('scan-line');
-    const freezeOverlay= document.getElementById('freeze-overlay');
-    const camHint      = document.getElementById('cam-hint');
+    const configScreen  = document.getElementById('config-screen');
+    const idleScreen    = document.getElementById('idle-screen');
+    const scanScreen    = document.getElementById('scanner-screen');
+    const gasInput      = document.getElementById('gas-url-input');
+    const serverDisp    = document.getElementById('server-url-display');
+    const badge         = document.getElementById('scan-badge');
+    const video         = document.getElementById('cam-video');
+    const canvas        = document.getElementById('qr-canvas');
+    const ctx           = canvas.getContext('2d');
+    const statusCard    = document.getElementById('status-card');
+    const sDot          = document.getElementById('s-dot');
+    const sTitle        = document.getElementById('s-title');
+    const sDetail       = document.getElementById('s-detail');
+    const liveDot       = document.getElementById('live-dot');
+    const stripLabel    = document.getElementById('strip-label');
+    const stripCount    = document.getElementById('strip-count');
+    const scanLine      = document.getElementById('scan-line');
+    const freezeOverlay = document.getElementById('freeze-overlay');
+    const camHint       = document.getElementById('cam-hint');
 
     let gasUrl        = '';
     let stream        = null;
@@ -725,8 +673,10 @@
     function showIdle() {
       hide(configScreen);
       show(idleScreen);
-      const short = gasUrl.replace('https://script.google.com/macros/s/', '…/').replace('https://script.google.com/a/macros/', '…/');
-      serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
+      const short = gasUrl
+        .replace('https://script.google.com/macros/s/', '…/')
+        .replace('https://script.google.com/a/macros/', '…/');
+      serverDisp.textContent = short.length > 50 ? short.substring(0, 50) + '…' : short;
     }
 
     async function openCamera() {
@@ -754,8 +704,8 @@
             canvas.width  = video.videoWidth  || 640;
             canvas.height = video.videoHeight || 480;
             decodeLoop();
-          } catch (e2) { alert("Camera Error"); }
-        } else { alert("Camera Error"); }
+          } catch (e2) { alert('Camera Error: ' + e2.message); }
+        } else { alert('Camera Error: ' + err.message); }
       }
     }
 
@@ -781,7 +731,7 @@
         const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
         if (code && code.data) {
           handleQR(code.data);
-          return; 
+          return;
         }
       }
       rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 100));
@@ -808,12 +758,13 @@
         return;
       }
 
-      // ── THIS IS THE CRITICAL FIX FOR THE BAD REQUEST ERROR ──
-      // Sending raw JSON string directly instead of form-urlencoded
-      fetch(gasUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ id: id, token: token }),
+      // ── KEY FIX: Use GET with query params to avoid POST→redirect issue ──
+      const targetUrl = new URL(gasUrl);
+      targetUrl.searchParams.set('id', id);
+      targetUrl.searchParams.set('token', token);
+
+      fetch(targetUrl.toString(), {
+        method: 'GET',
         redirect: 'follow'
       })
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
@@ -851,7 +802,6 @@
         scanLine.classList.remove('paused');
         freezeOverlay.classList.remove('visible');
         camHint.style.opacity = '1';
-        
         if (video.paused && stream) video.play();
         if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       }
@@ -860,7 +810,7 @@
     function showResult(type, title, detail) {
       clearTimeout(statusTimeout);
       const icons = { success: '✅', error: '❌', warning: '⚠️' };
-      sDot.textContent = icons[type] || '';
+      sDot.textContent    = icons[type] || '';
       sTitle.textContent  = title;
       sDetail.textContent = detail;
       statusCard.className = 'status-card ' + type;
