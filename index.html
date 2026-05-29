@@ -25,15 +25,12 @@
     }
     html, body { width: 100%; height: 100%; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-50); color: var(--gray-800); display: flex; flex-direction: column; min-height: 100dvh; }
-
     .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 20px; height: 64px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); }
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand-icon { width: 36px; height: 36px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); }
     .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; }
-
     .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; }
-
     #config-screen { display: flex; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; }
     .config-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
     .config-header { text-align: center; margin-bottom: 28px; }
@@ -44,11 +41,9 @@
     .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
     .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(92,88,246,0.1); background: var(--white); }
     .url-input.error { border-color: var(--red); }
-
     .btn-primary { width: 100%; padding: 16px; margin-top: 8px; background: var(--primary); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; box-shadow: 0 4px 14px rgba(92,88,246,0.3); -webkit-tap-highlight-color: transparent; }
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-primary:active { transform: scale(0.98); }
-
     #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 16px; width: 100%; max-width: 420px; }
     .idle-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 40px 28px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
     .scanner-illustration { width: 88px; height: 88px; background: var(--primary-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; }
@@ -61,17 +56,15 @@
     .server-url { font-size: 0.75rem; color: var(--gray-600); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); color: var(--gray-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s; -webkit-tap-highlight-color: transparent; }
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
-
     #scanner-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; }
     .scan-status-strip { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
     .strip-left { display: flex; align-items: center; gap: 10px; }
     .live-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); animation: blink 1s ease-in-out infinite; }
     .live-dot.scanning { background: var(--green); }
     .live-dot.paused { background: var(--amber); animation: none; }
-    @keyframes blink { 0%,100% { opacity:1; } 50% { opacity:0.3; } }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
     .strip-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); }
     .strip-count { font-size: 0.8rem; font-weight: 600; color: var(--primary); background: var(--primary-light); padding: 4px 12px; border-radius: 12px; }
-
     .cam-card { background: var(--gray-900); border-radius: var(--radius); overflow: hidden; position: relative; aspect-ratio: 1/1; box-shadow: var(--shadow-lg); }
     #cam-video { width: 100%; height: 100%; object-fit: cover; display: block; }
     #qr-canvas { display: none; }
@@ -80,24 +73,22 @@
     .corners svg { width: 100%; height: 100%; }
     .scan-line { position: absolute; left: 16%; right: 16%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); box-shadow: 0 0 8px 2px rgba(92,88,246,0.5); animation: scanMove 2s ease-in-out infinite; }
     .scan-line.paused { animation-play-state: paused; opacity: 0; }
-    @keyframes scanMove { 0% { top:16%; opacity:0; } 8% { opacity:1; } 92% { opacity:1; } 100% { top:84%; opacity:0; } }
+    @keyframes scanMove { 0%{top:16%;opacity:0}8%{opacity:1}92%{opacity:1}100%{top:84%;opacity:0} }
     .cam-hint { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
     .freeze-overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.72); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
     .freeze-overlay.visible { display: flex; }
     .freeze-spinner { width: 44px; height: 44px; border: 3px solid rgba(255,255,255,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes spin { to{transform:rotate(360deg)} }
     .freeze-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
-
     .status-card { background: var(--white); border-radius: var(--radius-sm); padding: 18px 20px; display: none; align-items: center; gap: 16px; box-shadow: var(--shadow-sm); animation: slideUp 0.2s ease; }
-    @keyframes slideUp { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes slideUp { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)} }
     .status-card.success { border: 1.5px solid #bbf7d0; background: var(--green-light); }
     .status-card.error   { border: 1.5px solid #fecaca; background: var(--red-light); }
     .status-card.warning { border: 1.5px solid #fde68a; background: var(--amber-light); }
     .s-dot { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; flex-shrink: 0; }
     .s-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
-    .success .s-title { color: #00875a; } .error .s-title { color: #b91c1c; } .warning .s-title { color: #b45309; }
+    .success .s-title{color:#00875a} .error .s-title{color:#b91c1c} .warning .s-title{color:#b45309}
     .s-detail { font-size: 0.8rem; color: var(--gray-600); line-height: 1.4; }
-
     .btn-stop { width: 100%; padding: 16px; margin-top: 8px; background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); color: var(--gray-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); -webkit-tap-highlight-color: transparent; transition: border-color 0.15s, color 0.15s; }
     .btn-stop:hover { border-color: var(--red); color: var(--red); }
   </style>
@@ -226,23 +217,15 @@
     const freezeOverlay = document.getElementById('freeze-overlay');
     const camHint       = document.getElementById('cam-hint');
 
-    let gasUrl        = '';
-    let stream        = null;
-    let rafId         = null;
-    let isProcessing  = false;
-    let scanCount     = 0;
-    let statusTimeout = null;
+    let gasUrl = '', stream = null, rafId = null;
+    let isProcessing = false, scanCount = 0, statusTimeout = null;
 
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved) { gasUrl = saved; showIdle(); }
-    else { show(configScreen); }
+    if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
 
     document.getElementById('btn-connect').addEventListener('click', () => {
       const val = gasInput.value.trim();
-      if (!val.startsWith('https://script.google.com')) {
-        gasInput.classList.add('error');
-        return;
-      }
+      if (!val.startsWith('https://script.google.com')) { gasInput.classList.add('error'); return; }
       gasInput.classList.remove('error');
       gasUrl = val;
       localStorage.setItem(STORAGE_KEY, gasUrl);
@@ -250,8 +233,7 @@
     });
 
     document.getElementById('btn-change-url').addEventListener('click', () => {
-      gasInput.value = gasUrl;
-      hide(idleScreen); show(configScreen);
+      gasInput.value = gasUrl; hide(idleScreen); show(configScreen);
     });
 
     document.getElementById('btn-open-camera').addEventListener('click', openCamera);
@@ -259,7 +241,7 @@
 
     function showIdle() {
       hide(configScreen); show(idleScreen);
-      const short = gasUrl.replace('https://script.google.com/macros/s/', '…/').replace('https://script.google.com/a/macros/', '…/');
+      const short = gasUrl.replace('https://script.google.com/macros/s/','…/').replace('https://script.google.com/a/macros/','…/');
       serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
@@ -269,10 +251,8 @@
       setScanState('scanning');
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
-        video.srcObject = stream;
-        await video.play();
-        canvas.width  = video.videoWidth  || 640;
-        canvas.height = video.videoHeight || 480;
+        video.srcObject = stream; await video.play();
+        canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
         decodeLoop();
       } catch (err) {
         try {
@@ -309,16 +289,13 @@
       video.pause();
       setScanState('verifying');
 
-      // Parse: "checkin_id:MBA00100|token:secure_token_123"
+      // Parse "checkin_id:MBA00100|token:secure_token_123"
       let id, token;
       try {
         const parts = raw.split('|');
         if (parts.length < 2) throw new Error('bad format');
-        // parts[0] = "checkin_id:MBA00100"  → split on first colon only
-        const idPart    = parts[0];
-        const tokenPart = parts[1];
-        id    = idPart.substring(idPart.indexOf(':') + 1).trim();
-        token = tokenPart.substring(tokenPart.indexOf(':') + 1).trim();
+        id    = parts[0].substring(parts[0].indexOf(':') + 1).trim();
+        token = parts[1].substring(parts[1].indexOf(':') + 1).trim();
         if (!id || !token) throw new Error('missing fields');
       } catch (e) {
         setScanState('scanning');
@@ -327,20 +304,20 @@
         return;
       }
 
-      // ── Send as POST with Content-Type text/plain ──
-      // GAS accepts text/plain without a CORS preflight, so no redirect stripping occurs.
+      // Build a plain-text body — NOT application/json to avoid preflight
+      // Use a simple key=value format that GAS reliably receives as e.postData.contents
+      const bodyStr = JSON.stringify({ id: id, token: token });
+
       fetch(gasUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({ id: id, token: token }),
-        redirect: 'follow',
-        mode: 'cors'
+        // NO Content-Type header at all → browser sends as text/plain → no preflight
+        // GAS receives raw string in e.postData.contents
+        headers: { 'Content-Type': 'text/plain' },
+        body: bodyStr
       })
       .then(r => r.text())
       .then(text => {
-        // Strip BOM and any whitespace, then parse
         const clean = text.replace(/^\uFEFF/, '').trim();
-        // GAS sometimes wraps in a callback — handle raw JSON only
         const res = JSON.parse(clean);
         setScanState('scanning');
         if (res.success) {
@@ -354,7 +331,7 @@
         }
         scheduleReset(3500);
       })
-      .catch(err => {
+      .catch(() => {
         setScanState('scanning');
         showResult('error', 'Server Unreachable', 'Check your URL or connection');
         scheduleReset(3000);
@@ -388,7 +365,6 @@
 
     function show(el) { el.style.display = 'flex'; }
     function hide(el) { el.style.display = 'none'; }
-
   })();
   </script>
 </body>
