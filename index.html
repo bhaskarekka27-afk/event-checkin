@@ -44,17 +44,22 @@
     .btn-primary { width: 100%; padding: 16px; margin-top: 8px; background: var(--primary); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; box-shadow: 0 4px 14px rgba(92,88,246,0.3); -webkit-tap-highlight-color: transparent; }
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-primary:active { transform: scale(0.98); }
-    #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 16px; width: 100%; max-width: 420px; }
-    .idle-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 40px 28px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px; }
-    .scanner-illustration { width: 88px; height: 88px; background: var(--primary-light); border-radius: 20px; display: flex; align-items: center; justify-content: center; position: relative; }
-    .scanner-illustration::after { content: ''; position: absolute; inset: -6px; border-radius: 26px; border: 1.5px solid rgba(92,88,246,0.15); }
-    .idle-title { font-size: 1.4rem; font-weight: 800; color: var(--gray-900); }
-    .idle-sub { font-size: 0.9rem; color: var(--gray-400); line-height: 1.5; margin-top: -8px; }
-    .server-row { display: flex; align-items: center; gap: 10px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 10px; padding: 12px 16px; width: 100%; }
-    .dot-live { width: 8px; height: 8px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
-    .server-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--gray-400); flex-shrink: 0; }
-    .server-url { font-size: 0.75rem; color: var(--gray-600); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); color: var(--gray-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color: 0.15s; -webkit-tap-highlight-color: transparent; }
+    
+    /* --- NEW IDLE SCREEN STYLES --- */
+    #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 16px; width: 100%; max-width: 420px; margin: 0 auto; }
+    .idle-card { background: var(--white); border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border: 1px solid var(--gray-200); padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; }
+    .scanner-illustration { width: 96px; height: 96px; background: var(--primary-light); border-radius: 28px; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
+    .scanner-illustration::after { content: ''; position: absolute; inset: -8px; border-radius: 36px; border: 2px solid var(--primary-light); }
+    .idle-text-group { display: flex; flex-direction: column; gap: 8px; }
+    .idle-title { font-size: 1.75rem; font-weight: 800; color: var(--gray-900); letter-spacing: -0.02em; line-height: 1.2; }
+    .idle-sub { font-size: 1rem; color: var(--gray-400); line-height: 1.5; }
+    .server-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 16px 20px; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .dot-live { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+    .server-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); flex-shrink: 0; }
+    .server-url { font-size: 0.85rem; color: var(--gray-600); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .btn-primary.btn-shadow { box-shadow: 0 12px 24px -6px rgba(92,88,246,0.4); border-radius: 16px; padding: 18px; font-size: 1.05rem; margin-top: 0; }
+    
+    .btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); color: var(--gray-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s; -webkit-tap-highlight-color: transparent; }
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
     #scanner-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; }
     .scan-status-strip { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
@@ -128,28 +133,32 @@
     <div id="idle-screen">
       <div class="idle-card">
         <div class="scanner-illustration">
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5c58f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5c58f6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
             <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
             <line x1="3" y1="12" x2="21" y2="12" stroke-width="1.5" opacity="0.4"/>
           </svg>
         </div>
-        <div>
+        
+        <div class="idle-text-group">
           <div class="idle-title">Ready to Check-in</div>
-          <div class="idle-sub">Open the camera to start scanning attendee QR codes instantly.</div>
+          <div class="idle-sub">Open the camera to start scanning<br>attendee QR codes instantly.</div>
         </div>
+        
         <div class="server-row">
           <div class="dot-live"></div>
           <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        <button class="btn-primary" id="btn-open-camera" style="margin-top:8px;">
+        
+        <button class="btn-primary btn-shadow" id="btn-open-camera">
           <span style="display:flex;align-items:center;justify-content:center;gap:10px">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
             Open Camera
           </span>
         </button>
       </div>
+      
       <button class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
@@ -289,7 +298,6 @@
       video.pause();
       setScanState('verifying');
 
-      // Parse "checkin_id:MBA00100|token:secure_token_123"
       let id, token;
       try {
         const parts = raw.split('|');
@@ -304,14 +312,10 @@
         return;
       }
 
-      // Build a plain-text body — NOT application/json to avoid preflight
-      // Use a simple key=value format that GAS reliably receives as e.postData.contents
       const bodyStr = JSON.stringify({ id: id, token: token });
 
       fetch(gasUrl, {
         method: 'POST',
-        // NO Content-Type header at all → browser sends as text/plain → no preflight
-        // GAS receives raw string in e.postData.contents
         headers: { 'Content-Type': 'text/plain' },
         body: bodyStr
       })
