@@ -6,23 +6,23 @@
   <title>Event Check-in</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* CLAT Mentorship Dashboard Theme Colors */
-      --primary: #5c58f6;       /* The distinct Indigo/Purple */
-      --primary-hover: #4641d4;
+      /* Updated Colors from CLAT Mentorship Dashboard */
+      --primary: #5c58f6; 
       --primary-light: #eff0fe;
-      --green: #00b075;         /* Completed/Done Green */
+      --primary-dark: #4a46c6;
+      --green: #00b075;
       --green-light: #e6f7f1;
-      --red: #ef4444;           /* Missed Red */
+      --red: #ef4444;
       --red-light: #fef2f2;
       --amber: #f59e0b;
       --amber-light: #fffbeb;
-      --gray-50: #f8f9fa;       /* Dashboard background */
+      --gray-50: #f8fafc;
       --gray-100: #f1f5f9;
       --gray-200: #e2e8f0;
       --gray-400: #94a3b8;
@@ -31,10 +31,10 @@
       --gray-900: #0f172a;
       --white: #ffffff;
       --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-      --shadow-md: 0 4px 16px rgba(92, 88, 246, 0.08), 0 1px 4px rgba(0,0,0,0.04);
-      --shadow-lg: 0 8px 32px rgba(92, 88, 246, 0.12), 0 2px 8px rgba(0,0,0,0.06);
-      --radius: 12px;
-      --radius-sm: 8px;
+      --shadow-md: 0 4px 16px rgba(92, 88, 246, 0.10), 0 1px 4px rgba(0,0,0,0.06);
+      --shadow-lg: 0 8px 32px rgba(92, 88, 246, 0.14), 0 2px 8px rgba(0,0,0,0.08);
+      --radius: 16px;
+      --radius-sm: 10px;
     }
 
     html, body {
@@ -42,7 +42,7 @@
     }
 
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: 'Plus Jakarta Sans', sans-serif;
       background: var(--gray-50);
       color: var(--gray-800);
       display: flex;
@@ -55,7 +55,7 @@
       background: var(--white);
       border-bottom: 1px solid var(--gray-200);
       padding: 0 20px;
-      height: 60px;
+      height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -66,26 +66,36 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
 
+    .brand-icon {
+      width: 32px; height: 32px;
+      background: var(--primary-light);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .brand-icon svg { color: var(--primary); }
+
     .brand-name {
-      font-size: 1.1rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: var(--gray-900);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gray-800);
     }
 
     .count-pill {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
-      color: var(--white);
-      background: var(--primary);
-      padding: 6px 14px;
-      border-radius: 6px;
-      box-shadow: 0 2px 6px rgba(92, 88, 246, 0.3);
+      color: var(--primary);
+      background: var(--primary-light);
+      border: 1px solid rgba(92, 88, 246, 0.2);
+      padding: 4px 12px;
+      border-radius: 20px;
     }
 
     /* ── CONTENT ── */
@@ -98,8 +108,18 @@
       gap: 16px;
     }
 
-    /* ── CONFIG / IDLE SCREEN ── */
-    #config-screen, #idle-screen {
+    /* ── CARD BASE ── */
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-200);
+      width: 100%;
+      max-width: 420px;
+    }
+
+    /* ── CONFIG SCREEN ── */
+    #config-screen {
       display: flex;
       flex-direction: column;
       align-items: stretch;
@@ -108,62 +128,84 @@
       max-width: 420px;
     }
 
-    .config-card, .idle-card {
+    .config-card {
       background: var(--white);
       border-radius: var(--radius);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--gray-200);
-      padding: 32px 24px;
+      padding: 28px 24px;
     }
 
-    .idle-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    .config-header {
       text-align: center;
-      gap: 16px;
+      margin-bottom: 24px;
     }
 
-    .config-header { text-align: center; margin-bottom: 24px; }
-    
-    .config-title, .idle-title {
+    .config-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 5px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+    }
+
+    .config-title {
       font-size: 1.4rem;
       font-weight: 800;
       color: var(--gray-900);
-      letter-spacing: -0.02em;
       line-height: 1.2;
     }
 
-    .config-sub, .idle-sub {
-      font-size: 0.85rem;
+    .config-sub {
+      font-size: 0.82rem;
       color: var(--gray-400);
-      margin-top: 8px;
+      margin-top: 6px;
       line-height: 1.5;
     }
 
     .input-label {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
       color: var(--gray-600);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: block;
+    }
+
+    .input-wrap {
+      position: relative;
     }
 
     .url-input {
       width: 100%;
       padding: 12px 14px;
-      border: 1px solid var(--gray-200);
+      border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
-      font-family: 'Inter', monospace;
+      font-family: 'Plus Jakarta Sans', monospace;
       font-size: 0.8rem;
       color: var(--gray-800);
       background: var(--gray-50);
       outline: none;
-      transition: all 0.2s;
+      transition: border-color 0.2s, box-shadow 0.2s;
     }
 
-    .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light); background: var(--white); }
-    .url-input.error { border-color: var(--red); box-shadow: 0 0 0 3px var(--red-light); }
+    .url-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(92, 88, 246, 0.1);
+      background: var(--white);
+    }
+
+    .url-input::placeholder { color: var(--gray-400); font-size: 0.75rem; }
+
+    .url-input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(239,68,68,0.08); }
 
     .btn-primary {
       width: 100%;
@@ -172,16 +214,72 @@
       color: var(--white);
       border: none;
       border-radius: var(--radius-sm);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.95rem;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.9rem;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.15s;
-      box-shadow: 0 4px 12px rgba(92, 88, 246, 0.25);
+      letter-spacing: 0.02em;
+      transition: background 0.15s, transform 0.1s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(92, 88, 246, 0.3);
+      -webkit-tap-highlight-color: transparent;
     }
 
-    .btn-primary:hover { background: var(--primary-hover); box-shadow: 0 6px 16px rgba(92, 88, 246, 0.35); }
+    .btn-primary:hover { background: var(--primary-dark); box-shadow: 0 6px 20px rgba(92, 88, 246, 0.4); }
     .btn-primary:active { transform: scale(0.98); }
+
+    /* ── IDLE SCREEN ── */
+    #idle-screen {
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .idle-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--gray-200);
+      padding: 32px 24px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 16px;
+    }
+
+    .scanner-illustration {
+      width: 80px; height: 80px;
+      background: var(--primary-light);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .scanner-illustration::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 24px;
+      border: 1.5px solid rgba(92, 88, 246, 0.15);
+    }
+
+    .idle-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--gray-900);
+    }
+
+    .idle-sub {
+      font-size: 0.85rem;
+      color: var(--gray-400);
+      line-height: 1.5;
+      margin-top: -8px;
+    }
 
     .server-row {
       display: flex;
@@ -189,43 +287,50 @@
       gap: 8px;
       background: var(--gray-50);
       border: 1px solid var(--gray-200);
-      border-radius: var(--radius-sm);
-      padding: 10px 14px;
+      border-radius: 8px;
+      padding: 8px 12px;
       width: 100%;
     }
 
     .dot-live {
-      width: 8px; height: 8px;
+      width: 7px; height: 7px;
       border-radius: 50%;
       background: var(--green);
-      box-shadow: 0 0 0 2px var(--green-light);
+      flex-shrink: 0;
+      box-shadow: 0 0 0 2px rgba(0,176,117,0.2);
     }
 
     .server-label {
-      font-size: 0.7rem;
+      font-size: 0.68rem;
       font-weight: 700;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       color: var(--gray-400);
+      flex-shrink: 0;
     }
 
     .server-url {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       color: var(--gray-600);
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+      font-family: 'Plus Jakarta Sans', monospace;
     }
 
     .btn-secondary {
       width: 100%;
       padding: 12px;
       background: transparent;
-      border: 1px solid var(--gray-200);
+      border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
       color: var(--gray-600);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.15s;
+      transition: border-color 0.15s, color 0.15s;
+      -webkit-tap-highlight-color: transparent;
     }
 
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
@@ -235,45 +340,59 @@
       display: none;
       flex-direction: column;
       align-items: stretch;
-      gap: 16px;
+      gap: 12px;
       width: 100%;
       max-width: 420px;
     }
 
+    /* Status strip above camera */
     .scan-status-strip {
       background: var(--white);
       border: 1px solid var(--gray-200);
       border-radius: var(--radius-sm);
-      padding: 12px 16px;
+      padding: 10px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       box-shadow: var(--shadow-sm);
     }
 
-    .strip-left { display: flex; align-items: center; gap: 10px; }
+    .strip-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
     .live-dot {
-      width: 10px; height: 10px;
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--red);
       animation: blink 1s ease-in-out infinite;
     }
+
     .live-dot.scanning { background: var(--green); }
     .live-dot.paused   { background: var(--amber); animation: none; }
 
-    @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+    @keyframes blink {
+      0%,100% { opacity: 1; }
+      50%      { opacity: 0.3; }
+    }
 
     .strip-label {
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      color: var(--gray-800);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gray-600);
     }
 
     .strip-count {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      color: var(--gray-600);
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 3px 9px;
+      border-radius: 12px;
     }
 
     /* Camera viewport */
@@ -284,7 +403,6 @@
       position: relative;
       aspect-ratio: 1 / 1;
       box-shadow: var(--shadow-lg);
-      border: 1px solid var(--gray-200);
     }
 
     #cam-video {
@@ -295,25 +413,34 @@
 
     #qr-canvas { display: none; }
 
+    /* Dark vignette */
     .vignette {
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse at center, transparent 40%, rgba(15,23,42,0.5) 100%);
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(15,23,42,0.6) 100%);
       pointer-events: none;
     }
 
-    .corners { position: absolute; inset: 0; pointer-events: none; }
+    /* Corner brackets */
+    .corners {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
     .corners svg { width: 100%; height: 100%; }
 
+    /* Animated scan line */
     .scan-line {
       position: absolute;
       left: 16%; right: 16%;
       height: 2px;
-      background: var(--primary);
-      box-shadow: 0 0 10px 2px rgba(92, 88, 246, 0.6);
+      background: linear-gradient(90deg, transparent, var(--primary), transparent);
+      box-shadow: 0 0 8px 2px rgba(92, 88, 246, 0.5);
       animation: scanMove 2s ease-in-out infinite;
     }
-    .scan-line.paused { display: none; }
+
+    .scan-line.paused { animation-play-state: paused; opacity: 0; }
 
     @keyframes scanMove {
       0%   { top: 16%; opacity: 0; }
@@ -322,25 +449,24 @@
       100% { top: 84%; opacity: 0; }
     }
 
+    /* Center hint label */
     .cam-hint {
       position: absolute;
-      bottom: 16px;
+      bottom: 14px;
       left: 0; right: 0;
       text-align: center;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 600;
-      letter-spacing: 0.05em;
-      color: rgba(255,255,255,0.8);
-      background: rgba(0,0,0,0.4);
-      padding: 6px 0;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
     }
 
     /* Freeze overlay — shown while verifying */
     .freeze-overlay {
       position: absolute;
       inset: 0;
-      background: rgba(15,23,42,0.4);
-      backdrop-filter: blur(2px);
+      background: rgba(15,23,42,0.72);
       display: none;
       align-items: center;
       justify-content: center;
@@ -351,79 +477,169 @@
     .freeze-overlay.visible { display: flex; }
 
     .freeze-spinner {
-      width: 48px; height: 48px;
-      border: 4px solid rgba(255,255,255,0.2);
+      width: 40px; height: 40px;
+      border: 3px solid rgba(255,255,255,0.15);
       border-top-color: var(--primary);
       border-radius: 50%;
-      animation: spin 0.8s linear infinite;
+      animation: spin 0.7s linear infinite;
     }
 
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── STATUS CARD ── */
+    .freeze-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+    }
+
+    /* ── STATUS CARD (below camera) ── */
     .status-card {
       background: var(--white);
       border-radius: var(--radius-sm);
-      padding: 16px;
+      padding: 14px 16px;
       display: none;
       align-items: center;
-      gap: 16px;
-      box-shadow: var(--shadow-md);
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
       animation: slideUp 0.2s ease;
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(10px); }
+      from { opacity: 0; transform: translateY(6px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
-    .status-card.success { border-left: 6px solid var(--green); }
-    .status-card.error   { border-left: 6px solid var(--red); }
-    .status-card.warning { border-left: 6px solid var(--amber); }
+    .status-card.success { border: 1.5px solid #bbf7d0; background: var(--green-light); }
+    .status-card.error   { border: 1.5px solid #fecaca; background: var(--red-light); }
+    .status-card.warning { border: 1.5px solid #fde68a; background: var(--amber-light); }
 
     .s-dot {
-      width: 40px; height: 40px;
+      width: 36px; height: 36px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1rem;
       flex-shrink: 0;
     }
 
-    .success .s-dot { background: var(--green-light); color: var(--green); }
-    .error   .s-dot { background: var(--red-light); color: var(--red); }
-    .warning .s-dot { background: var(--amber-light); color: var(--amber); }
+    .success .s-dot { background: rgba(0,176,117,0.15); }
+    .error   .s-dot { background: rgba(239,68,68,0.12); }
+    .warning .s-dot { background: rgba(245,158,11,0.12); }
 
     .s-title {
-      font-size: 0.95rem;
-      font-weight: 800;
-      color: var(--gray-900);
-      margin-bottom: 2px;
+      font-size: 0.88rem;
+      font-weight: 700;
+      margin-bottom: 1px;
     }
-    .s-detail { font-size: 0.8rem; color: var(--gray-600); }
 
+    .success .s-title { color: #00875a; }
+    .error   .s-title { color: #b91c1c; }
+    .warning .s-title { color: #b45309; }
+
+    .s-detail {
+      font-size: 0.76rem;
+      color: var(--gray-600);
+    }
+
+    /* Stop button */
     .btn-stop {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       background: var(--white);
-      border: 1px solid var(--gray-200);
+      border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
-      color: var(--red);
-      font-weight: 700;
+      color: var(--gray-600);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
       cursor: pointer;
       box-shadow: var(--shadow-sm);
-      transition: all 0.15s;
+      -webkit-tap-highlight-color: transparent;
+      transition: border-color 0.15s, color 0.15s;
     }
-    .btn-stop:hover { background: var(--red-light); border-color: var(--red); }
 
+    .btn-stop:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── ERROR SCREEN ── */
+    #error-screen {
+      display: none;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .error-card {
+      background: var(--white);
+      border: 1.5px solid #fecaca;
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .error-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .error-title {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--red);
+      margin-bottom: 6px;
+    }
+
+    .error-body {
+      font-size: 0.84rem;
+      color: var(--gray-600);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .steps-box {
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 14px 16px;
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .steps-box li {
+      font-size: 0.82rem;
+      color: var(--gray-600);
+      line-height: 1.8;
+      list-style: none;
+      padding-left: 20px;
+      position: relative;
+    }
+
+    .steps-box li::before {
+      content: attr(data-n);
+      position: absolute; left: 0;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
   </style>
 </head>
 <body>
 
   <div class="topbar">
     <div class="brand">
-      <span class="brand-name">CLAT Mentorship Check-in</span>
+      <div class="brand-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="17" width="3" height="3"/>
+          <path d="M14 14h3v3"/><path d="M17 14h3v6h-3"/><path d="M14 20h3"/>
+        </svg>
+      </div>
+      <span class="brand-name">Event Check-in</span>
     </div>
-    <div class="count-pill" id="scan-badge">System Ready</div>
+    <div class="count-pill" id="scan-badge">Ready</div>
   </div>
 
   <div class="content">
@@ -431,30 +647,59 @@
     <div id="config-screen">
       <div class="config-card">
         <div class="config-header">
-          <div class="config-title">Connect Backend</div>
-          <div class="config-sub">Enter your Apps Script deployment URL.</div>
+          <div class="config-badge">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            Secure Scanner
+          </div>
+          <div class="config-title">Connect to Event</div>
+          <div class="config-sub">Paste your Google Apps Script deployment URL to link this scanner to your attendance sheet.</div>
         </div>
-        <div style="margin-bottom:20px">
-          <label class="input-label" for="gas-url-input">Web App URL</label>
-          <input type="url" id="gas-url-input" class="url-input" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off">
+
+        <div style="margin-bottom:16px">
+          <label class="input-label" for="gas-url-input">Apps Script Web App URL</label>
+          <div class="input-wrap">
+            <input type="url" id="gas-url-input" class="url-input"
+              placeholder="https://script.google.com/macros/s/.../exec"
+              autocomplete="off" autocorrect="off" spellcheck="false">
+          </div>
         </div>
-        <button class="btn-primary" id="btn-connect">Connect & Save</button>
+
+        <button class="btn-primary" id="btn-connect">
+          Connect &amp; Start Scanning
+        </button>
+
+        <p style="font-size:0.72rem;color:var(--gray-400);text-align:center;margin-top:12px;line-height:1.5">
+          Your URL is saved locally in this browser and never shared.
+        </p>
       </div>
     </div>
 
     <div id="idle-screen">
       <div class="idle-card">
-        <div class="idle-title">Ready to Scan</div>
-        <div class="idle-sub">Open the camera to begin processing attendee QR codes.</div>
-        
+        <div class="scanner-illustration">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#5c58f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
+            <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
+            <line x1="3" y1="12" x2="21" y2="12" stroke-width="1.5" opacity="0.4"/>
+          </svg>
+        </div>
+        <div>
+          <div class="idle-title">Ready to Check-in</div>
+          <div class="idle-sub">Open the camera to start scanning attendee QR codes instantly.</div>
+        </div>
         <div class="server-row">
           <div class="dot-live"></div>
-          <span class="server-label">Link</span>
+          <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        <button class="btn-primary" id="btn-open-camera">📷 Start Camera Feed</button>
+        <button class="btn-primary" id="btn-open-camera" style="width:100%">
+          <span style="display:flex;align-items:center;justify-content:center;gap:8px">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            Open Camera
+          </span>
+        </button>
       </div>
-      <button class="btn-secondary" id="btn-change-url">Update Backend URL</button>
+      <button class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
     <div id="scanner-screen">
@@ -462,9 +707,9 @@
       <div class="scan-status-strip">
         <div class="strip-left">
           <div class="live-dot scanning" id="live-dot"></div>
-          <span class="strip-label" id="strip-label">Camera Active</span>
+          <span class="strip-label" id="strip-label">Scanning</span>
         </div>
-        <span class="strip-count" id="strip-count">0 Scanned</span>
+        <span class="strip-count" id="strip-count">0 checked in</span>
       </div>
 
       <div class="cam-card">
@@ -473,10 +718,10 @@
 
         <div class="corners">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 28 L18 18 L28 18" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M72 18 L82 18 L82 28" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M82 72 L82 82 L72 82" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
-            <path d="M28 82 L18 82 L18 72" stroke="var(--primary)" stroke-width="2" fill="none" stroke-linecap="round"/>
+            <path d="M18 28 L18 18 L28 18" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M72 18 L82 18 L82 28" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M82 72 L82 82 L72 82" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M28 82 L18 82 L18 72" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
           </svg>
         </div>
 
@@ -486,23 +731,36 @@
 
         <div class="freeze-overlay" id="freeze-overlay">
           <div class="freeze-spinner"></div>
+          <div class="freeze-label">Verifying…</div>
         </div>
       </div>
 
       <div id="status-card" class="status-card">
         <div class="s-dot" id="s-dot"></div>
-        <div>
+        <div class="s-body">
           <div class="s-title" id="s-title"></div>
           <div class="s-detail" id="s-detail"></div>
         </div>
       </div>
 
-      <button class="btn-stop" id="btn-stop">Close Camera</button>
+      <button class="btn-stop" id="btn-stop">Stop Scanner</button>
     </div>
 
-  </div>
+    <div id="error-screen">
+      <div class="error-card">
+        <div class="error-icon">📷</div>
+        <div class="error-title">Camera Blocked</div>
+        <div class="error-body">Your browser blocked camera access. Follow these steps to fix it:</div>
+        <ul class="steps-box">
+          <li data-n="1.">Tap the lock or <strong>aA</strong> icon in your address bar</li>
+          <li data-n="2.">Find <strong>Camera</strong> and set it to <strong>Allow</strong></li>
+          <li data-n="3.">Reload this page and try again</li>
+        </ul>
+        <button class="btn-primary" onclick="location.reload()">Reload Page</button>
+      </div>
+    </div>
 
-  <script>
+  </div><script>
   (function () {
     'use strict';
 
@@ -511,6 +769,7 @@
     const configScreen = document.getElementById('config-screen');
     const idleScreen   = document.getElementById('idle-screen');
     const scanScreen   = document.getElementById('scanner-screen');
+    const errScreen    = document.getElementById('error-screen');
     const gasInput     = document.getElementById('gas-url-input');
     const serverDisp   = document.getElementById('server-url-display');
     const badge        = document.getElementById('scan-badge');
@@ -540,11 +799,12 @@
     if (saved) { gasUrl = saved; showIdle(); }
     else { show(configScreen); }
 
-    // Config Events
+    // Config
     document.getElementById('btn-connect').addEventListener('click', () => {
       const val = gasInput.value.trim();
       if (!val.startsWith('https://script.google.com')) {
         gasInput.classList.add('error');
+        gasInput.placeholder = '⚠ Must be a script.google.com URL';
         return;
       }
       gasInput.classList.remove('error');
@@ -562,28 +822,41 @@
     document.getElementById('btn-stop').addEventListener('click', stopCamera);
 
     function showIdle() {
-      hide(configScreen); show(idleScreen);
+      hide(configScreen);
+      show(idleScreen);
       const short = gasUrl.replace('https://script.google.com/macros/s/', '…/').replace('https://script.google.com/a/macros/', '…/');
-      serverDisp.textContent = short.length > 40 ? short.substring(0,40)+'…' : short;
+      serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
+    // Camera
     async function openCamera() {
-      hide(idleScreen); show(scanScreen);
+      hide(idleScreen);
+      show(scanScreen);
+      hide(errScreen);
       statusCard.style.display = 'none';
       setScanState('scanning');
 
       try {
         stream = await navigator.mediaDevices.getUserMedia({
-          video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 } }, audio: false
+          video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } },
+          audio: false
         });
         video.srcObject = stream;
         await video.play();
-        canvas.width  = video.videoWidth || 640;
+        canvas.width  = video.videoWidth  || 640;
         canvas.height = video.videoHeight || 480;
         decodeLoop();
       } catch (err) {
-        alert("Camera blocked or unavailable. Please check permissions.");
-        stopCamera();
+        if (err.name === 'OverconstrainedError') {
+          try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+            video.srcObject = stream;
+            await video.play();
+            canvas.width  = video.videoWidth  || 640;
+            canvas.height = video.videoHeight || 480;
+            decodeLoop();
+          } catch (e2) { showCamError(); }
+        } else { showCamError(); }
       }
     }
 
@@ -593,22 +866,26 @@
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null;
       isProcessing = false;
-      hide(scanScreen); showIdle();
+      hide(scanScreen);
+      showIdle();
     }
 
+    function showCamError() { hide(scanScreen); show(errScreen); }
+
+    // Decode loop — pauses when verifying
     function decodeLoop() {
       if (!stream) return;
       if (!isProcessing && video.readyState >= video.HAVE_ENOUGH_DATA) {
         if (video.videoWidth && video.videoWidth !== canvas.width) {
-          canvas.width  = video.videoWidth; canvas.height = video.videoHeight;
+          canvas.width  = video.videoWidth;
+          canvas.height = video.videoHeight;
         }
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
         const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
-        
         if (code && code.data) {
           handleQR(code.data);
-          return; // Stop requesting frames while handling
+          return; // stop scheduling new frames — handleQR will resume after
         }
       }
       rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 100));
@@ -617,8 +894,8 @@
     function handleQR(raw) {
       if (isProcessing) return;
       isProcessing = true;
-      
-      // Physically pause the video feed so the UI freezes
+
+      // Physically pause the video feed to freeze the camera UI
       video.pause();
       setScanState('verifying');
 
@@ -630,62 +907,68 @@
         token = parts[1].split(':')[1];
         if (!id || !token) throw new Error('missing fields');
       } catch (e) {
-        showResult('error', 'Invalid QR Code', 'Not recognized as an event ticket');
+        setScanState('scanning');
+        showResult('error', 'Invalid QR Code', 'Not a valid event ticket');
         scheduleReset(3000);
         return;
       }
 
+      const formBody = 'payload=' + encodeURIComponent(JSON.stringify({ id, token }));
+
       fetch(gasUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: 'payload=' + encodeURIComponent(JSON.stringify({ id, token })),
+        body: formBody,
         redirect: 'follow'
       })
-      .then(r => r.text())
+      .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
       .then(text => {
-        const res = JSON.parse(text.trim());
+        const res = JSON.parse(text.trim().replace(/^\uFEFF/, ''));
+        setScanState('scanning');
         if (res.success) {
           scanCount++;
-          badge.textContent = scanCount + ' Processed';
-          stripCount.textContent = scanCount + ' Scanned';
-          showResult('success', 'Checked In', res.message);
+          badge.textContent = scanCount + ' Checked In';
+          stripCount.textContent = scanCount + ' checked in';
+          showResult('success', 'Check-in Successful', res.message);
         } else {
-          const type = res.message.includes('already') ? 'warning' : 'error';
+          const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
           showResult(type, 'Check-in Denied', res.message);
         }
         scheduleReset(3500);
       })
       .catch(() => {
-        showResult('error', 'Network Error', 'Check your connection or URL');
+        setScanState('scanning');
+        showResult('error', 'Server Unreachable', 'Check your URL or connection');
         scheduleReset(3000);
       });
     }
 
+    // Visual state management
     function setScanState(state) {
       if (state === 'verifying') {
         liveDot.className = 'live-dot paused';
-        stripLabel.textContent = 'Verifying Record...';
+        stripLabel.textContent = 'Verifying';
         scanLine.classList.add('paused');
         freezeOverlay.classList.add('visible');
         camHint.style.opacity = '0';
       } else {
         liveDot.className = 'live-dot scanning';
-        stripLabel.textContent = 'Camera Active';
+        stripLabel.textContent = 'Scanning';
         scanLine.classList.remove('paused');
         freezeOverlay.classList.remove('visible');
         camHint.style.opacity = '1';
         
-        // Ensure video resumes playing
-        if (video.paused && stream) video.play(); 
+        // Unfreeze the camera feed if it was paused
+        if (video.paused && stream) video.play();
         
-        // Resume continuous decoding
+        // Resume decode loop
         if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       }
     }
 
     function showResult(type, title, detail) {
       clearTimeout(statusTimeout);
-      const icons = { success: '✔', error: '✖', warning: '⚠' };
+      const icons = { success: '✅', error: '❌', warning: '⚠️' };
       sDot.textContent = icons[type] || '';
       sTitle.textContent  = title;
       sDetail.textContent = detail;
@@ -697,7 +980,6 @@
       statusTimeout = setTimeout(() => {
         statusCard.style.display = 'none';
         isProcessing = false;
-        setScanState('scanning'); // Unfreezes the video and restarts loop
       }, ms);
     }
 
