@@ -682,15 +682,24 @@
         return;
       }
 
-      // Call GAS via fetch (not google.script.run — this is a standalone page)
+      // GAS Workspace domains block standard POST with JSON content-type (CORS preflight fails).
+      // Workaround: send as form-encoded POST — GAS accepts this without a preflight OPTIONS request.
+      const formBody = 'payload=' + encodeURIComponent(JSON.stringify({ id, token }));
+
       fetch(gasUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id, token }),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: formBody,
         redirect: 'follow'
       })
-      .then(r => r.json())
-      .then(res => {
+      .then(r => {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.text();
+      })
+      .then(text => {
+        // GAS sometimes wraps response — strip any leading/trailing whitespace or BOM
+        const clean = text.trim().replace(/^\uFEFF/, '');
+        const res = JSON.parse(clean);
         if (res.success) {
           scanCount++;
           badge.textContent = scanCount + ' CHECKED IN';
