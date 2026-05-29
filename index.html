@@ -12,7 +12,6 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Updated Colors from CLAT Mentorship Dashboard */
       --primary: #5c58f6; 
       --primary-light: #eff0fe;
       --primary-dark: #4a46c6;
@@ -55,7 +54,7 @@
       background: var(--white);
       border-bottom: 1px solid var(--gray-200);
       padding: 0 20px;
-      height: 56px;
+      height: 64px; /* Increased height slightly for better breathing room */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -66,35 +65,35 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 12px;
     }
 
     .brand-icon {
-      width: 32px; height: 32px;
+      width: 36px; height: 36px;
       background: var(--primary-light);
-      border-radius: 8px;
+      border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
     }
 
     .brand-icon svg { color: var(--primary); }
 
     .brand-name {
-      font-size: 0.8rem;
+      font-size: 0.9rem;
       font-weight: 700;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--gray-800);
     }
 
     .count-pill {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
-      letter-spacing: 0.07em;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--primary);
       background: var(--primary-light);
       border: 1px solid rgba(92, 88, 246, 0.2);
-      padding: 4px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
     }
 
@@ -104,18 +103,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 24px 16px;
-      gap: 16px;
-    }
-
-    /* ── CARD BASE ── */
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-md);
-      border: 1px solid var(--gray-200);
-      width: 100%;
-      max-width: 420px;
+      padding: 32px 20px; /* Increased padding for better spacing */
+      gap: 24px; /* Increased gap between blocks */
     }
 
     /* ── CONFIG SCREEN ── */
@@ -123,7 +112,7 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: 16px;
+      gap: 20px;
       width: 100%;
       max-width: 420px;
     }
@@ -133,50 +122,50 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--gray-200);
-      padding: 28px 24px;
+      padding: 36px 28px;
     }
 
     .config-header {
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 28px;
     }
 
     .config-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      font-size: 0.7rem;
+      gap: 8px;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--primary);
       background: var(--primary-light);
-      padding: 5px 12px;
+      padding: 6px 14px;
       border-radius: 20px;
-      margin-bottom: 12px;
+      margin-bottom: 16px;
     }
 
     .config-title {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--gray-900);
       line-height: 1.2;
     }
 
     .config-sub {
-      font-size: 0.82rem;
+      font-size: 0.85rem;
       color: var(--gray-400);
-      margin-top: 6px;
+      margin-top: 8px;
       line-height: 1.5;
     }
 
     .input-label {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
       color: var(--gray-600);
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       display: block;
     }
 
@@ -186,11 +175,11 @@
 
     .url-input {
       width: 100%;
-      padding: 12px 14px;
+      padding: 14px 16px;
       border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
       font-family: 'Plus Jakarta Sans', monospace;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: var(--gray-800);
       background: var(--gray-50);
       outline: none;
@@ -203,19 +192,18 @@
       background: var(--white);
     }
 
-    .url-input::placeholder { color: var(--gray-400); font-size: 0.75rem; }
-
     .url-input.error { border-color: var(--red); box-shadow: 0 0 0 3px rgba(239,68,68,0.08); }
 
     .btn-primary {
       width: 100%;
-      padding: 14px;
+      padding: 16px;
+      margin-top: 8px;
       background: var(--primary);
       color: var(--white);
       border: none;
       border-radius: var(--radius-sm);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       font-weight: 700;
       cursor: pointer;
       letter-spacing: 0.02em;
@@ -232,7 +220,7 @@
       display: none;
       flex-direction: column;
       align-items: stretch;
-      gap: 12px;
+      gap: 16px;
       width: 100%;
       max-width: 420px;
     }
@@ -242,16 +230,16 @@
       border-radius: var(--radius);
       box-shadow: var(--shadow-md);
       border: 1px solid var(--gray-200);
-      padding: 32px 24px 28px;
+      padding: 40px 28px 32px;
       display: flex;
       flex-direction: column;
       align-items: center;
       text-align: center;
-      gap: 16px;
+      gap: 20px;
     }
 
     .scanner-illustration {
-      width: 80px; height: 80px;
+      width: 88px; height: 88px;
       background: var(--primary-light);
       border-radius: 20px;
       display: flex;
@@ -263,19 +251,19 @@
     .scanner-illustration::after {
       content: '';
       position: absolute;
-      inset: -4px;
-      border-radius: 24px;
+      inset: -6px;
+      border-radius: 26px;
       border: 1.5px solid rgba(92, 88, 246, 0.15);
     }
 
     .idle-title {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 800;
       color: var(--gray-900);
     }
 
     .idle-sub {
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       color: var(--gray-400);
       line-height: 1.5;
       margin-top: -8px;
@@ -284,16 +272,16 @@
     .server-row {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       background: var(--gray-50);
       border: 1px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 8px 12px;
+      border-radius: 10px;
+      padding: 12px 16px;
       width: 100%;
     }
 
     .dot-live {
-      width: 7px; height: 7px;
+      width: 8px; height: 8px;
       border-radius: 50%;
       background: var(--green);
       flex-shrink: 0;
@@ -301,7 +289,7 @@
     }
 
     .server-label {
-      font-size: 0.68rem;
+      font-size: 0.75rem;
       font-weight: 700;
       letter-spacing: 0.07em;
       text-transform: uppercase;
@@ -310,7 +298,7 @@
     }
 
     .server-url {
-      font-size: 0.7rem;
+      font-size: 0.75rem;
       color: var(--gray-600);
       overflow: hidden;
       text-overflow: ellipsis;
@@ -320,13 +308,13 @@
 
     .btn-secondary {
       width: 100%;
-      padding: 12px;
+      padding: 14px;
       background: transparent;
       border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
       color: var(--gray-600);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       transition: border-color 0.15s, color 0.15s;
@@ -340,7 +328,7 @@
       display: none;
       flex-direction: column;
       align-items: stretch;
-      gap: 12px;
+      gap: 20px; /* Increased gap between camera elements */
       width: 100%;
       max-width: 420px;
     }
@@ -350,7 +338,7 @@
       background: var(--white);
       border: 1px solid var(--gray-200);
       border-radius: var(--radius-sm);
-      padding: 10px 16px;
+      padding: 14px 18px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -360,11 +348,11 @@
     .strip-left {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
     }
 
     .live-dot {
-      width: 8px; height: 8px;
+      width: 10px; height: 10px;
       border-radius: 50%;
       background: var(--red);
       animation: blink 1s ease-in-out infinite;
@@ -379,7 +367,7 @@
     }
 
     .strip-label {
-      font-size: 0.72rem;
+      font-size: 0.8rem;
       font-weight: 700;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -387,11 +375,11 @@
     }
 
     .strip-count {
-      font-size: 0.72rem;
+      font-size: 0.8rem;
       font-weight: 600;
       color: var(--primary);
       background: var(--primary-light);
-      padding: 3px 9px;
+      padding: 4px 12px;
       border-radius: 12px;
     }
 
@@ -413,7 +401,6 @@
 
     #qr-canvas { display: none; }
 
-    /* Dark vignette */
     .vignette {
       position: absolute;
       inset: 0;
@@ -421,7 +408,6 @@
       pointer-events: none;
     }
 
-    /* Corner brackets */
     .corners {
       position: absolute;
       inset: 0;
@@ -430,7 +416,6 @@
 
     .corners svg { width: 100%; height: 100%; }
 
-    /* Animated scan line */
     .scan-line {
       position: absolute;
       left: 16%; right: 16%;
@@ -449,20 +434,18 @@
       100% { top: 84%; opacity: 0; }
     }
 
-    /* Center hint label */
     .cam-hint {
       position: absolute;
-      bottom: 14px;
+      bottom: 20px;
       left: 0; right: 0;
       text-align: center;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.08em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.6);
     }
 
-    /* Freeze overlay — shown while verifying */
     .freeze-overlay {
       position: absolute;
       inset: 0;
@@ -471,13 +454,13 @@
       align-items: center;
       justify-content: center;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
     }
 
     .freeze-overlay.visible { display: flex; }
 
     .freeze-spinner {
-      width: 40px; height: 40px;
+      width: 44px; height: 44px;
       border: 3px solid rgba(255,255,255,0.15);
       border-top-color: var(--primary);
       border-radius: 50%;
@@ -487,27 +470,27 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     .freeze-label {
-      font-size: 0.78rem;
+      font-size: 0.85rem;
       font-weight: 600;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255,255,255,0.8);
     }
 
-    /* ── STATUS CARD (below camera) ── */
+    /* ── STATUS CARD ── */
     .status-card {
       background: var(--white);
       border-radius: var(--radius-sm);
-      padding: 14px 16px;
+      padding: 18px 20px;
       display: none;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       box-shadow: var(--shadow-sm);
       animation: slideUp 0.2s ease;
     }
 
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(8px); }
       to   { opacity: 1; transform: translateY(0); }
     }
 
@@ -516,10 +499,10 @@
     .status-card.warning { border: 1.5px solid #fde68a; background: var(--amber-light); }
 
     .s-dot {
-      width: 36px; height: 36px;
+      width: 42px; height: 42px;
       border-radius: 50%;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1rem;
+      font-size: 1.1rem;
       flex-shrink: 0;
     }
 
@@ -528,9 +511,9 @@
     .warning .s-dot { background: rgba(245,158,11,0.12); }
 
     .s-title {
-      font-size: 0.88rem;
+      font-size: 0.95rem;
       font-weight: 700;
-      margin-bottom: 1px;
+      margin-bottom: 3px;
     }
 
     .success .s-title { color: #00875a; }
@@ -538,20 +521,22 @@
     .warning .s-title { color: #b45309; }
 
     .s-detail {
-      font-size: 0.76rem;
+      font-size: 0.8rem;
       color: var(--gray-600);
+      line-height: 1.4;
     }
 
     /* Stop button */
     .btn-stop {
       width: 100%;
-      padding: 13px;
+      padding: 16px;
+      margin-top: 8px;
       background: var(--white);
       border: 1.5px solid var(--gray-200);
       border-radius: var(--radius-sm);
       color: var(--gray-600);
       font-family: 'Plus Jakarta Sans', sans-serif;
-      font-size: 0.85rem;
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       box-shadow: var(--shadow-sm);
@@ -561,69 +546,6 @@
 
     .btn-stop:hover { border-color: var(--red); color: var(--red); }
 
-    /* ── ERROR SCREEN ── */
-    #error-screen {
-      display: none;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-      width: 100%;
-      max-width: 420px;
-    }
-
-    .error-card {
-      background: var(--white);
-      border: 1.5px solid #fecaca;
-      border-radius: var(--radius);
-      padding: 28px 24px;
-      text-align: center;
-      box-shadow: var(--shadow-md);
-    }
-
-    .error-icon {
-      font-size: 2.5rem;
-      margin-bottom: 12px;
-    }
-
-    .error-title {
-      font-size: 1.1rem;
-      font-weight: 800;
-      color: var(--red);
-      margin-bottom: 6px;
-    }
-
-    .error-body {
-      font-size: 0.84rem;
-      color: var(--gray-600);
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-
-    .steps-box {
-      background: var(--gray-50);
-      border: 1px solid var(--gray-200);
-      border-radius: 10px;
-      padding: 14px 16px;
-      text-align: left;
-      margin-bottom: 20px;
-    }
-
-    .steps-box li {
-      font-size: 0.82rem;
-      color: var(--gray-600);
-      line-height: 1.8;
-      list-style: none;
-      padding-left: 20px;
-      position: relative;
-    }
-
-    .steps-box li::before {
-      content: attr(data-n);
-      position: absolute; left: 0;
-      color: var(--primary);
-      font-weight: 700;
-      font-size: 0.75rem;
-    }
   </style>
 </head>
 <body>
@@ -631,7 +553,7 @@
   <div class="topbar">
     <div class="brand">
       <div class="brand-icon">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
           <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="17" width="3" height="3"/>
           <path d="M14 14h3v3"/><path d="M17 14h3v6h-3"/><path d="M14 20h3"/>
@@ -648,14 +570,14 @@
       <div class="config-card">
         <div class="config-header">
           <div class="config-badge">
-            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Secure Scanner
           </div>
           <div class="config-title">Connect to Event</div>
           <div class="config-sub">Paste your Google Apps Script deployment URL to link this scanner to your attendance sheet.</div>
         </div>
 
-        <div style="margin-bottom:16px">
+        <div>
           <label class="input-label" for="gas-url-input">Apps Script Web App URL</label>
           <div class="input-wrap">
             <input type="url" id="gas-url-input" class="url-input"
@@ -667,24 +589,20 @@
         <button class="btn-primary" id="btn-connect">
           Connect &amp; Start Scanning
         </button>
-
-        <p style="font-size:0.72rem;color:var(--gray-400);text-align:center;margin-top:12px;line-height:1.5">
-          Your URL is saved locally in this browser and never shared.
-        </p>
       </div>
     </div>
 
     <div id="idle-screen">
       <div class="idle-card">
         <div class="scanner-illustration">
-          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#5c58f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#5c58f6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/>
             <path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/>
             <line x1="3" y1="12" x2="21" y2="12" stroke-width="1.5" opacity="0.4"/>
           </svg>
         </div>
         <div>
-          <div class="idle-title">Ready to Check-in</div><br>
+          <div class="idle-title">Ready to Check-in</div>
           <div class="idle-sub">Open the camera to start scanning attendee QR codes instantly.</div>
         </div>
         <div class="server-row">
@@ -692,9 +610,9 @@
           <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        <button class="btn-primary" id="btn-open-camera" style="width:100%">
-          <span style="display:flex;align-items:center;justify-content:center;gap:8px">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        <button class="btn-primary" id="btn-open-camera" style="margin-top: 8px;">
+          <span style="display:flex;align-items:center;justify-content:center;gap:10px">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
             Open Camera
           </span>
         </button>
@@ -746,20 +664,6 @@
       <button class="btn-stop" id="btn-stop">Stop Scanner</button>
     </div>
 
-    <div id="error-screen">
-      <div class="error-card">
-        <div class="error-icon">📷</div>
-        <div class="error-title">Camera Blocked</div>
-        <div class="error-body">Your browser blocked camera access. Follow these steps to fix it:</div>
-        <ul class="steps-box">
-          <li data-n="1.">Tap the lock or <strong>aA</strong> icon in your address bar</li>
-          <li data-n="2.">Find <strong>Camera</strong> and set it to <strong>Allow</strong></li>
-          <li data-n="3.">Reload this page and try again</li>
-        </ul>
-        <button class="btn-primary" onclick="location.reload()">Reload Page</button>
-      </div>
-    </div>
-
   </div><script>
   (function () {
     'use strict';
@@ -769,7 +673,6 @@
     const configScreen = document.getElementById('config-screen');
     const idleScreen   = document.getElementById('idle-screen');
     const scanScreen   = document.getElementById('scanner-screen');
-    const errScreen    = document.getElementById('error-screen');
     const gasInput     = document.getElementById('gas-url-input');
     const serverDisp   = document.getElementById('server-url-display');
     const badge        = document.getElementById('scan-badge');
@@ -794,12 +697,10 @@
     let scanCount     = 0;
     let statusTimeout = null;
 
-    // Init
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); }
     else { show(configScreen); }
 
-    // Config
     document.getElementById('btn-connect').addEventListener('click', () => {
       const val = gasInput.value.trim();
       if (!val.startsWith('https://script.google.com')) {
@@ -828,11 +729,9 @@
       serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
-    // Camera
     async function openCamera() {
       hide(idleScreen);
       show(scanScreen);
-      hide(errScreen);
       statusCard.style.display = 'none';
       setScanState('scanning');
 
@@ -855,8 +754,8 @@
             canvas.width  = video.videoWidth  || 640;
             canvas.height = video.videoHeight || 480;
             decodeLoop();
-          } catch (e2) { showCamError(); }
-        } else { showCamError(); }
+          } catch (e2) { alert("Camera Error"); }
+        } else { alert("Camera Error"); }
       }
     }
 
@@ -870,9 +769,6 @@
       showIdle();
     }
 
-    function showCamError() { hide(scanScreen); show(errScreen); }
-
-    // Decode loop — pauses when verifying
     function decodeLoop() {
       if (!stream) return;
       if (!isProcessing && video.readyState >= video.HAVE_ENOUGH_DATA) {
@@ -885,7 +781,7 @@
         const code = jsQR(imgData.data, imgData.width, imgData.height, { inversionAttempts: 'dontInvert' });
         if (code && code.data) {
           handleQR(code.data);
-          return; // stop scheduling new frames — handleQR will resume after
+          return; 
         }
       }
       rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 100));
@@ -895,7 +791,6 @@
       if (isProcessing) return;
       isProcessing = true;
 
-      // Physically pause the video feed to freeze the camera UI
       video.pause();
       setScanState('verifying');
 
@@ -913,12 +808,12 @@
         return;
       }
 
-      const formBody = 'payload=' + encodeURIComponent(JSON.stringify({ id, token }));
-
+      // ── THIS IS THE CRITICAL FIX FOR THE BAD REQUEST ERROR ──
+      // Sending raw JSON string directly instead of form-urlencoded
       fetch(gasUrl, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: formBody,
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({ id: id, token: token }),
         redirect: 'follow'
       })
       .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
@@ -943,7 +838,6 @@
       });
     }
 
-    // Visual state management
     function setScanState(state) {
       if (state === 'verifying') {
         liveDot.className = 'live-dot paused';
@@ -958,10 +852,7 @@
         freezeOverlay.classList.remove('visible');
         camHint.style.opacity = '1';
         
-        // Unfreeze the camera feed if it was paused
         if (video.paused && stream) video.play();
-        
-        // Resume decode loop
         if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       }
     }
