@@ -152,7 +152,7 @@
         </div>
         <label class="input-label" for="gas-url-input">Apps Script Web App URL</label>
         <input type="url" id="gas-url-input" class="url-input" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off" autocorrect="off" spellcheck="false">
-        <button class="btn-primary" id="btn-connect">Connect & Start Scanning</button>
+        <button type="button" class="btn-primary" id="btn-connect">Connect & Start Scanning</button>
       </div>
     </div>
 
@@ -174,14 +174,14 @@
           <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        <button class="btn-primary btn-shadow" id="btn-open-camera">
+        <button type="button" class="btn-primary btn-shadow" id="btn-open-camera">
           <span style="display:flex;align-items:center;justify-content:center;gap:10px">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
             Open Camera
           </span>
         </button>
       </div>
-      <button class="btn-secondary" id="btn-change-url">Change Server URL</button>
+      <button type="button" class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
     <div id="scanner-screen">
@@ -215,8 +215,8 @@
       </div>
 
       <div style="width: 100%;">
-        <button class="btn-stop" id="btn-stop">Stop Scanner</button>
-        <button class="btn-secondary" id="btn-manual-main">Enter Data Manually</button>
+        <button type="button" class="btn-stop" id="btn-stop">Stop Scanner</button>
+        <button type="button" class="btn-secondary" id="btn-manual-main">Enter Data Manually</button>
       </div>
     </div>
   </div>
@@ -249,8 +249,8 @@
       </div>
 
       <div class="popup-btn-group" style="display:flex;">
-        <button class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
-        <button class="btn-secondary" id="btn-cancel-manual">Cancel</button>
+        <button type="button" class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
+        <button type="button" class="btn-secondary" id="btn-cancel-manual">Cancel</button>
       </div>
     </div>
   </div>
@@ -411,7 +411,6 @@
       sendPayloadToBackend(payload);
     }
 
-    // --- MANUAL ENTRY CONTROL ---
     function openManualForm() {
       hidePopup();
       setScanState('locked_for_ui'); // Safely lock the background scanner
@@ -449,7 +448,6 @@
       sendPayloadToBackend(payload);
     }
 
-    // --- API HANDLER ---
     function sendPayloadToBackend(payload) {
       fetch(gasUrl, {
         method: 'POST',
@@ -485,7 +483,6 @@
       });
     }
 
-    // --- CENTRALIZED STATE MANAGEMENT ---
     function setScanState(state) {
       if (state === 'verifying') {
         isProcessing = true;
@@ -507,7 +504,6 @@
         if (video && video.paused && stream) video.play();
       } 
       else {
-        // 'scanning' normal mode
         isProcessing = false;
         liveDot.className = 'live-dot scanning'; stripLabel.textContent = 'Scanning';
         scanLine.className = 'scan-line'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
@@ -520,7 +516,7 @@
 
     function triggerPopup(type, title, text, buttons = [], timeoutMs = 0) {
       clearTimeout(statusTimeout);
-      setScanState('locked_for_ui'); // Always lock camera when a popup appears
+      setScanState('locked_for_ui');
 
       pTitle.textContent = title;
       pText.textContent = text;
@@ -533,6 +529,7 @@
         pBtnGroup.style.display = 'flex';
         buttons.forEach(btnObj => {
           const btn = document.createElement('button');
+          btn.type = 'button';
           btn.className = btnObj.class;
           btn.textContent = btnObj.text;
           btn.onclick = btnObj.action;
