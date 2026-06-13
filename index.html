@@ -125,16 +125,19 @@
     .back-header svg { width: 24px; height: 24px; }
     .back-header span { font-weight: 700; font-size: 1.1rem; }
 
-    /* STUDENTS DATA SCREEN */
-    #data-screen { display: none; flex-direction: column; align-items: stretch; width: 100%; max-width: 600px; margin: 0 auto; gap: 16px; }
+    /* STUDENTS DATA SCREEN (TABLE FORMAT) */
+    #data-screen { display: none; flex-direction: column; align-items: stretch; width: 100%; max-width: 800px; margin: 0 auto; gap: 16px; }
     .data-header { display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 16px 20px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
     .data-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin: 0; }
-    .student-list { display: flex; flex-direction: column; gap: 12px; }
-    .student-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
-    .student-info { display: flex; flex-direction: column; gap: 4px; }
-    .st-name { font-weight: 700; color: var(--gray-900); font-size: 1.05rem; }
-    .st-sub { font-size: 0.8rem; color: var(--gray-600); display: flex; gap: 10px; }
-    .st-badge { font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    
+    .data-table-wrapper { width: 100%; overflow-x: auto; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .students-table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; }
+    .students-table th { background: var(--gray-50); padding: 14px 16px; font-size: 0.8rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--gray-200); white-space: nowrap; }
+    .students-table td { padding: 16px; border-bottom: 1px solid var(--gray-200); font-size: 0.9rem; color: var(--gray-800); }
+    .students-table tr:last-child td { border-bottom: none; }
+    .students-table tr:hover { background: var(--gray-50); }
+    
+    .st-badge { font-size: 0.7rem; font-weight: 700; padding: 6px 12px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; white-space: nowrap; }
     .st-checked { background: var(--green-light); color: var(--green); }
     .st-pending { background: var(--gray-200); color: var(--gray-600); }
 
@@ -170,6 +173,7 @@
   </style>
 </head>
 <body>
+  <!-- --- SIDE MENU OVERLAY --- -->
   <div class="side-menu-overlay" id="menu-overlay"></div>
   <div class="side-menu" id="side-menu">
     <div class="menu-header">
@@ -192,7 +196,7 @@
       </a>
     </div>
     <div class="menu-footer">
-      App Version v2.5
+      App Version v2.6
     </div>
   </div>
 
@@ -214,6 +218,7 @@
 
   <div class="content">
     
+    <!-- Config Screen -->
     <div id="config-screen">
       <div class="config-card">
         <div class="config-header">
@@ -230,6 +235,7 @@
       </div>
     </div>
 
+    <!-- Idle Screen -->
     <div id="idle-screen">
       <div class="idle-card">
         <div class="scanner-illustration">
@@ -258,6 +264,7 @@
       <button type="button" class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
+    <!-- Scanner Screen -->
     <div id="scanner-screen">
       <div class="scan-status-strip">
         <div class="strip-left">
@@ -294,6 +301,7 @@
       </div>
     </div>
 
+    <!-- SEPARATE MANUAL ENTRY SCREEN -->
     <div id="manual-screen">
       <div class="back-header" id="btn-back-manual">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -321,17 +329,20 @@
       </div>
     </div>
 
+    <!-- STUDENTS DATA SCREEN -->
     <div id="data-screen">
       <div class="data-header">
         <h2>Students Data</h2>
         <button class="btn-primary btn-small" id="btn-data-to-scan">Open Scanner</button>
       </div>
-      <div class="student-list" id="student-list-container">
-        </div>
+      <!-- List container that gets replaced by the table -->
+      <div id="student-list-container" style="width: 100%;">
+      </div>
     </div>
 
   </div>
 
+  <!-- UNIFIED POPUP OVERLAY -->
   <div class="popup-overlay" id="unified-popup">
     <div class="popup-card">
       <div class="popup-close" id="btn-popup-close">
@@ -416,10 +427,21 @@
       menuOverlay.classList.remove('active');
     }
 
+    // --- SAFE NAVIGATION CONTROLLER ---
+    function navigateTo(screenElement) {
+       hide(configScreen); 
+       hide(idleScreen); 
+       hide(scanScreen); 
+       hide(manualScreen); 
+       hide(dataScreen);
+       
+       if (screenElement) show(screenElement);
+    }
+
     document.getElementById('nav-scanner').addEventListener('click', () => {
       closeMenu();
-      if(!gasUrl) return show(configScreen);
-      showIdle(); // Shows ready screen where they can open camera
+      if(!gasUrl) return navigateTo(configScreen);
+      showIdle();
     });
 
     document.getElementById('nav-data').addEventListener('click', () => {
@@ -444,12 +466,11 @@
 
     document.getElementById('btn-change-url').addEventListener('click', () => {
       gasInput.value = gasUrl; 
-      hide(idleScreen); hide(scanScreen); hide(manualScreen); hide(dataScreen);
-      show(configScreen);
+      navigateTo(configScreen);
     });
 
     document.getElementById('btn-open-camera').addEventListener('click', () => startScannerSystem());
-    document.getElementById('btn-stop').addEventListener('click', stopScannerSystem);
+    document.getElementById('btn-stop').addEventListener('click', () => stopScannerSystem(false));
     
     // Routing for manual buttons
     document.getElementById('btn-manual-main').addEventListener('click', () => openManualScreen('main'));
@@ -462,17 +483,15 @@
     });
 
     function showIdle() {
-      hide(configScreen); hide(scanScreen); hide(manualScreen); hide(dataScreen); 
-      show(idleScreen);
+      navigateTo(idleScreen);
       const short = gasUrl.replace('https://script.google.com/macros/s/','…/').replace('https://script.google.com/a/macros/','…/');
       serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
-    // --- DATA SCREEN LOGIC ---
+    // --- DATA SCREEN LOGIC (TABLE DESIGN) ---
     function openDataScreen() {
-      hide(idleScreen); hide(configScreen); hide(scanScreen); hide(manualScreen);
-      stopScannerSystem(); // Free camera
-      show(dataScreen);
+      stopScannerSystem(true); // Free camera cleanly without navigating to idle
+      navigateTo(dataScreen);
 
       studentList.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--gray-400); font-weight: 600;">Fetching data...</div>`;
 
@@ -500,29 +519,37 @@
          studentList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--gray-400);">No records found.</div>`;
          return;
       }
-      studentList.innerHTML = '';
+      
+      let html = `<div class="data-table-wrapper"><table class="students-table">
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Phone Number</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>`;
+                    
       dataArray.forEach(st => {
          const badgeClass = st.checkedIn ? 'st-checked' : 'st-pending';
          const badgeText  = st.checkedIn ? 'Checked In' : 'Pending';
-         const card = `
-           <div class="student-card">
-             <div class="student-info">
-               <div class="st-name">${st.name}</div>
-               <div class="st-sub">
-                 <span>ID: ${st.id}</span>
-                 <span>📞 ${st.phone}</span>
-               </div>
-             </div>
-             <div class="st-badge ${badgeClass}">${badgeText}</div>
-           </div>
-         `;
-         studentList.insertAdjacentHTML('beforeend', card);
+         
+         html += `<tr>
+                    <td style="font-weight: 700;">${st.name}</td>
+                    <td style="font-family: monospace; color: var(--gray-600);">${st.id}</td>
+                    <td>${st.phone}</td>
+                    <td><span class="st-badge ${badgeClass}">${badgeText}</span></td>
+                  </tr>`;
       });
+      
+      html += `</tbody></table></div>`;
+      studentList.innerHTML = html;
     }
 
     // --- SCANNER SYSTEM ---
     async function startScannerSystem(resumePopupSource = null) {
-      hide(idleScreen); hide(manualScreen); hide(dataScreen); show(scanScreen);
+      navigateTo(scanScreen);
       hidePopup();
       currentScanMode = 'normal';
       
@@ -554,13 +581,14 @@
       }
     }
 
-    function stopScannerSystem() {
+    function stopScannerSystem(skipNav = false) {
       cancelAnimationFrame(rafId); clearTimeout(statusTimeout);
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null; isProcessing = false;
       hidePopup();
-      hide(scanScreen); 
-      showIdle(); // Shows ready to check in screen to fix the blank screen bug
+      if(!skipNav) {
+         showIdle();
+      }
     }
 
     function decodeLoop() {
@@ -628,23 +656,17 @@
     function openManualScreen(source) {
       hidePopup();
       manualSource = source; 
-      
-      cancelAnimationFrame(rafId);
-      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
-      video.srcObject = null;
-      
-      hide(scanScreen);
+      stopScannerSystem(true); // Free camera
       
       mName.value = ''; mPhone.value = ''; mCity.value = '';
       mName.classList.remove('error'); mPhone.classList.remove('error'); mCity.classList.remove('error');
       btnSubManual.disabled = false;
       btnSubManual.textContent = "Submit Check-in";
       
-      show(manualScreen);
+      navigateTo(manualScreen);
     }
 
     function closeManualScreen() {
-      hide(manualScreen);
       if(manualSource === 'bypass') {
         startScannerSystem('bypass');
       } else {
@@ -696,7 +718,6 @@
           currentScanMode = 'normal';
           
           if(payload.action === 'manual') {
-              hide(manualScreen);
               startScannerSystem().then(() => {
                  triggerPopup('success', 'Check-in Successful', res.message, [], 3500);
               });
