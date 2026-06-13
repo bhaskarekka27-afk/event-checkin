@@ -352,25 +352,37 @@
       video.pause();
       setScanState('verifying');
 
-      let id, token;
+      let payload = { action: currentScanMode };
+      
       try {
+        // Dynamically parse all key:value pairs embedded in the QR
         const parts = raw.split('|');
         if (parts.length < 2) throw new Error('bad format');
-        id    = parts[0].substring(parts[0].indexOf(':') + 1).trim();
-        token = parts[1].substring(parts[1].indexOf(':') + 1).trim();
-        if (!id || !token) throw new Error('missing fields');
+        
+        parts.forEach(part => {
+          const delimIndex = part.indexOf(':');
+          if (delimIndex > -1) {
+            const key = part.substring(0, delimIndex).trim();
+            const val = part.substring(delimIndex + 1).trim();
+            payload[key] = val;
+          }
+        });
+
+        if (!payload.checkin_id || !payload.token) throw new Error('missing core fields');
+        // Standardize ID for backend
+        payload.id = payload.checkin_id;
+        
       } catch (e) {
         setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         triggerPopup('error', 'Invalid QR Code', 'Not a valid event ticket.', [], 3000);
         return;
       }
 
-      const bodyStr = JSON.stringify({ id: id, token: token, action: currentScanMode });
-
+      // Send entire parsed payload to the backend
       fetch(gasUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
-        body: bodyStr
+        body: JSON.stringify(payload)
       })
       .then(r => r.text())
       .then(text => {
