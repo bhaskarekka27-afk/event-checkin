@@ -23,44 +23,58 @@
       --shadow-lg: 0 8px 32px rgba(92,88,246,0.14), 0 2px 8px rgba(0,0,0,0.08);
       --radius: 16px; --radius-sm: 10px;
     }
-    html, body { width: 100%; height: 100%; }
-    body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-50); color: var(--gray-800); display: flex; flex-direction: column; min-height: 100dvh; }
+    html, body { width: 100%; height: 100%; background: var(--gray-50); }
+    body { font-family: 'Plus Jakarta Sans', sans-serif; color: var(--gray-800); display: flex; flex-direction: column; min-height: 100dvh; overflow-x: hidden; }
     
-    /* --- HEADER UI FIXES --- */
-    .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 20px; height: 64px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); z-index: 10; position: relative; gap: 10px; }
-    .brand { display: flex; align-items: center; gap: 10px; overflow: hidden; flex-grow: 1; }
-    .brand-icon { width: 36px; height: 36px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .app-version { font-size: 0.65rem; font-weight: 800; background: var(--gray-200); color: var(--gray-600); padding: 2px 8px; border-radius: 10px; letter-spacing: 0.05em; flex-shrink: 0; }
-    .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+    /* --- TOPBAR WITH HAMBURGER --- */
+    .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 16px; height: 64px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); z-index: 20; position: relative; gap: 8px; }
+    .menu-icon { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--gray-800); border-radius: 8px; transition: 0.2s; }
+    .menu-icon:hover { background: var(--gray-50); color: var(--primary); }
+    .brand { display: flex; align-items: center; gap: 8px; overflow: hidden; flex-grow: 1; }
+    .brand-icon { width: 32px; height: 32px; background: var(--primary-light); border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .brand-icon svg { width: 16px; height: 16px; }
+    .brand-name { font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .app-version { font-size: 0.6rem; font-weight: 800; background: var(--gray-200); color: var(--gray-600); padding: 2px 6px; border-radius: 8px; letter-spacing: 0.05em; flex-shrink: 0; }
+    .count-pill { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 12px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
 
-    .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; position: relative; }
+    /* --- SIDE MENU --- */
+    .side-menu-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.4); z-index: 1000; display: none; opacity: 0; transition: opacity 0.3s; }
+    .side-menu-overlay.active { display: block; opacity: 1; }
+    .side-menu { position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: var(--white); z-index: 1001; box-shadow: var(--shadow-lg); transition: transform 0.3s ease; display: flex; flex-direction: column; }
+    .side-menu.active { transform: translateX(280px); }
+    .menu-header { padding: 24px 20px; border-bottom: 1px solid var(--gray-200); display: flex; align-items: center; gap: 12px; }
+    .menu-links { padding: 16px 12px; display: flex; flex-direction: column; gap: 8px; }
+    .menu-link { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: var(--radius-sm); color: var(--gray-800); font-weight: 600; text-decoration: none; cursor: pointer; transition: 0.2s; }
+    .menu-link:hover { background: var(--primary-light); color: var(--primary); }
+    .menu-link svg { width: 20px; height: 20px; }
+
+    .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 24px 16px; position: relative; }
     
     #config-screen, #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
-    .config-card, .idle-card, .manual-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
-    .idle-card { border-radius: 24px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
+    .config-card, .idle-card, .manual-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 32px 24px; }
+    .idle-card { border-radius: 24px; padding: 40px 24px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
     
-    .config-header { text-align: center; margin-bottom: 28px; }
+    .config-header { text-align: center; margin-bottom: 24px; }
     .config-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; }
     .config-title, .idle-title { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); line-height: 1.2; }
-    .idle-title { font-size: 1.75rem; letter-spacing: -0.02em; }
+    .idle-title { font-size: 1.6rem; letter-spacing: -0.02em; }
     .config-sub, .idle-sub { font-size: 0.85rem; color: var(--gray-400); margin-top: 8px; line-height: 1.5; }
-    .idle-sub { font-size: 1rem; }
+    .idle-sub { font-size: 0.95rem; }
     
     .input-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; display: block; text-align: left; }
     .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
     .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(92,88,246,0.1); background: var(--white); }
     .url-input.error { border-color: var(--red); background: var(--red-light); }
     
-    .scanner-illustration { width: 96px; height: 96px; background: var(--primary-light); border-radius: 28px; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
-    .scanner-illustration::after { content: ''; position: absolute; inset: -8px; border-radius: 36px; border: 2px solid var(--primary-light); }
-    .server-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 16px 20px; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+    .scanner-illustration { width: 80px; height: 80px; background: var(--primary-light); border-radius: 24px; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
+    .scanner-illustration::after { content: ''; position: absolute; inset: -8px; border-radius: 32px; border: 2px solid var(--primary-light); }
+    .server-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 14px 16px; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
     .dot-live { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
     .server-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); flex-shrink: 0; }
     .server-url { font-size: 0.85rem; color: var(--gray-600); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     
     /* Buttons */
-    .btn-primary, .btn-secondary { width: 100%; padding: 16px; border-radius: var(--radius-sm); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.15s; -webkit-tap-highlight-color: transparent; }
+    .btn-primary, .btn-secondary, .btn-small { width: 100%; padding: 16px; border-radius: var(--radius-sm); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.15s; -webkit-tap-highlight-color: transparent; }
     .btn-primary { background: var(--primary); color: var(--white); border: none; box-shadow: 0 4px 14px rgba(92,88,246,0.3); margin-top: 8px; }
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-primary:active { transform: scale(0.98); }
@@ -69,9 +83,11 @@
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
     .btn-stop { background: var(--white); border: 1.5px solid var(--gray-200); color: var(--gray-600); margin-top: 8px; width: 100%; padding: 16px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); }
     .btn-stop:hover { border-color: var(--red); color: var(--red); }
+    
+    .btn-small { width: auto; padding: 10px 16px; font-size: 0.85rem; margin-top: 0; box-shadow: none; border-radius: 8px; }
 
     /* Scanner Screen */
-    #scanner-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; }
+    #scanner-screen { display: none; flex-direction: column; align-items: stretch; gap: 16px; width: 100%; max-width: 420px; }
     .scan-status-strip { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
     .strip-left { display: flex; align-items: center; gap: 10px; }
     .live-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); animation: blink 1s ease-in-out infinite; }
@@ -101,20 +117,38 @@
     .freeze-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
 
     /* SEPARATE MANUAL SCREEN */
-    #manual-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
+    #manual-screen { display: none; flex-direction: column; align-items: stretch; gap: 16px; width: 100%; max-width: 420px; margin: 0 auto; }
     .back-header { display: flex; align-items: center; gap: 12px; cursor: pointer; color: var(--gray-600); transition: 0.2s; padding: 4px 0; }
     .back-header:hover { color: var(--primary); }
     .back-header svg { width: 24px; height: 24px; }
     .back-header span { font-weight: 700; font-size: 1.1rem; }
 
-    /* FULL SCREEN OVERLAYS */
-    .popup-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 999; animation: fadeIn 0.2s ease; }
+    /* STUDENTS DATA SCREEN */
+    #data-screen { display: none; flex-direction: column; align-items: stretch; width: 100%; max-width: 600px; margin: 0 auto; gap: 16px; }
+    .data-header { display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 16px 20px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
+    .data-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin: 0; }
+    .student-list { display: flex; flex-direction: column; gap: 12px; }
+    .student-card { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 16px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .student-info { display: flex; flex-direction: column; gap: 4px; }
+    .st-name { font-weight: 700; color: var(--gray-900); font-size: 1.05rem; }
+    .st-sub { font-size: 0.8rem; color: var(--gray-600); display: flex; gap: 10px; }
+    .st-badge { font-size: 0.7rem; font-weight: 700; padding: 4px 10px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .st-checked { background: var(--green-light); color: var(--green); }
+    .st-pending { background: var(--gray-200); color: var(--gray-600); }
+
+    /* --- FULL SCREEN OVERLAYS (Fixed Position) --- */
+    .popup-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 9999; animation: fadeIn 0.2s ease; }
     .popup-overlay.visible { display: flex; }
     @keyframes fadeIn { from{opacity:0}to{opacity:1} }
     
-    .popup-card { background: var(--white); border-radius: 24px; padding: 32px 24px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 24px 48px rgba(0,0,0,0.15); animation: scaleUp 0.2s ease; display: flex; flex-direction: column; align-items: center; }
+    .popup-card { background: var(--white); border-radius: 24px; padding: 36px 24px 32px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 24px 48px rgba(0,0,0,0.15); animation: scaleUp 0.2s ease; display: flex; flex-direction: column; align-items: center; position: relative; }
     @keyframes scaleUp { from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)} }
     
+    /* CLOSE ICON ON POPUP */
+    .popup-close { position: absolute; top: 16px; right: 16px; width: 32px; height: 32px; background: var(--gray-50); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--gray-600); cursor: pointer; transition: 0.2s; }
+    .popup-close:hover { background: var(--gray-200); color: var(--gray-900); }
+    .popup-close svg { width: 16px; height: 16px; }
+
     .popup-icon-box { width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; flex-shrink: 0; }
     .popup-icon-box svg { width: 32px; height: 32px; }
     
@@ -134,17 +168,42 @@
   </style>
 </head>
 <body>
-  <div class="topbar">
-    <div class="brand">
+  <div class="side-menu-overlay" id="menu-overlay"></div>
+  <div class="side-menu" id="side-menu">
+    <div class="menu-header">
       <div class="brand-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
           <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="17" width="3" height="3"/>
-          <path d="M14 14h3v3"/><path d="M17 14h3v6h-3"/><path d="M14 20h3"/>
+        </svg>
+      </div>
+      <div style="font-weight:800; color:var(--gray-900);">PW CHECK-IN</div>
+    </div>
+    <div class="menu-links">
+      <a class="menu-link" id="nav-scanner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/></svg>
+        QR Scanner
+      </a>
+      <a class="menu-link" id="nav-data">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Students Data
+      </a>
+    </div>
+  </div>
+
+  <div class="topbar">
+    <div class="menu-icon" id="btn-menu">
+      <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </div>
+    <div class="brand">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+          <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="17" width="3" height="3"/>
         </svg>
       </div>
       <span class="brand-name">Event Check-in</span>
-      <span class="app-version">v2.3</span>
+      <span class="app-version">v2.4</span>
     </div>
     <div class="count-pill" id="scan-badge">Ready</div>
   </div>
@@ -185,7 +244,7 @@
           <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        <button type="button" class="btn-primary btn-shadow" id="btn-open-camera">
+        <button type="button" class="btn-primary" id="btn-open-camera" style="box-shadow: 0 12px 24px -6px rgba(92,88,246,0.4); border-radius: 16px; padding: 18px; font-size: 1.05rem;">
           <span style="display:flex;align-items:center;justify-content:center;gap:10px">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
             Open Camera
@@ -258,10 +317,22 @@
       </div>
     </div>
 
+    <div id="data-screen">
+      <div class="data-header">
+        <h2>Students Data</h2>
+        <button class="btn-primary btn-small" id="btn-data-to-scan">Open Scanner</button>
+      </div>
+      <div class="student-list" id="student-list-container">
+        </div>
+    </div>
+
   </div>
 
   <div class="popup-overlay" id="unified-popup">
     <div class="popup-card">
+      <div class="popup-close" id="btn-popup-close">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </div>
       <div class="popup-icon-box" id="up-icon-box"></div>
       <div class="popup-title" id="up-title">Title</div>
       <div class="popup-text" id="up-text">Message goes here.</div>
@@ -275,11 +346,14 @@
 
     const STORAGE_KEY = 'gas_checkin_url_v2';
 
+    // Screens
     const configScreen  = document.getElementById('config-screen');
     const idleScreen    = document.getElementById('idle-screen');
     const scanScreen    = document.getElementById('scanner-screen');
     const manualScreen  = document.getElementById('manual-screen');
+    const dataScreen    = document.getElementById('data-screen');
     
+    // UI Elements
     const gasInput      = document.getElementById('gas-url-input');
     const serverDisp    = document.getElementById('server-url-display');
     const badge         = document.getElementById('scan-badge');
@@ -304,6 +378,7 @@
     const mPhone        = document.getElementById('man-phone');
     const mCity         = document.getElementById('man-city');
     const btnSubManual  = document.getElementById('btn-submit-manual');
+    const studentList   = document.getElementById('student-list-container');
 
     const ICONS = {
       success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
@@ -316,14 +391,44 @@
     let isProcessing = false, scanCount = 0, statusTimeout = null;
     let currentScanMode = 'normal'; 
     let manualSource = 'main'; 
-
-    // --- NEW: FRESH SCAN LOCK ---
     let requireFreshScan = false;
     let emptyFrames = 0;
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
 
+    // --- MENU NAVIGATION ---
+    const menuBtn = document.getElementById('btn-menu');
+    const sideMenu = document.getElementById('side-menu');
+    const menuOverlay = document.getElementById('menu-overlay');
+
+    menuBtn.addEventListener('click', () => {
+      sideMenu.classList.add('active');
+      menuOverlay.classList.add('active');
+    });
+    menuOverlay.addEventListener('click', closeMenu);
+    function closeMenu() {
+      sideMenu.classList.remove('active');
+      menuOverlay.classList.remove('active');
+    }
+
+    document.getElementById('nav-scanner').addEventListener('click', () => {
+      closeMenu();
+      if(!gasUrl) return show(configScreen);
+      showIdle(); // Shows ready screen where they can open camera
+    });
+
+    document.getElementById('nav-data').addEventListener('click', () => {
+      closeMenu();
+      if(!gasUrl) return alert("Please configure the Web App URL first.");
+      openDataScreen();
+    });
+
+    document.getElementById('btn-data-to-scan').addEventListener('click', () => {
+      startScannerSystem();
+    });
+
+    // --- SETUP CONFIG ---
     document.getElementById('btn-connect').addEventListener('click', () => {
       const val = gasInput.value.trim();
       if (!val.startsWith('https://script.google.com')) { gasInput.classList.add('error'); return; }
@@ -334,24 +439,86 @@
     });
 
     document.getElementById('btn-change-url').addEventListener('click', () => {
-      gasInput.value = gasUrl; hide(idleScreen); show(configScreen);
+      gasInput.value = gasUrl; 
+      hide(idleScreen); hide(scanScreen); hide(manualScreen); hide(dataScreen);
+      show(configScreen);
     });
 
     document.getElementById('btn-open-camera').addEventListener('click', () => startScannerSystem());
     document.getElementById('btn-stop').addEventListener('click', stopScannerSystem);
     
+    // Routing for manual buttons
     document.getElementById('btn-manual-main').addEventListener('click', () => openManualScreen('main'));
     document.getElementById('btn-back-manual').addEventListener('click', closeManualScreen);
     btnSubManual.addEventListener('click', submitManualEntry);
 
+    // Popup Close "X"
+    document.getElementById('btn-popup-close').addEventListener('click', () => {
+       hidePopup(); // Handles correct routing back based on screen
+    });
+
     function showIdle() {
-      hide(configScreen); hide(scanScreen); hide(manualScreen); show(idleScreen);
+      hide(configScreen); hide(scanScreen); hide(manualScreen); hide(dataScreen); 
+      show(idleScreen);
       const short = gasUrl.replace('https://script.google.com/macros/s/','…/').replace('https://script.google.com/a/macros/','…/');
       serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
+    // --- DATA SCREEN LOGIC ---
+    function openDataScreen() {
+      hide(idleScreen); hide(configScreen); hide(scanScreen); hide(manualScreen);
+      stopScannerSystem(); // Free camera
+      show(dataScreen);
+
+      studentList.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--gray-400); font-weight: 600;">Fetching data...</div>`;
+
+      fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ action: 'get_data' })
+      })
+      .then(r => r.text())
+      .then(text => {
+        const res = JSON.parse(text.replace(/^\uFEFF/, '').trim());
+        if (res.success && res.data) {
+           renderData(res.data);
+        } else {
+           studentList.innerHTML = `<div style="text-align:center; color: var(--red); font-weight:600;">Failed to load data.</div>`;
+        }
+      })
+      .catch(() => {
+        studentList.innerHTML = `<div style="text-align:center; color: var(--red); font-weight:600;">Network Error.</div>`;
+      });
+    }
+
+    function renderData(dataArray) {
+      if(dataArray.length === 0) {
+         studentList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--gray-400);">No records found.</div>`;
+         return;
+      }
+      studentList.innerHTML = '';
+      dataArray.forEach(st => {
+         const badgeClass = st.checkedIn ? 'st-checked' : 'st-pending';
+         const badgeText  = st.checkedIn ? 'Checked In' : 'Pending';
+         const card = `
+           <div class="student-card">
+             <div class="student-info">
+               <div class="st-name">${st.name}</div>
+               <div class="st-sub">
+                 <span>ID: ${st.id}</span>
+                 <span>📞 ${st.phone}</span>
+               </div>
+             </div>
+             <div class="st-badge ${badgeClass}">${badgeText}</div>
+           </div>
+         `;
+         studentList.insertAdjacentHTML('beforeend', card);
+      });
+    }
+
+    // --- SCANNER SYSTEM ---
     async function startScannerSystem(resumePopupSource = null) {
-      hide(idleScreen); hide(manualScreen); show(scanScreen);
+      hide(idleScreen); hide(manualScreen); hide(dataScreen); show(scanScreen);
       hidePopup();
       currentScanMode = 'normal';
       
@@ -377,11 +544,8 @@
           cancelAnimationFrame(rafId);
           decodeLoop();
           
-          if(resumePopupSource === 'bypass') {
-            showBypassPopup();
-          } else {
-            setScanState('scanning');
-          }
+          if(resumePopupSource === 'bypass') showBypassPopup();
+          else setScanState('scanning');
         } catch (e2) { alert('Camera error: ' + e2.message); }
       }
     }
@@ -391,7 +555,7 @@
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null; isProcessing = false;
       hidePopup();
-      hide(scanScreen); showIdle();
+      hide(scanScreen); 
     }
 
     function decodeLoop() {
@@ -410,10 +574,7 @@
           }
         } else {
           emptyFrames++;
-          // Require about ~0.5 seconds of empty frames before unlocking the scanner again
-          if (emptyFrames > 5) {
-             requireFreshScan = false; 
-          }
+          if (emptyFrames > 5) { requireFreshScan = false; }
         }
       }
       rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 100));
@@ -462,12 +623,7 @@
     function openManualScreen(source) {
       hidePopup();
       manualSource = source; 
-      
-      cancelAnimationFrame(rafId);
-      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
-      video.srcObject = null;
-      
-      hide(scanScreen);
+      stopScannerSystem(); // fully stops camera
       
       mName.value = ''; mPhone.value = ''; mCity.value = '';
       mName.classList.remove('error'); mPhone.classList.remove('error'); mCity.classList.remove('error');
@@ -507,13 +663,7 @@
       btnSubManual.disabled = true;
       btnSubManual.textContent = "Processing...";
 
-      const payload = {
-        action: 'manual',
-        name: name,
-        phone: phone,
-        city: city
-      };
-
+      const payload = { action: 'manual', name: name, phone: phone, city: city };
       sendPayloadToBackend(payload);
     }
 
@@ -545,13 +695,19 @@
           }
 
         } else {
+          // Manual form rejection flow
           if(payload.action === 'manual') {
               btnSubManual.disabled = false;
               btnSubManual.textContent = "Submit Check-in";
-              alert(res.message); 
+              
+              const type = res.message.toLowerCase().includes('already') ? 'warning' : 'error';
+              triggerPopup(type, 'Check-in Denied', res.message, [
+                 { text: 'Close', class: 'btn-secondary', action: hidePopup } // Just closes popup
+              ], 0);
               return;
           }
 
+          // Camera rejection flow
           if (res.status === 'deleted' && currentScanMode !== 'recover') {
              showBypassPopup();
           } else {
@@ -564,10 +720,8 @@
         if(payload.action === 'manual') {
             btnSubManual.disabled = false;
             btnSubManual.textContent = "Submit Check-in";
-            alert("Network Error. Try again.");
-        } else {
-            triggerPopup('error', 'Server Unreachable', 'Check your URL or connection.', [], 3000);
         }
+        triggerPopup('error', 'Server Unreachable', 'Check your URL or connection.', [], 3000);
       });
     }
 
@@ -590,30 +744,24 @@
         if (video && !video.paused) video.pause();
       }
       else if (state === 'recovery_mode') {
-        isProcessing = false;
-        requireFreshScan = true; // --- NEW: FORCE CAMERA TO BE MOVED AWAY FIRST ---
+        isProcessing = false; requireFreshScan = true; 
         liveDot.className = 'live-dot recovery'; stripLabel.textContent = 'Recovery Mode';
         scanLine.className = 'scan-line recovery'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
         camHint.textContent = 'Scan code to recreate entry';
         const cols = document.querySelectorAll('.corners path');
         cols.forEach(p => p.setAttribute('stroke', '#f59e0b')); 
         if (video && video.paused && stream) video.play();
-        
-        cancelAnimationFrame(rafId);
-        decodeLoop();
+        cancelAnimationFrame(rafId); decodeLoop();
       } 
       else {
-        isProcessing = false;
-        requireFreshScan = true; // --- NEW: FORCE CAMERA TO BE MOVED AWAY FIRST ---
+        isProcessing = false; requireFreshScan = true; 
         liveDot.className = 'live-dot scanning'; stripLabel.textContent = 'Scanning';
         scanLine.className = 'scan-line'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
         camHint.textContent = 'Align QR code within the frame';
         const cols = document.querySelectorAll('.corners path');
         cols.forEach(p => p.setAttribute('stroke', '#5c58f6')); 
         if (video && video.paused && stream) video.play();
-        
-        cancelAnimationFrame(rafId);
-        decodeLoop();
+        cancelAnimationFrame(rafId); decodeLoop();
       }
     }
 
@@ -647,7 +795,6 @@
       if (timeoutMs > 0) {
         statusTimeout = setTimeout(() => {
           hidePopup();
-          setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         }, timeoutMs);
       }
     }
@@ -655,6 +802,14 @@
     function hidePopup() {
       clearTimeout(statusTimeout);
       popupOverlay.classList.remove('visible');
+      
+      // Smart resume logic based on current screen
+      if (manualScreen.style.display === 'flex' || dataScreen.style.display === 'flex') {
+         // Do nothing, we are safely navigating a separate screen UI
+      } else {
+         // We are on the scanner screen, resume scanning
+         setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
+      }
     }
 
     function startRecovery() {
