@@ -26,9 +26,13 @@
     html, body { width: 100%; height: 100%; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-50); color: var(--gray-800); display: flex; flex-direction: column; min-height: 100dvh; }
     .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 20px; height: 64px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); z-index: 10; position: relative; }
-    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 10px; }
     .brand-icon { width: 36px; height: 36px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); }
+    
+    /* APP VERSION BADGE */
+    .app-version { font-size: 0.65rem; font-weight: 800; background: var(--gray-200); color: var(--gray-600); padding: 2px 8px; border-radius: 10px; letter-spacing: 0.05em; }
+
     .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; }
     .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; position: relative; }
     
@@ -141,6 +145,7 @@
         </svg>
       </div>
       <span class="brand-name">Event Check-in</span>
+      <span class="app-version">v2.1</span>
     </div>
     <div class="count-pill" id="scan-badge">Ready</div>
   </div>
@@ -311,7 +316,7 @@
     let gasUrl = '', stream = null, rafId = null;
     let isProcessing = false, scanCount = 0, statusTimeout = null;
     let currentScanMode = 'normal'; 
-    let manualSource = 'main'; // Tracks where the manual screen was opened from
+    let manualSource = 'main'; 
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
@@ -354,7 +359,6 @@
         canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
         decodeLoop();
 
-        // If returning from manual bypass, instantly pop the overlay back up
         if(resumePopupSource === 'bypass') {
            showBypassPopup();
         }
@@ -369,7 +373,6 @@
       }
     }
 
-    // Safely suspends camera tracks completely
     function stopScannerSystem() {
       cancelAnimationFrame(rafId); clearTimeout(statusTimeout);
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
@@ -430,19 +433,16 @@
       sendPayloadToBackend(payload);
     }
 
-    // --- MANUAL ENTRY SCREEN CONTROL ---
     function openManualScreen(source) {
       hidePopup();
       manualSource = source; 
       
-      // Completely pause scanner process to free memory/camera while on manual page
       cancelAnimationFrame(rafId);
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null;
       
       hide(scanScreen);
       
-      // Reset form
       mName.value = ''; mPhone.value = ''; mCity.value = '';
       mName.classList.remove('error'); mPhone.classList.remove('error'); mCity.classList.remove('error');
       btnSubManual.disabled = false;
@@ -453,7 +453,6 @@
 
     function closeManualScreen() {
       hide(manualScreen);
-      // Re-initialize scanner cleanly
       if(manualSource === 'bypass') {
         startScannerSystem('bypass');
       } else {
@@ -470,7 +469,6 @@
       if (!name) { mName.classList.add('error'); isValid = false; } else { mName.classList.remove('error'); }
       if (!city) { mCity.classList.add('error'); isValid = false; } else { mCity.classList.remove('error'); }
       
-      // Strict 10 digit check
       if (!/^\d{10}$/.test(phone)) { 
          mPhone.classList.add('error'); 
          isValid = false; 
@@ -490,7 +488,6 @@
         city: city
       };
 
-      // Proceed immediately to backend, skipping camera verification
       sendPayloadToBackend(payload);
     }
 
@@ -514,7 +511,6 @@
           
           if(payload.action === 'manual') {
               hide(manualScreen);
-              // Restart scanner normally and show success popup
               startScannerSystem().then(() => {
                  triggerPopup('success', 'Check-in Successful', res.message, [], 3500);
               });
@@ -523,11 +519,10 @@
           }
 
         } else {
-          // If we fail on manual submission, just show error and re-enable button
           if(payload.action === 'manual') {
               btnSubManual.disabled = false;
               btnSubManual.textContent = "Submit Check-in";
-              alert(res.message); // Simple alert since we are on the form screen
+              alert(res.message); 
               return;
           }
 
