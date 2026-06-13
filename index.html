@@ -25,12 +25,12 @@
     }
     html, body { width: 100%; height: 100%; }
     body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--gray-50); color: var(--gray-800); display: flex; flex-direction: column; min-height: 100dvh; }
-    .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 20px; height: 64px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); }
+    .topbar { background: var(--white); border-bottom: 1px solid var(--gray-200); padding: 0 20px; height: 64px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; box-shadow: var(--shadow-sm); z-index: 10; position: relative; }
     .brand { display: flex; align-items: center; gap: 12px; }
     .brand-icon { width: 36px; height: 36px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); }
     .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; }
-    .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; }
+    .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; position: relative; }
     
     /* Config & Idle Screens */
     #config-screen, #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
@@ -44,8 +44,8 @@
     .config-sub, .idle-sub { font-size: 0.85rem; color: var(--gray-400); margin-top: 8px; line-height: 1.5; }
     .idle-sub { font-size: 1rem; }
     
-    .input-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; display: block; }
-    .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: 0.2s; }
+    .input-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; display: block; text-align: left; }
+    .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
     .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(92,88,246,0.1); background: var(--white); }
     .url-input.error { border-color: var(--red); }
     
@@ -61,6 +61,7 @@
     .btn-primary { background: var(--primary); color: var(--white); border: none; box-shadow: 0 4px 14px rgba(92,88,246,0.3); margin-top: 8px; }
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-primary:active { transform: scale(0.98); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
     .btn-primary.btn-shadow { box-shadow: 0 12px 24px -6px rgba(92,88,246,0.4); border-radius: 16px; padding: 18px; font-size: 1.05rem; margin-top: 0; }
     .btn-secondary { background: transparent; border: 1.5px solid var(--gray-200); color: var(--gray-600); margin-top: 8px; }
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
@@ -98,15 +99,15 @@
     @keyframes spin { to{transform:rotate(360deg)} }
     .freeze-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
     
-    /* --- UNIFIED OVERLAY POPUPS (Replaces Status Cards & Old Overlays) --- */
-    .popup-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 10; animation: fadeIn 0.2s ease; }
+    /* --- FULL SCREEN OVERLAYS (Fixed Position) --- */
+    .popup-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 999; animation: fadeIn 0.2s ease; }
     .popup-overlay.visible { display: flex; }
     @keyframes fadeIn { from{opacity:0}to{opacity:1} }
     
-    .popup-card { background: var(--white); border-radius: 24px; padding: 32px 24px; text-align: center; width: 100%; box-shadow: 0 24px 48px rgba(0,0,0,0.15); animation: scaleUp 0.2s ease; display: flex; flex-direction: column; align-items: center; }
+    .popup-card { background: var(--white); border-radius: 24px; padding: 32px 24px; text-align: center; width: 100%; max-width: 400px; box-shadow: 0 24px 48px rgba(0,0,0,0.15); animation: scaleUp 0.2s ease; display: flex; flex-direction: column; align-items: center; }
     @keyframes scaleUp { from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)} }
     
-    .popup-icon-box { width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; }
+    .popup-icon-box { width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; flex-shrink: 0; }
     .popup-icon-box svg { width: 32px; height: 32px; }
     
     /* Theme Colors for Icons */
@@ -121,6 +122,9 @@
     .popup-btn-group { display: flex; flex-direction: column; gap: 10px; width: 100%; margin-top: 24px; }
     .popup-btn-group .btn-primary { margin-top: 0; }
     .popup-btn-group .btn-secondary { margin-top: 0; }
+
+    /* Forms */
+    .form-group { width: 100%; margin-bottom: 16px; }
 
   </style>
 </head>
@@ -141,7 +145,6 @@
 
   <div class="content">
     
-    <!-- Config Screen -->
     <div id="config-screen">
       <div class="config-card">
         <div class="config-header">
@@ -158,7 +161,6 @@
       </div>
     </div>
 
-    <!-- Idle Screen -->
     <div id="idle-screen">
       <div class="idle-card">
         <div class="scanner-illustration">
@@ -187,7 +189,6 @@
       <button class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
-    <!-- Scanner Screen -->
     <div id="scanner-screen">
       <div class="scan-status-strip">
         <div class="strip-left">
@@ -216,25 +217,49 @@
           <div class="freeze-spinner"></div>
           <div class="freeze-label">Verifying…</div>
         </div>
-
-        <!-- UNIFIED POPUP OVERLAY -->
-        <div class="popup-overlay" id="unified-popup">
-          <div class="popup-card">
-            <div class="popup-icon-box" id="up-icon-box">
-              <!-- SVG Icon injected via JS -->
-            </div>
-            <div class="popup-title" id="up-title">Title</div>
-            <div class="popup-text" id="up-text">Message goes here.</div>
-            
-            <div class="popup-btn-group" id="up-btn-group" style="display: none;">
-              <!-- Dynamic Buttons injected via JS -->
-            </div>
-          </div>
-        </div>
-
       </div>
 
-      <button class="btn-stop" id="btn-stop">Stop Scanner</button>
+      <div>
+        <button class="btn-stop" id="btn-stop">Stop Scanner</button>
+        <button class="btn-secondary" id="btn-manual-main">Enter Data Manually</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="unified-popup">
+    <div class="popup-card">
+      <div class="popup-icon-box" id="up-icon-box">
+        </div>
+      <div class="popup-title" id="up-title">Title</div>
+      <div class="popup-text" id="up-text">Message goes here.</div>
+      
+      <div class="popup-btn-group" id="up-btn-group" style="display: none;">
+        </div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="manual-form-overlay">
+    <div class="popup-card">
+      <div class="popup-title">Manual Entry</div>
+      <div class="popup-text" style="margin-bottom: 24px;">Enter attendee details directly.</div>
+      
+      <div class="form-group">
+        <label class="input-label" for="man-name">Name (Required)</label>
+        <input type="text" id="man-name" class="url-input" placeholder="Attendee Name" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="input-label" for="man-phone">Phone Number</label>
+        <input type="tel" id="man-phone" class="url-input" placeholder="e.g. 9876543210" autocomplete="off">
+      </div>
+      <div class="form-group">
+        <label class="input-label" for="man-city">City</label>
+        <input type="text" id="man-city" class="url-input" placeholder="e.g. New Delhi" autocomplete="off">
+      </div>
+
+      <div class="popup-btn-group">
+        <button class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
+        <button class="btn-secondary" id="btn-cancel-manual">Cancel</button>
+      </div>
     </div>
   </div>
 
@@ -269,6 +294,13 @@
     const pText         = document.getElementById('up-text');
     const pBtnGroup     = document.getElementById('up-btn-group');
 
+    // Manual Form Elements
+    const manualOverlay = document.getElementById('manual-form-overlay');
+    const mName         = document.getElementById('man-name');
+    const mPhone        = document.getElementById('man-phone');
+    const mCity         = document.getElementById('man-city');
+    const btnSubManual  = document.getElementById('btn-submit-manual');
+
     // SVGs for popups
     const ICONS = {
       success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
@@ -299,6 +331,11 @@
 
     document.getElementById('btn-open-camera').addEventListener('click', openCamera);
     document.getElementById('btn-stop').addEventListener('click', stopCamera);
+    
+    // Wire up Manual Entry buttons
+    document.getElementById('btn-manual-main').addEventListener('click', openManualForm);
+    document.getElementById('btn-cancel-manual').addEventListener('click', closeManualForm);
+    btnSubManual.addEventListener('click', submitManualEntry);
 
     function showIdle() {
       hide(configScreen); show(idleScreen);
@@ -331,6 +368,7 @@
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null; isProcessing = false;
       hidePopup();
+      manualOverlay.classList.remove('visible');
       hide(scanScreen); showIdle();
     }
 
@@ -353,23 +391,18 @@
       setScanState('verifying');
 
       let payload = { action: currentScanMode };
-      
-      // FIX: Trim any invisible spaces the camera might pick up
       let decodedText = raw.trim(); 
       
       try {
-        // --- 100% SAFE DECRYPTION LOGIC ---
         if (decodedText.startsWith('PW-')) {
            const reversedB64 = decodedText.substring(3);
            const b64 = reversedB64.split('').reverse().join('');
-           // window.atob unwraps the Base64, decodeURIComponent unwraps the text perfectly
            decodedText = decodeURIComponent(window.atob(b64));
         } 
         else if (!decodedText.includes('checkin_id')) {
            throw new Error('Not an event QR code');
         }
 
-        // Parse the key:value pairs embedded in the QR
         const parts = decodedText.split('|');
         if (parts.length < 2) throw new Error('bad format');
         
@@ -383,17 +416,61 @@
         });
 
         if (!payload.checkin_id || !payload.token) throw new Error('missing core fields');
-        
-        // Standardize ID for backend
         payload.id = payload.checkin_id;
         
       } catch (e) {
+        console.error("QR Error:", e.message, "| Raw:", raw);
         setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
-        triggerPopup('error', 'Invalid QR Code', 'Not a valid event ticket.', [], 3000);
+        triggerPopup('error', 'Invalid QR Code', `Error: Not a valid event ticket.`, [], 3000);
         return;
       }
 
-      // Send entire parsed payload to the backend
+      sendPayloadToBackend(payload);
+    }
+
+    // --- MANUAL ENTRY FUNCTIONS ---
+    function openManualForm() {
+      hidePopup();
+      if (video && !video.paused) video.pause();
+      isProcessing = true;
+      mName.value = ''; mPhone.value = ''; mCity.value = '';
+      mName.classList.remove('error');
+      btnSubManual.disabled = false;
+      btnSubManual.textContent = "Submit Check-in";
+      manualOverlay.classList.add('visible');
+    }
+
+    function closeManualForm() {
+      manualOverlay.classList.remove('visible');
+      currentScanMode = 'normal';
+      setScanState('scanning');
+    }
+
+    function submitManualEntry() {
+      const name = mName.value.trim();
+      if (!name) {
+        mName.classList.add('error');
+        return;
+      }
+      
+      mName.classList.remove('error');
+      btnSubManual.disabled = true;
+      btnSubManual.textContent = "Processing...";
+
+      const payload = {
+        action: 'manual',
+        name: name,
+        phone: mPhone.value.trim(),
+        city: mCity.value.trim()
+      };
+
+      manualOverlay.classList.remove('visible');
+      setScanState('verifying');
+      sendPayloadToBackend(payload);
+    }
+
+    // --- SHARED BACKEND HANDLER ---
+    function sendPayloadToBackend(payload) {
       fetch(gasUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain' },
@@ -414,14 +491,12 @@
           currentScanMode = 'normal';
           setScanState('scanning');
         } else {
-          // DELETED USER FLOW
           if (res.status === 'deleted' && currentScanMode !== 'recover') {
              triggerPopup('warning', 'User Data Deleted', 'This QR code is valid, but the user data was removed from the sheet. How would you like to proceed?', [
                { text: 'Scan & Create New Entry', class: 'btn-primary', action: startRecovery },
-               { text: 'Enter Data Manually', class: 'btn-secondary', action: showManualInfo }
+               { text: 'Enter Data Manually', class: 'btn-secondary', action: openManualForm }
              ]);
           } else {
-             // NORMAL REJECTION (Already checked in, etc.)
              const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
              triggerPopup(type, 'Check-in Denied', res.message, [], 3500);
              setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
@@ -439,29 +514,29 @@
         liveDot.className = 'live-dot paused'; stripLabel.textContent = 'Verifying';
         scanLine.classList.add('paused'); freezeOverlay.classList.add('visible'); camHint.style.opacity = '0';
       } else if (state === 'recovery_mode') {
+        isProcessing = false;
         liveDot.className = 'live-dot recovery'; stripLabel.textContent = 'Recovery Mode';
         scanLine.className = 'scan-line recovery'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
         camHint.textContent = 'Scan code to recreate entry';
         const cols = document.querySelectorAll('.corners path');
-        cols.forEach(p => p.setAttribute('stroke', '#f59e0b')); // Amber corners
+        cols.forEach(p => p.setAttribute('stroke', '#f59e0b')); 
         if (video.paused && stream) video.play();
         if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       } else {
-        // Normal scanning
+        isProcessing = false;
         liveDot.className = 'live-dot scanning'; stripLabel.textContent = 'Scanning';
         scanLine.className = 'scan-line'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
         camHint.textContent = 'Align QR code within the frame';
         const cols = document.querySelectorAll('.corners path');
-        cols.forEach(p => p.setAttribute('stroke', '#5c58f6')); // Primary corners
+        cols.forEach(p => p.setAttribute('stroke', '#5c58f6')); 
         if (video.paused && stream) video.play();
         if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       }
     }
 
-    // --- Dynamic Popup Handler ---
     function triggerPopup(type, title, text, buttons = [], timeoutMs = 0) {
       clearTimeout(statusTimeout);
-      freezeOverlay.classList.remove('visible'); // clear verifying loader
+      freezeOverlay.classList.remove('visible'); 
 
       pTitle.textContent = title;
       pText.textContent = text;
@@ -494,26 +569,15 @@
 
     function hidePopup() {
       popupOverlay.classList.remove('visible');
-      isProcessing = false; // release lock for next scan
+      if(currentScanMode !== 'manual') {
+        isProcessing = false; 
+      }
     }
 
-    // --- Action Handlers ---
     function startRecovery() {
       hidePopup();
       currentScanMode = 'recover';
       setScanState('recovery_mode');
-    }
-
-    function showManualInfo() {
-      triggerPopup('info', 'Manual Entry', 'Please reach out to the event organiser for the manual event access process.', [
-        { text: 'Close & Next Scan', class: 'btn-secondary', action: resetScannerNormal }
-      ]);
-    }
-
-    function resetScannerNormal() {
-      hidePopup();
-      currentScanMode = 'normal';
-      setScanState('scanning');
     }
 
     function show(el) { el.style.display = 'flex'; }
