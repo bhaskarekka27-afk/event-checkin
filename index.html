@@ -354,9 +354,23 @@
 
       let payload = { action: currentScanMode };
       
+      // FIX: Trim any invisible spaces the camera might pick up
+      let decodedText = raw.trim(); 
+      
       try {
-        // Dynamically parse all key:value pairs embedded in the QR
-        const parts = raw.split('|');
+        // --- 100% SAFE DECRYPTION LOGIC ---
+        if (decodedText.startsWith('PW-')) {
+           const reversedB64 = decodedText.substring(3);
+           const b64 = reversedB64.split('').reverse().join('');
+           // window.atob unwraps the Base64, decodeURIComponent unwraps the text perfectly
+           decodedText = decodeURIComponent(window.atob(b64));
+        } 
+        else if (!decodedText.includes('checkin_id')) {
+           throw new Error('Not an event QR code');
+        }
+
+        // Parse the key:value pairs embedded in the QR
+        const parts = decodedText.split('|');
         if (parts.length < 2) throw new Error('bad format');
         
         parts.forEach(part => {
@@ -369,6 +383,7 @@
         });
 
         if (!payload.checkin_id || !payload.token) throw new Error('missing core fields');
+        
         // Standardize ID for backend
         payload.id = payload.checkin_id;
         
