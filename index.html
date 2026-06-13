@@ -173,6 +173,7 @@
   </style>
 </head>
 <body>
+  <!-- --- SIDE MENU OVERLAY --- -->
   <div class="side-menu-overlay" id="menu-overlay"></div>
   <div class="side-menu" id="side-menu">
     <div class="menu-header">
@@ -195,7 +196,7 @@
       </a>
     </div>
     <div class="menu-footer">
-      App Version v2.8
+      App Version v2.9
     </div>
   </div>
 
@@ -217,6 +218,7 @@
 
   <div class="content">
     
+    <!-- Config Screen -->
     <div id="config-screen">
       <div class="config-card">
         <div class="config-header">
@@ -233,6 +235,7 @@
       </div>
     </div>
 
+    <!-- Idle Screen -->
     <div id="idle-screen">
       <div class="idle-card">
         <div class="scanner-illustration">
@@ -261,6 +264,7 @@
       <button type="button" class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
+    <!-- Scanner Screen -->
     <div id="scanner-screen">
       <div class="scan-status-strip">
         <div class="strip-left">
@@ -297,6 +301,7 @@
       </div>
     </div>
 
+    <!-- SEPARATE MANUAL ENTRY SCREEN -->
     <div id="manual-screen">
       <div class="back-header" id="btn-back-manual">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
@@ -305,7 +310,7 @@
       
       <div class="manual-card">
         <div style="text-align:left; font-size: 1.5rem; font-weight:800; color:var(--gray-900); margin-bottom: 8px;">Manual Entry</div>
-        <div style="text-align:left; font-size: 0.9rem; color:var(--gray-600); margin-bottom: 24px;">Enter details directly.</div>
+        <div style="text-align:left; font-size: 0.9rem; color:var(--gray-600); margin-bottom: 24px;">Enter details directly. All fields are required.</div>
         
         <div class="form-group">
           <label class="input-label" for="man-name">Name (Required)</label>
@@ -323,26 +328,25 @@
           <label class="input-label" for="man-city">City (Required)</label>
           <input type="text" id="man-city" class="url-input" placeholder="e.g. New Delhi" autocomplete="off">
         </div>
-        <div class="form-group">
-          <label class="input-label" for="man-state">State (Required)</label>
-          <input type="text" id="man-state" class="url-input" placeholder="e.g. Delhi" autocomplete="off">
-        </div>
 
         <button type="button" class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
       </div>
     </div>
 
+    <!-- STUDENTS DATA SCREEN (TABLE FORMAT) -->
     <div id="data-screen">
       <div class="data-header">
         <h2>Students Data</h2>
         <button class="btn-primary btn-small" id="btn-data-to-scan">Open Scanner</button>
       </div>
+      <!-- List container that gets replaced by the table -->
       <div id="student-list-container" style="width: 100%;">
       </div>
     </div>
 
   </div>
 
+  <!-- UNIFIED POPUP OVERLAY -->
   <div class="popup-overlay" id="unified-popup">
     <div class="popup-card">
       <div class="popup-close" id="btn-popup-close">
@@ -393,7 +397,6 @@
     const mEmail        = document.getElementById('man-email');
     const mPhone        = document.getElementById('man-phone');
     const mCity         = document.getElementById('man-city');
-    const mState        = document.getElementById('man-state');
     const btnSubManual  = document.getElementById('btn-submit-manual');
     const studentList   = document.getElementById('student-list-container');
 
@@ -669,8 +672,8 @@
       manualSource = source; 
       stopScannerSystem(true); // Free camera
       
-      mName.value = ''; mPhone.value = ''; mCity.value = ''; mEmail.value = ''; mState.value = '';
-      mName.classList.remove('error'); mPhone.classList.remove('error'); mCity.classList.remove('error'); mEmail.classList.remove('error'); mState.classList.remove('error');
+      mName.value = ''; mPhone.value = ''; mCity.value = ''; mEmail.value = '';
+      mName.classList.remove('error'); mPhone.classList.remove('error'); mCity.classList.remove('error'); mEmail.classList.remove('error');
       btnSubManual.disabled = false;
       btnSubManual.textContent = "Submit Check-in";
       
@@ -690,12 +693,10 @@
       const email = mEmail.value.trim();
       const phone = mPhone.value.trim();
       const city = mCity.value.trim();
-      const state = mState.value.trim();
       
       let isValid = true;
       if (!name) { mName.classList.add('error'); isValid = false; } else { mName.classList.remove('error'); }
       if (!city) { mCity.classList.add('error'); isValid = false; } else { mCity.classList.remove('error'); }
-      if (!state) { mState.classList.add('error'); isValid = false; } else { mState.classList.remove('error'); }
       
       // Email is optional, but if entered, must be loosely valid
       if (email && !email.includes('@')) { mEmail.classList.add('error'); isValid = false; } else { mEmail.classList.remove('error'); }
@@ -712,7 +713,7 @@
       btnSubManual.disabled = true;
       btnSubManual.textContent = "Processing...";
 
-      const payload = { action: 'manual', name: name, email: email, phone: phone, city: city, state: state };
+      const payload = { action: 'manual', name: name, email: email, phone: phone, city: city };
       sendPayloadToBackend(payload);
     }
 
