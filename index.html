@@ -32,7 +32,6 @@
     .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; }
     .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; position: relative; }
     
-    /* Config & Idle Screens */
     #config-screen, #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
     .config-card, .idle-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
     .idle-card { border-radius: 24px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
@@ -62,10 +61,8 @@
     .btn-primary:hover { background: var(--primary-dark); }
     .btn-primary:active { transform: scale(0.98); }
     .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
-    .btn-primary.btn-shadow { box-shadow: 0 12px 24px -6px rgba(92,88,246,0.4); border-radius: 16px; padding: 18px; font-size: 1.05rem; margin-top: 0; }
     .btn-secondary { background: transparent; border: 1.5px solid var(--gray-200); color: var(--gray-600); margin-top: 8px; }
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
-    
     .btn-stop { background: var(--white); border: 1.5px solid var(--gray-200); color: var(--gray-600); margin-top: 8px; width: 100%; padding: 16px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); }
     .btn-stop:hover { border-color: var(--red); color: var(--red); }
 
@@ -110,7 +107,6 @@
     .popup-icon-box { width: 64px; height: 64px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 20px; flex-shrink: 0; }
     .popup-icon-box svg { width: 32px; height: 32px; }
     
-    /* Theme Colors for Icons */
     .po-success { background: var(--green-light); color: var(--green); }
     .po-error { background: var(--red-light); color: var(--red); }
     .po-warning { background: var(--amber-light); color: var(--amber); }
@@ -123,7 +119,6 @@
     .popup-btn-group .btn-primary { margin-top: 0; }
     .popup-btn-group .btn-secondary { margin-top: 0; }
 
-    /* Forms */
     .form-group { width: 100%; margin-bottom: 16px; }
 
   </style>
@@ -157,7 +152,7 @@
         </div>
         <label class="input-label" for="gas-url-input">Apps Script Web App URL</label>
         <input type="url" id="gas-url-input" class="url-input" placeholder="https://script.google.com/macros/s/.../exec" autocomplete="off" autocorrect="off" spellcheck="false">
-        <button class="btn-primary" id="btn-connect">Connect &amp; Start Scanning</button>
+        <button class="btn-primary" id="btn-connect">Connect & Start Scanning</button>
       </div>
     </div>
 
@@ -219,7 +214,7 @@
         </div>
       </div>
 
-      <div>
+      <div style="width: 100%;">
         <button class="btn-stop" id="btn-stop">Stop Scanner</button>
         <button class="btn-secondary" id="btn-manual-main">Enter Data Manually</button>
       </div>
@@ -228,13 +223,10 @@
 
   <div class="popup-overlay" id="unified-popup">
     <div class="popup-card">
-      <div class="popup-icon-box" id="up-icon-box">
-        </div>
+      <div class="popup-icon-box" id="up-icon-box"></div>
       <div class="popup-title" id="up-title">Title</div>
       <div class="popup-text" id="up-text">Message goes here.</div>
-      
-      <div class="popup-btn-group" id="up-btn-group" style="display: none;">
-        </div>
+      <div class="popup-btn-group" id="up-btn-group" style="display: none;"></div>
     </div>
   </div>
 
@@ -256,7 +248,7 @@
         <input type="text" id="man-city" class="url-input" placeholder="e.g. New Delhi" autocomplete="off">
       </div>
 
-      <div class="popup-btn-group">
+      <div class="popup-btn-group" style="display:flex;">
         <button class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
         <button class="btn-secondary" id="btn-cancel-manual">Cancel</button>
       </div>
@@ -279,7 +271,6 @@
     const canvas        = document.getElementById('qr-canvas');
     const ctx           = canvas.getContext('2d', { willReadFrequently: true });
     
-    // Status UI elements
     const liveDot       = document.getElementById('live-dot');
     const stripLabel    = document.getElementById('strip-label');
     const stripCount    = document.getElementById('strip-count');
@@ -287,21 +278,18 @@
     const freezeOverlay = document.getElementById('freeze-overlay');
     const camHint       = document.getElementById('cam-hint');
 
-    // Unified Popup Elements
     const popupOverlay  = document.getElementById('unified-popup');
     const pIconBox      = document.getElementById('up-icon-box');
     const pTitle        = document.getElementById('up-title');
     const pText         = document.getElementById('up-text');
     const pBtnGroup     = document.getElementById('up-btn-group');
 
-    // Manual Form Elements
     const manualOverlay = document.getElementById('manual-form-overlay');
     const mName         = document.getElementById('man-name');
     const mPhone        = document.getElementById('man-phone');
     const mCity         = document.getElementById('man-city');
     const btnSubManual  = document.getElementById('btn-submit-manual');
 
-    // SVGs for popups
     const ICONS = {
       success: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>`,
       error: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>`,
@@ -311,7 +299,7 @@
 
     let gasUrl = '', stream = null, rafId = null;
     let isProcessing = false, scanCount = 0, statusTimeout = null;
-    let currentScanMode = 'normal'; // 'normal' or 'recover'
+    let currentScanMode = 'normal'; 
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
@@ -332,7 +320,6 @@
     document.getElementById('btn-open-camera').addEventListener('click', openCamera);
     document.getElementById('btn-stop').addEventListener('click', stopCamera);
     
-    // Wire up Manual Entry buttons
     document.getElementById('btn-manual-main').addEventListener('click', openManualForm);
     document.getElementById('btn-cancel-manual').addEventListener('click', closeManualForm);
     btnSubManual.addEventListener('click', submitManualEntry);
@@ -386,9 +373,7 @@
 
     function handleQR(raw) {
       if (isProcessing) return;
-      isProcessing = true;
-      video.pause();
-      setScanState('verifying');
+      setScanState('verifying'); // Locks scanner immediately
 
       let payload = { action: currentScanMode };
       let decodedText = raw.trim(); 
@@ -419,8 +404,6 @@
         payload.id = payload.checkin_id;
         
       } catch (e) {
-        console.error("QR Error:", e.message, "| Raw:", raw);
-        setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         triggerPopup('error', 'Invalid QR Code', `Error: Not a valid event ticket.`, [], 3000);
         return;
       }
@@ -428,11 +411,11 @@
       sendPayloadToBackend(payload);
     }
 
-    // --- MANUAL ENTRY FUNCTIONS ---
+    // --- MANUAL ENTRY CONTROL ---
     function openManualForm() {
       hidePopup();
-      if (video && !video.paused) video.pause();
-      isProcessing = true;
+      setScanState('locked_for_ui'); // Safely lock the background scanner
+      
       mName.value = ''; mPhone.value = ''; mCity.value = '';
       mName.classList.remove('error');
       btnSubManual.disabled = false;
@@ -448,10 +431,7 @@
 
     function submitManualEntry() {
       const name = mName.value.trim();
-      if (!name) {
-        mName.classList.add('error');
-        return;
-      }
+      if (!name) { mName.classList.add('error'); return; }
       
       mName.classList.remove('error');
       btnSubManual.disabled = true;
@@ -469,7 +449,7 @@
       sendPayloadToBackend(payload);
     }
 
-    // --- SHARED BACKEND HANDLER ---
+    // --- API HANDLER ---
     function sendPayloadToBackend(payload) {
       fetch(gasUrl, {
         method: 'POST',
@@ -486,57 +466,61 @@
           badge.textContent = scanCount + ' Checked In';
           stripCount.textContent = scanCount + ' checked in';
           
-          triggerPopup('success', 'Check-in Successful', res.message, [], 3500);
-          
           currentScanMode = 'normal';
-          setScanState('scanning');
+          triggerPopup('success', 'Check-in Successful', res.message, [], 2500);
         } else {
           if (res.status === 'deleted' && currentScanMode !== 'recover') {
              triggerPopup('warning', 'User Data Deleted', 'This QR code is valid, but the user data was removed from the sheet. How would you like to proceed?', [
                { text: 'Scan & Create New Entry', class: 'btn-primary', action: startRecovery },
                { text: 'Enter Data Manually', class: 'btn-secondary', action: openManualForm }
-             ]);
+             ], 0);
           } else {
              const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
              triggerPopup(type, 'Check-in Denied', res.message, [], 3500);
-             setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
           }
         }
       })
       .catch(() => {
-        setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         triggerPopup('error', 'Server Unreachable', 'Check your URL or connection.', [], 3000);
       });
     }
 
+    // --- CENTRALIZED STATE MANAGEMENT ---
     function setScanState(state) {
       if (state === 'verifying') {
+        isProcessing = true;
+        if (video && !video.paused) video.pause();
         liveDot.className = 'live-dot paused'; stripLabel.textContent = 'Verifying';
         scanLine.classList.add('paused'); freezeOverlay.classList.add('visible'); camHint.style.opacity = '0';
-      } else if (state === 'recovery_mode') {
+      } 
+      else if (state === 'locked_for_ui') {
+        isProcessing = true;
+        if (video && !video.paused) video.pause();
+      }
+      else if (state === 'recovery_mode') {
         isProcessing = false;
         liveDot.className = 'live-dot recovery'; stripLabel.textContent = 'Recovery Mode';
         scanLine.className = 'scan-line recovery'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
         camHint.textContent = 'Scan code to recreate entry';
         const cols = document.querySelectorAll('.corners path');
         cols.forEach(p => p.setAttribute('stroke', '#f59e0b')); 
-        if (video.paused && stream) video.play();
-        if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
-      } else {
+        if (video && video.paused && stream) video.play();
+      } 
+      else {
+        // 'scanning' normal mode
         isProcessing = false;
         liveDot.className = 'live-dot scanning'; stripLabel.textContent = 'Scanning';
         scanLine.className = 'scan-line'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
         camHint.textContent = 'Align QR code within the frame';
         const cols = document.querySelectorAll('.corners path');
         cols.forEach(p => p.setAttribute('stroke', '#5c58f6')); 
-        if (video.paused && stream) video.play();
-        if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
+        if (video && video.paused && stream) video.play();
       }
     }
 
     function triggerPopup(type, title, text, buttons = [], timeoutMs = 0) {
       clearTimeout(statusTimeout);
-      freezeOverlay.classList.remove('visible'); 
+      setScanState('locked_for_ui'); // Always lock camera when a popup appears
 
       pTitle.textContent = title;
       pText.textContent = text;
@@ -563,15 +547,14 @@
       if (timeoutMs > 0) {
         statusTimeout = setTimeout(() => {
           hidePopup();
+          setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         }, timeoutMs);
       }
     }
 
     function hidePopup() {
+      clearTimeout(statusTimeout);
       popupOverlay.classList.remove('visible');
-      if(currentScanMode !== 'manual') {
-        isProcessing = false; 
-      }
     }
 
     function startRecovery() {
