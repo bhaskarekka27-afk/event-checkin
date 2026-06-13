@@ -31,45 +31,53 @@
     .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); }
     .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; }
     .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; }
-    #config-screen { display: flex; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; }
-    .config-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
+    
+    /* Config & Idle Screens */
+    #config-screen, #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
+    .config-card, .idle-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
+    .idle-card { border-radius: 24px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
+    
     .config-header { text-align: center; margin-bottom: 28px; }
     .config-badge { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); padding: 6px 14px; border-radius: 20px; margin-bottom: 16px; }
-    .config-title { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); line-height: 1.2; }
-    .config-sub { font-size: 0.85rem; color: var(--gray-400); margin-top: 8px; line-height: 1.5; }
+    .config-title, .idle-title { font-size: 1.5rem; font-weight: 800; color: var(--gray-900); line-height: 1.2; }
+    .idle-title { font-size: 1.75rem; letter-spacing: -0.02em; }
+    .config-sub, .idle-sub { font-size: 0.85rem; color: var(--gray-400); margin-top: 8px; line-height: 1.5; }
+    .idle-sub { font-size: 1rem; }
+    
     .input-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; display: block; }
-    .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.85rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: 0.2s; }
     .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(92,88,246,0.1); background: var(--white); }
     .url-input.error { border-color: var(--red); }
-    .btn-primary { width: 100%; padding: 16px; margin-top: 8px; background: var(--primary); color: var(--white); border: none; border-radius: var(--radius-sm); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: background 0.15s, transform 0.1s; box-shadow: 0 4px 14px rgba(92,88,246,0.3); -webkit-tap-highlight-color: transparent; }
-    .btn-primary:hover { background: var(--primary-dark); }
-    .btn-primary:active { transform: scale(0.98); }
     
-    /* --- NEW IDLE SCREEN STYLES --- */
-    #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 16px; width: 100%; max-width: 420px; margin: 0 auto; }
-    .idle-card { background: var(--white); border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); border: 1px solid var(--gray-200); padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; }
     .scanner-illustration { width: 96px; height: 96px; background: var(--primary-light); border-radius: 28px; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
     .scanner-illustration::after { content: ''; position: absolute; inset: -8px; border-radius: 36px; border: 2px solid var(--primary-light); }
-    .idle-text-group { display: flex; flex-direction: column; gap: 8px; }
-    .idle-title { font-size: 1.75rem; font-weight: 800; color: var(--gray-900); letter-spacing: -0.02em; line-height: 1.2; }
-    .idle-sub { font-size: 1rem; color: var(--gray-400); line-height: 1.5; }
     .server-row { display: flex; align-items: center; gap: 12px; background: var(--white); border: 1px solid var(--gray-200); border-radius: 16px; padding: 16px 20px; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
     .dot-live { width: 10px; height: 10px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
     .server-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-400); flex-shrink: 0; }
     .server-url { font-size: 0.85rem; color: var(--gray-600); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .btn-primary.btn-shadow { box-shadow: 0 12px 24px -6px rgba(92,88,246,0.4); border-radius: 16px; padding: 18px; font-size: 1.05rem; margin-top: 0; }
     
-    .btn-secondary { width: 100%; padding: 14px; background: transparent; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); color: var(--gray-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: border-color 0.15s, color 0.15s; -webkit-tap-highlight-color: transparent; }
+    .btn-primary, .btn-secondary { width: 100%; padding: 16px; border-radius: var(--radius-sm); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; font-weight: 700; cursor: pointer; transition: 0.15s; -webkit-tap-highlight-color: transparent; }
+    .btn-primary { background: var(--primary); color: var(--white); border: none; box-shadow: 0 4px 14px rgba(92,88,246,0.3); margin-top: 8px; }
+    .btn-primary:hover { background: var(--primary-dark); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary.btn-shadow { box-shadow: 0 12px 24px -6px rgba(92,88,246,0.4); border-radius: 16px; padding: 18px; font-size: 1.05rem; margin-top: 0; }
+    .btn-secondary { background: transparent; border: 1.5px solid var(--gray-200); color: var(--gray-600); }
     .btn-secondary:hover { border-color: var(--primary); color: var(--primary); }
+    .btn-stop { background: var(--white); border: 1.5px solid var(--gray-200); color: var(--gray-600); margin-top: 8px; width: 100%; padding: 16px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); }
+    .btn-stop:hover { border-color: var(--red); color: var(--red); }
+
+    /* Scanner Screen */
     #scanner-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; }
     .scan-status-strip { background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 18px; display: flex; align-items: center; justify-content: space-between; box-shadow: var(--shadow-sm); }
     .strip-left { display: flex; align-items: center; gap: 10px; }
     .live-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--red); animation: blink 1s ease-in-out infinite; }
     .live-dot.scanning { background: var(--green); }
     .live-dot.paused { background: var(--amber); animation: none; }
+    .live-dot.recovery { background: var(--primary); animation: blink 1s ease-in-out infinite; }
     @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
     .strip-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); }
     .strip-count { font-size: 0.8rem; font-weight: 600; color: var(--primary); background: var(--primary-light); padding: 4px 12px; border-radius: 12px; }
+    
     .cam-card { background: var(--gray-900); border-radius: var(--radius); overflow: hidden; position: relative; aspect-ratio: 1/1; box-shadow: var(--shadow-lg); }
     #cam-video { width: 100%; height: 100%; object-fit: cover; display: block; }
     #qr-canvas { display: none; }
@@ -78,13 +86,17 @@
     .corners svg { width: 100%; height: 100%; }
     .scan-line { position: absolute; left: 16%; right: 16%; height: 2px; background: linear-gradient(90deg, transparent, var(--primary), transparent); box-shadow: 0 0 8px 2px rgba(92,88,246,0.5); animation: scanMove 2s ease-in-out infinite; }
     .scan-line.paused { animation-play-state: paused; opacity: 0; }
+    .scan-line.recovery { background: linear-gradient(90deg, transparent, var(--amber), transparent); box-shadow: 0 0 8px 2px rgba(245,158,11,0.5); }
     @keyframes scanMove { 0%{top:16%;opacity:0}8%{opacity:1}92%{opacity:1}100%{top:84%;opacity:0} }
     .cam-hint { position: absolute; bottom: 20px; left: 0; right: 0; text-align: center; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
-    .freeze-overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.72); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; }
+    
+    .freeze-overlay { position: absolute; inset: 0; background: rgba(15,23,42,0.72); display: none; align-items: center; justify-content: center; flex-direction: column; gap: 14px; z-index: 5; }
     .freeze-overlay.visible { display: flex; }
     .freeze-spinner { width: 44px; height: 44px; border: 3px solid rgba(255,255,255,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg)} }
     .freeze-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
+    
+    /* Notification Status Card */
     .status-card { background: var(--white); border-radius: var(--radius-sm); padding: 18px 20px; display: none; align-items: center; gap: 16px; box-shadow: var(--shadow-sm); animation: slideUp 0.2s ease; }
     @keyframes slideUp { from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)} }
     .status-card.success { border: 1.5px solid #bbf7d0; background: var(--green-light); }
@@ -94,8 +106,18 @@
     .s-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 3px; }
     .success .s-title{color:#00875a} .error .s-title{color:#b91c1c} .warning .s-title{color:#b45309}
     .s-detail { font-size: 0.8rem; color: var(--gray-600); line-height: 1.4; }
-    .btn-stop { width: 100%; padding: 16px; margin-top: 8px; background: var(--white); border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); color: var(--gray-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; box-shadow: var(--shadow-sm); -webkit-tap-highlight-color: transparent; transition: border-color 0.15s, color 0.15s; }
-    .btn-stop:hover { border-color: var(--red); color: var(--red); }
+
+    /* --- NEW BYPASS OVERLAYS --- */
+    .action-overlay { position: absolute; inset: 0; background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); display: none; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; z-index: 10; animation: fadeIn 0.2s ease; }
+    .action-overlay.visible { display: flex; }
+    @keyframes fadeIn { from{opacity:0}to{opacity:1} }
+    .overlay-icon { font-size: 2.5rem; margin-bottom: 12px; }
+    .overlay-title { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin-bottom: 8px; }
+    .overlay-text { font-size: 0.85rem; color: var(--gray-600); margin-bottom: 24px; line-height: 1.5; }
+    .btn-group { display: flex; flex-direction: column; gap: 10px; width: 100%; }
+    
+    .btn-action-primary { background: var(--primary); color: white; border: none; padding: 14px; border-radius: var(--radius-sm); font-weight: 700; cursor: pointer; }
+    .btn-action-secondary { background: white; color: var(--gray-800); border: 1.5px solid var(--gray-200); padding: 14px; border-radius: var(--radius-sm); font-weight: 600; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -114,6 +136,7 @@
   </div>
 
   <div class="content">
+    
     <div id="config-screen">
       <div class="config-card">
         <div class="config-header">
@@ -139,18 +162,15 @@
             <line x1="3" y1="12" x2="21" y2="12" stroke-width="1.5" opacity="0.4"/>
           </svg>
         </div>
-        
         <div class="idle-text-group">
           <div class="idle-title">Ready to Check-in</div>
           <div class="idle-sub">Open the camera to start scanning<br>attendee QR codes instantly.</div>
         </div>
-        
         <div class="server-row">
           <div class="dot-live"></div>
           <span class="server-label">Server</span>
           <span class="server-url" id="server-url-display">—</span>
         </div>
-        
         <button class="btn-primary btn-shadow" id="btn-open-camera">
           <span style="display:flex;align-items:center;justify-content:center;gap:10px">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
@@ -158,7 +178,6 @@
           </span>
         </button>
       </div>
-      
       <button class="btn-secondary" id="btn-change-url">Change Server URL</button>
     </div>
 
@@ -170,25 +189,48 @@
         </div>
         <span class="strip-count" id="strip-count">0 checked in</span>
       </div>
+      
       <div class="cam-card">
         <video id="cam-video" autoplay playsinline muted></video>
         <div class="vignette"></div>
         <div class="corners">
           <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 28 L18 18 L28 18" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M72 18 L82 18 L82 28" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M82 72 L82 82 L72 82" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
-            <path d="M28 82 L18 82 L18 72" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+            <path d="M18 28 L18 18 L28 18" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round" id="c-tl"/>
+            <path d="M72 18 L82 18 L82 28" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round" id="c-tr"/>
+            <path d="M82 72 L82 82 L72 82" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round" id="c-br"/>
+            <path d="M28 82 L18 82 L18 72" stroke="#5c58f6" stroke-width="2.5" fill="none" stroke-linecap="round" id="c-bl"/>
           </svg>
         </div>
         <div class="scan-line" id="scan-line"></div>
         <canvas id="qr-canvas"></canvas>
         <div class="cam-hint" id="cam-hint">Align QR code within the frame</div>
+        
         <div class="freeze-overlay" id="freeze-overlay">
           <div class="freeze-spinner"></div>
           <div class="freeze-label">Verifying…</div>
         </div>
+
+        <div class="action-overlay" id="bypass-overlay">
+          <div class="overlay-icon">⚠️</div>
+          <div class="overlay-title">User Data Deleted</div>
+          <div class="overlay-text">This QR code is valid, but the user data was removed from the sheet. How would you like to proceed?</div>
+          <div class="btn-group">
+            <button class="btn-action-primary" id="btn-recover-scan">Scan & Create New Entry</button>
+            <button class="btn-action-secondary" id="btn-manual-entry">Enter Data Manually</button>
+          </div>
+        </div>
+
+        <div class="action-overlay" id="manual-overlay">
+          <div class="overlay-icon">✍️</div>
+          <div class="overlay-title">Manual Entry</div>
+          <div class="overlay-text">Please reach out to the event organiser for the manual event access process.</div>
+          <div class="btn-group">
+            <button class="btn-action-secondary" id="btn-close-manual">Close & Next Scan</button>
+          </div>
+        </div>
+
       </div>
+
       <div id="status-card" class="status-card">
         <div class="s-dot" id="s-dot"></div>
         <div class="s-body">
@@ -196,6 +238,7 @@
           <div class="s-detail" id="s-detail"></div>
         </div>
       </div>
+      
       <button class="btn-stop" id="btn-stop">Stop Scanner</button>
     </div>
   </div>
@@ -214,7 +257,9 @@
     const badge         = document.getElementById('scan-badge');
     const video         = document.getElementById('cam-video');
     const canvas        = document.getElementById('qr-canvas');
-    const ctx           = canvas.getContext('2d');
+    const ctx           = canvas.getContext('2d', { willReadFrequently: true });
+    
+    // Status UI elements
     const statusCard    = document.getElementById('status-card');
     const sDot          = document.getElementById('s-dot');
     const sTitle        = document.getElementById('s-title');
@@ -226,8 +271,13 @@
     const freezeOverlay = document.getElementById('freeze-overlay');
     const camHint       = document.getElementById('cam-hint');
 
+    // Overlays
+    const bypassOverlay = document.getElementById('bypass-overlay');
+    const manualOverlay = document.getElementById('manual-overlay');
+
     let gasUrl = '', stream = null, rafId = null;
     let isProcessing = false, scanCount = 0, statusTimeout = null;
+    let currentScanMode = 'normal'; // 'normal' or 'recover'
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
@@ -248,6 +298,24 @@
     document.getElementById('btn-open-camera').addEventListener('click', openCamera);
     document.getElementById('btn-stop').addEventListener('click', stopCamera);
 
+    // --- Overlay Button Listeners ---
+    document.getElementById('btn-recover-scan').addEventListener('click', () => {
+      bypassOverlay.classList.remove('visible');
+      currentScanMode = 'recover';
+      setScanState('recovery_mode');
+    });
+
+    document.getElementById('btn-manual-entry').addEventListener('click', () => {
+      bypassOverlay.classList.remove('visible');
+      manualOverlay.classList.add('visible');
+    });
+
+    document.getElementById('btn-close-manual').addEventListener('click', () => {
+      manualOverlay.classList.remove('visible');
+      currentScanMode = 'normal';
+      setScanState('scanning');
+    });
+
     function showIdle() {
       hide(configScreen); show(idleScreen);
       const short = gasUrl.replace('https://script.google.com/macros/s/','…/').replace('https://script.google.com/a/macros/','…/');
@@ -257,6 +325,7 @@
     async function openCamera() {
       hide(idleScreen); show(scanScreen);
       statusCard.style.display = 'none';
+      currentScanMode = 'normal';
       setScanState('scanning');
       try {
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
@@ -277,6 +346,8 @@
       cancelAnimationFrame(rafId); clearTimeout(statusTimeout);
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null; isProcessing = false;
+      bypassOverlay.classList.remove('visible');
+      manualOverlay.classList.remove('visible');
       hide(scanScreen); showIdle();
     }
 
@@ -306,13 +377,14 @@
         token = parts[1].substring(parts[1].indexOf(':') + 1).trim();
         if (!id || !token) throw new Error('missing fields');
       } catch (e) {
-        setScanState('scanning');
+        setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         showResult('error', 'Invalid QR Code', 'Not a valid event ticket');
         scheduleReset(3000);
         return;
       }
 
-      const bodyStr = JSON.stringify({ id: id, token: token });
+      // INCLUDE ACTION IN PAYLOAD
+      const bodyStr = JSON.stringify({ id: id, token: token, action: currentScanMode });
 
       fetch(gasUrl, {
         method: 'POST',
@@ -323,20 +395,34 @@
       .then(text => {
         const clean = text.replace(/^\uFEFF/, '').trim();
         const res = JSON.parse(clean);
-        setScanState('scanning');
+        
         if (res.success) {
           scanCount++;
           badge.textContent = scanCount + ' Checked In';
           stripCount.textContent = scanCount + ' checked in';
           showResult('success', 'Check-in Successful', res.message);
+          
+          currentScanMode = 'normal'; // reset mode
+          setScanState('scanning');
+          scheduleReset(3500);
         } else {
-          const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
-          showResult(type, 'Check-in Denied', res.message);
+          // DELETED USER FLOW
+          if (res.status === 'deleted' && currentScanMode !== 'recover') {
+             // Keep freeze overlay off, but pause camera and show bypass options
+             freezeOverlay.classList.remove('visible');
+             bypassOverlay.classList.add('visible');
+             // Do NOT scheduleReset, wait for user input
+          } else {
+             // NORMAL REJECTION (Already checked in, etc.)
+             const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
+             showResult(type, 'Check-in Denied', res.message);
+             setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
+             scheduleReset(3500);
+          }
         }
-        scheduleReset(3500);
       })
       .catch(() => {
-        setScanState('scanning');
+        setScanState(currentScanMode === 'recover' ? 'recovery_mode' : 'scanning');
         showResult('error', 'Server Unreachable', 'Check your URL or connection');
         scheduleReset(3000);
       });
@@ -346,9 +432,23 @@
       if (state === 'verifying') {
         liveDot.className = 'live-dot paused'; stripLabel.textContent = 'Verifying';
         scanLine.classList.add('paused'); freezeOverlay.classList.add('visible'); camHint.style.opacity = '0';
+      } else if (state === 'recovery_mode') {
+        isProcessing = false;
+        liveDot.className = 'live-dot recovery'; stripLabel.textContent = 'Recovery Mode';
+        scanLine.className = 'scan-line recovery'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
+        camHint.textContent = 'Scan code to recreate entry';
+        const cols = document.querySelectorAll('.corners path');
+        cols.forEach(p => p.setAttribute('stroke', '#f59e0b')); // Amber corners
+        if (video.paused && stream) video.play();
+        if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       } else {
+        // Normal scanning
+        isProcessing = false;
         liveDot.className = 'live-dot scanning'; stripLabel.textContent = 'Scanning';
-        scanLine.classList.remove('paused'); freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
+        scanLine.className = 'scan-line'; freezeOverlay.classList.remove('visible'); camHint.style.opacity = '1';
+        camHint.textContent = 'Align QR code within the frame';
+        const cols = document.querySelectorAll('.corners path');
+        cols.forEach(p => p.setAttribute('stroke', '#5c58f6')); // Primary corners
         if (video.paused && stream) video.play();
         if (stream) rafId = requestAnimationFrame(() => setTimeout(decodeLoop, 300));
       }
@@ -364,7 +464,10 @@
     }
 
     function scheduleReset(ms) {
-      statusTimeout = setTimeout(() => { statusCard.style.display = 'none'; isProcessing = false; }, ms);
+      statusTimeout = setTimeout(() => { 
+        statusCard.style.display = 'none'; 
+        isProcessing = false; 
+      }, ms);
     }
 
     function show(el) { el.style.display = 'flex'; }
