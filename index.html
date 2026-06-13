@@ -30,7 +30,7 @@
     .brand-icon { width: 36px; height: 36px; background: var(--primary-light); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
     .brand-name { font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-800); }
     
-    /* APP VERSION BADGE */
+    /* APP VERSION BADGE - Updated to v2.2 */
     .app-version { font-size: 0.65rem; font-weight: 800; background: var(--gray-200); color: var(--gray-600); padding: 2px 8px; border-radius: 10px; letter-spacing: 0.05em; }
 
     .count-pill { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: var(--primary); background: var(--primary-light); border: 1px solid rgba(92,88,246,0.2); padding: 6px 14px; border-radius: 20px; }
@@ -145,7 +145,7 @@
         </svg>
       </div>
       <span class="brand-name">Event Check-in</span>
-      <span class="app-version">v2.1</span>
+      <span class="app-version">v2.2</span>
     </div>
     <div class="count-pill" id="scan-badge">Ready</div>
   </div>
@@ -357,6 +357,9 @@
         stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { ideal: 'environment' }, width: { ideal: 1280 }, height: { ideal: 720 } }, audio: false });
         video.srcObject = stream; await video.play();
         canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
+        
+        // Restart the scanning loop
+        cancelAnimationFrame(rafId);
         decodeLoop();
 
         if(resumePopupSource === 'bypass') {
@@ -367,7 +370,10 @@
           stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
           video.srcObject = stream; await video.play();
           canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
+          
+          cancelAnimationFrame(rafId);
           decodeLoop();
+          
           if(resumePopupSource === 'bypass') showBypassPopup();
         } catch (e2) { alert('Camera error: ' + e2.message); }
       }
@@ -571,6 +577,10 @@
         const cols = document.querySelectorAll('.corners path');
         cols.forEach(p => p.setAttribute('stroke', '#f59e0b')); 
         if (video && video.paused && stream) video.play();
+        
+        // --- FIX: RESTART BACKGROUND LOOP AFTER RECOVERY POPUP CLEARS ---
+        cancelAnimationFrame(rafId);
+        decodeLoop();
       } 
       else {
         isProcessing = false;
@@ -580,6 +590,10 @@
         const cols = document.querySelectorAll('.corners path');
         cols.forEach(p => p.setAttribute('stroke', '#5c58f6')); 
         if (video && video.paused && stream) video.play();
+        
+        // --- FIX: RESTART BACKGROUND LOOP AFTER NORMAL POPUP CLEARS ---
+        cancelAnimationFrame(rafId);
+        decodeLoop();
       }
     }
 
