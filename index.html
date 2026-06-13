@@ -33,7 +33,7 @@
     .content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 32px 20px; gap: 24px; position: relative; }
     
     #config-screen, #idle-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
-    .config-card, .idle-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
+    .config-card, .idle-card, .manual-card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow-md); border: 1px solid var(--gray-200); padding: 36px 28px; }
     .idle-card { border-radius: 24px; padding: 48px 32px; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 32px; box-shadow: 0 12px 40px rgba(0,0,0,0.04); }
     
     .config-header { text-align: center; margin-bottom: 28px; }
@@ -46,7 +46,7 @@
     .input-label { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gray-600); margin-bottom: 8px; display: block; text-align: left; }
     .url-input { width: 100%; padding: 14px 16px; border: 1.5px solid var(--gray-200); border-radius: var(--radius-sm); font-size: 0.95rem; color: var(--gray-800); background: var(--gray-50); outline: none; transition: 0.2s; font-family: 'Plus Jakarta Sans', sans-serif; }
     .url-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(92,88,246,0.1); background: var(--white); }
-    .url-input.error { border-color: var(--red); }
+    .url-input.error { border-color: var(--red); background: var(--red-light); }
     
     .scanner-illustration { width: 96px; height: 96px; background: var(--primary-light); border-radius: 28px; display: flex; align-items: center; justify-content: center; position: relative; margin-bottom: 8px; }
     .scanner-illustration::after { content: ''; position: absolute; inset: -8px; border-radius: 36px; border: 2px solid var(--primary-light); }
@@ -95,7 +95,14 @@
     .freeze-spinner { width: 44px; height: 44px; border: 3px solid rgba(255,255,255,0.15); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.7s linear infinite; }
     @keyframes spin { to{transform:rotate(360deg)} }
     .freeze-label { font-size: 0.85rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: rgba(255,255,255,0.8); }
-    
+
+    /* SEPARATE MANUAL SCREEN */
+    #manual-screen { display: none; flex-direction: column; align-items: stretch; gap: 20px; width: 100%; max-width: 420px; margin: 0 auto; }
+    .back-header { display: flex; align-items: center; gap: 12px; cursor: pointer; color: var(--gray-600); transition: 0.2s; padding: 4px 0; }
+    .back-header:hover { color: var(--primary); }
+    .back-header svg { width: 24px; height: 24px; }
+    .back-header span { font-weight: 700; font-size: 1.1rem; }
+
     /* --- FULL SCREEN OVERLAYS (Fixed Position) --- */
     .popup-overlay { position: fixed; inset: 0; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(6px); display: none; align-items: center; justify-content: center; padding: 24px; z-index: 999; animation: fadeIn 0.2s ease; }
     .popup-overlay.visible { display: flex; }
@@ -219,6 +226,34 @@
         <button type="button" class="btn-secondary" id="btn-manual-main">Enter Data Manually</button>
       </div>
     </div>
+
+    <div id="manual-screen">
+      <div class="back-header" id="btn-back-manual">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+        <span>Back</span>
+      </div>
+      
+      <div class="manual-card">
+        <div style="text-align:left; font-size: 1.5rem; font-weight:800; color:var(--gray-900); margin-bottom: 8px;">Manual Entry</div>
+        <div style="text-align:left; font-size: 0.9rem; color:var(--gray-600); margin-bottom: 24px;">Enter details directly. All fields are required.</div>
+        
+        <div class="form-group">
+          <label class="input-label" for="man-name">Name</label>
+          <input type="text" id="man-name" class="url-input" placeholder="Attendee Name" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="input-label" for="man-phone">Phone Number (10 Digits)</label>
+          <input type="tel" id="man-phone" class="url-input" placeholder="e.g. 9876543210" autocomplete="off" maxlength="10">
+        </div>
+        <div class="form-group">
+          <label class="input-label" for="man-city">City</label>
+          <input type="text" id="man-city" class="url-input" placeholder="e.g. New Delhi" autocomplete="off">
+        </div>
+
+        <button type="button" class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
+      </div>
+    </div>
+
   </div>
 
   <div class="popup-overlay" id="unified-popup">
@@ -227,31 +262,6 @@
       <div class="popup-title" id="up-title">Title</div>
       <div class="popup-text" id="up-text">Message goes here.</div>
       <div class="popup-btn-group" id="up-btn-group" style="display: none;"></div>
-    </div>
-  </div>
-
-  <div class="popup-overlay" id="manual-form-overlay">
-    <div class="popup-card">
-      <div class="popup-title">Manual Entry</div>
-      <div class="popup-text" style="margin-bottom: 24px;">Enter attendee details directly.</div>
-      
-      <div class="form-group">
-        <label class="input-label" for="man-name">Name (Required)</label>
-        <input type="text" id="man-name" class="url-input" placeholder="Attendee Name" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label class="input-label" for="man-phone">Phone Number</label>
-        <input type="tel" id="man-phone" class="url-input" placeholder="e.g. 9876543210" autocomplete="off">
-      </div>
-      <div class="form-group">
-        <label class="input-label" for="man-city">City</label>
-        <input type="text" id="man-city" class="url-input" placeholder="e.g. New Delhi" autocomplete="off">
-      </div>
-
-      <div class="popup-btn-group" style="display:flex;">
-        <button type="button" class="btn-primary" id="btn-submit-manual">Submit Check-in</button>
-        <button type="button" class="btn-secondary" id="btn-cancel-manual">Cancel</button>
-      </div>
     </div>
   </div>
 
@@ -264,6 +274,8 @@
     const configScreen  = document.getElementById('config-screen');
     const idleScreen    = document.getElementById('idle-screen');
     const scanScreen    = document.getElementById('scanner-screen');
+    const manualScreen  = document.getElementById('manual-screen');
+    
     const gasInput      = document.getElementById('gas-url-input');
     const serverDisp    = document.getElementById('server-url-display');
     const badge         = document.getElementById('scan-badge');
@@ -284,7 +296,6 @@
     const pText         = document.getElementById('up-text');
     const pBtnGroup     = document.getElementById('up-btn-group');
 
-    const manualOverlay = document.getElementById('manual-form-overlay');
     const mName         = document.getElementById('man-name');
     const mPhone        = document.getElementById('man-phone');
     const mCity         = document.getElementById('man-city');
@@ -300,6 +311,7 @@
     let gasUrl = '', stream = null, rafId = null;
     let isProcessing = false, scanCount = 0, statusTimeout = null;
     let currentScanMode = 'normal'; 
+    let manualSource = 'main'; // Tracks where the manual screen was opened from
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
@@ -317,21 +329,22 @@
       gasInput.value = gasUrl; hide(idleScreen); show(configScreen);
     });
 
-    document.getElementById('btn-open-camera').addEventListener('click', openCamera);
-    document.getElementById('btn-stop').addEventListener('click', stopCamera);
+    document.getElementById('btn-open-camera').addEventListener('click', () => startScannerSystem());
+    document.getElementById('btn-stop').addEventListener('click', stopScannerSystem);
     
-    document.getElementById('btn-manual-main').addEventListener('click', openManualForm);
-    document.getElementById('btn-cancel-manual').addEventListener('click', closeManualForm);
+    // Routing for manual buttons
+    document.getElementById('btn-manual-main').addEventListener('click', () => openManualScreen('main'));
+    document.getElementById('btn-back-manual').addEventListener('click', closeManualScreen);
     btnSubManual.addEventListener('click', submitManualEntry);
 
     function showIdle() {
-      hide(configScreen); show(idleScreen);
+      hide(configScreen); hide(scanScreen); hide(manualScreen); show(idleScreen);
       const short = gasUrl.replace('https://script.google.com/macros/s/','…/').replace('https://script.google.com/a/macros/','…/');
       serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
-    async function openCamera() {
-      hide(idleScreen); show(scanScreen);
+    async function startScannerSystem(resumePopupSource = null) {
+      hide(idleScreen); hide(manualScreen); show(scanScreen);
       hidePopup();
       currentScanMode = 'normal';
       setScanState('scanning');
@@ -340,22 +353,28 @@
         video.srcObject = stream; await video.play();
         canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
         decodeLoop();
+
+        // If returning from manual bypass, instantly pop the overlay back up
+        if(resumePopupSource === 'bypass') {
+           showBypassPopup();
+        }
       } catch (err) {
         try {
           stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
           video.srcObject = stream; await video.play();
           canvas.width = video.videoWidth || 640; canvas.height = video.videoHeight || 480;
           decodeLoop();
+          if(resumePopupSource === 'bypass') showBypassPopup();
         } catch (e2) { alert('Camera error: ' + e2.message); }
       }
     }
 
-    function stopCamera() {
+    // Safely suspends camera tracks completely
+    function stopScannerSystem() {
       cancelAnimationFrame(rafId); clearTimeout(statusTimeout);
       if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
       video.srcObject = null; isProcessing = false;
       hidePopup();
-      manualOverlay.classList.remove('visible');
       hide(scanScreen); showIdle();
     }
 
@@ -373,7 +392,7 @@
 
     function handleQR(raw) {
       if (isProcessing) return;
-      setScanState('verifying'); // Locks scanner immediately
+      setScanState('verifying'); 
 
       let payload = { action: currentScanMode };
       let decodedText = raw.trim(); 
@@ -411,40 +430,67 @@
       sendPayloadToBackend(payload);
     }
 
-    function openManualForm() {
+    // --- MANUAL ENTRY SCREEN CONTROL ---
+    function openManualScreen(source) {
       hidePopup();
-      setScanState('locked_for_ui'); // Safely lock the background scanner
+      manualSource = source; 
       
+      // Completely pause scanner process to free memory/camera while on manual page
+      cancelAnimationFrame(rafId);
+      if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+      video.srcObject = null;
+      
+      hide(scanScreen);
+      
+      // Reset form
       mName.value = ''; mPhone.value = ''; mCity.value = '';
-      mName.classList.remove('error');
+      mName.classList.remove('error'); mPhone.classList.remove('error'); mCity.classList.remove('error');
       btnSubManual.disabled = false;
       btnSubManual.textContent = "Submit Check-in";
-      manualOverlay.classList.add('visible');
+      
+      show(manualScreen);
     }
 
-    function closeManualForm() {
-      manualOverlay.classList.remove('visible');
-      currentScanMode = 'normal';
-      setScanState('scanning');
+    function closeManualScreen() {
+      hide(manualScreen);
+      // Re-initialize scanner cleanly
+      if(manualSource === 'bypass') {
+        startScannerSystem('bypass');
+      } else {
+        startScannerSystem();
+      }
     }
 
     function submitManualEntry() {
       const name = mName.value.trim();
-      if (!name) { mName.classList.add('error'); return; }
+      const phone = mPhone.value.trim();
+      const city = mCity.value.trim();
       
-      mName.classList.remove('error');
+      let isValid = true;
+      if (!name) { mName.classList.add('error'); isValid = false; } else { mName.classList.remove('error'); }
+      if (!city) { mCity.classList.add('error'); isValid = false; } else { mCity.classList.remove('error'); }
+      
+      // Strict 10 digit check
+      if (!/^\d{10}$/.test(phone)) { 
+         mPhone.classList.add('error'); 
+         isValid = false; 
+      } else { 
+         mPhone.classList.remove('error'); 
+      }
+
+      if(!isValid) return;
+      
       btnSubManual.disabled = true;
       btnSubManual.textContent = "Processing...";
 
       const payload = {
         action: 'manual',
         name: name,
-        phone: mPhone.value.trim(),
-        city: mCity.value.trim()
+        phone: phone,
+        city: city
       };
 
-      manualOverlay.classList.remove('visible');
-      setScanState('verifying');
+      // Proceed immediately to backend, skipping camera verification
       sendPayloadToBackend(payload);
     }
 
@@ -465,13 +511,28 @@
           stripCount.textContent = scanCount + ' checked in';
           
           currentScanMode = 'normal';
-          triggerPopup('success', 'Check-in Successful', res.message, [], 2500);
+          
+          if(payload.action === 'manual') {
+              hide(manualScreen);
+              // Restart scanner normally and show success popup
+              startScannerSystem().then(() => {
+                 triggerPopup('success', 'Check-in Successful', res.message, [], 3500);
+              });
+          } else {
+              triggerPopup('success', 'Check-in Successful', res.message, [], 2500);
+          }
+
         } else {
+          // If we fail on manual submission, just show error and re-enable button
+          if(payload.action === 'manual') {
+              btnSubManual.disabled = false;
+              btnSubManual.textContent = "Submit Check-in";
+              alert(res.message); // Simple alert since we are on the form screen
+              return;
+          }
+
           if (res.status === 'deleted' && currentScanMode !== 'recover') {
-             triggerPopup('warning', 'User Data Deleted', 'This QR code is valid, but the user data was removed from the sheet. How would you like to proceed?', [
-               { text: 'Scan & Create New Entry', class: 'btn-primary', action: startRecovery },
-               { text: 'Enter Data Manually', class: 'btn-secondary', action: openManualForm }
-             ], 0);
+             showBypassPopup();
           } else {
              const type = res.message && res.message.toLowerCase().includes('already') ? 'warning' : 'error';
              triggerPopup(type, 'Check-in Denied', res.message, [], 3500);
@@ -479,8 +540,21 @@
         }
       })
       .catch(() => {
-        triggerPopup('error', 'Server Unreachable', 'Check your URL or connection.', [], 3000);
+        if(payload.action === 'manual') {
+            btnSubManual.disabled = false;
+            btnSubManual.textContent = "Submit Check-in";
+            alert("Network Error. Try again.");
+        } else {
+            triggerPopup('error', 'Server Unreachable', 'Check your URL or connection.', [], 3000);
+        }
       });
+    }
+
+    function showBypassPopup() {
+       triggerPopup('warning', 'User Data Deleted', 'This QR code is valid, but the user data was removed from the sheet. How would you like to proceed?', [
+         { text: 'Scan & Create New Entry', class: 'btn-primary', action: startRecovery },
+         { text: 'Enter Data Manually', class: 'btn-secondary', action: () => openManualScreen('bypass') }
+       ], 0);
     }
 
     function setScanState(state) {
