@@ -130,6 +130,15 @@
     .data-header { display: flex; justify-content: space-between; align-items: center; background: var(--white); padding: 16px 20px; border-radius: var(--radius); box-shadow: var(--shadow-sm); border: 1px solid var(--gray-200); }
     .data-header h2 { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); margin: 0; }
     
+    /* --- NEW DATA STATS/FILTERS --- */
+    .data-stats { display: flex; gap: 12px; width: 100%; }
+    .stat-card { flex: 1; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); padding: 14px 12px; text-align: center; cursor: pointer; transition: 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
+    .stat-card:hover { border-color: var(--primary-light); background: var(--primary-light); }
+    .stat-card.active { border-color: var(--primary); background: var(--primary); color: var(--white); box-shadow: 0 4px 12px rgba(92,88,246,0.25); }
+    .stat-card.active .stat-title, .stat-card.active .stat-value { color: var(--white); }
+    .stat-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--gray-500); letter-spacing: 0.05em; margin-bottom: 4px; transition: 0.2s; }
+    .stat-value { font-size: 1.35rem; font-weight: 800; color: var(--gray-900); transition: 0.2s; }
+
     .data-table-wrapper { width: 100%; overflow-x: auto; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius-sm); box-shadow: 0 2px 6px rgba(0,0,0,0.02); }
     .students-table { width: 100%; border-collapse: collapse; min-width: 600px; text-align: left; }
     .students-table th { background: var(--gray-50); padding: 14px 16px; font-size: 0.8rem; font-weight: 700; color: var(--gray-600); text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid var(--gray-200); white-space: nowrap; }
@@ -196,7 +205,7 @@
       </a>
     </div>
     <div class="menu-footer">
-      App Version v2.9
+      App Version v3.1
     </div>
   </div>
 
@@ -310,7 +319,7 @@
       
       <div class="manual-card">
         <div style="text-align:left; font-size: 1.5rem; font-weight:800; color:var(--gray-900); margin-bottom: 8px;">Manual Entry</div>
-        <div style="text-align:left; font-size: 0.9rem; color:var(--gray-600); margin-bottom: 24px;">Enter details directly. All fields are required.</div>
+        <div style="text-align:left; font-size: 0.9rem; color:var(--gray-600); margin-bottom: 24px;">Enter details directly.</div>
         
         <div class="form-group">
           <label class="input-label" for="man-name">Name (Required)</label>
@@ -339,9 +348,25 @@
         <h2>Students Data</h2>
         <button class="btn-primary btn-small" id="btn-data-to-scan">Open Scanner</button>
       </div>
-      <!-- List container that gets replaced by the table -->
-      <div id="student-list-container" style="width: 100%;">
+      
+      <!-- DATA STATS & FILTERS -->
+      <div class="data-stats">
+        <div class="stat-card active" data-filter="all">
+          <div class="stat-title">Total</div>
+          <div class="stat-value" id="stat-total">0</div>
+        </div>
+        <div class="stat-card" data-filter="checkedin">
+          <div class="stat-title">Checked In</div>
+          <div class="stat-value" id="stat-checkedin">0</div>
+        </div>
+        <div class="stat-card" data-filter="pending">
+          <div class="stat-title">Pending</div>
+          <div class="stat-value" id="stat-pending">0</div>
+        </div>
       </div>
+
+      <!-- List container that gets replaced by the table -->
+      <div id="student-list-container" style="width: 100%;"></div>
     </div>
 
   </div>
@@ -413,6 +438,9 @@
     let manualSource = 'main'; 
     let requireFreshScan = false;
     let emptyFrames = 0;
+    
+    let allStudentsData = [];
+    let currentFilter = 'all';
 
     const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) { gasUrl = saved; showIdle(); } else { show(configScreen); }
@@ -498,9 +526,9 @@
       serverDisp.textContent = short.length > 50 ? short.substring(0,50)+'…' : short;
     }
 
-    // --- DATA SCREEN LOGIC (TABLE DESIGN) ---
+    // --- DATA SCREEN LOGIC ---
     function openDataScreen() {
-      stopScannerSystem(true); // Free camera cleanly without navigating to idle
+      stopScannerSystem(true);
       navigateTo(dataScreen);
 
       studentList.innerHTML = `<div style="text-align:center; padding: 40px; color: var(--gray-400); font-weight: 600;">Fetching data...</div>`;
@@ -514,7 +542,8 @@
       .then(text => {
         const res = JSON.parse(text.replace(/^\uFEFF/, '').trim());
         if (res.success && res.data) {
-           renderData(res.data);
+           allStudentsData = res.data;
+           updateDataView();
         } else {
            studentList.innerHTML = `<div style="text-align:center; color: var(--red); font-weight:600;">Failed to load data.</div>`;
         }
@@ -524,9 +553,36 @@
       });
     }
 
+    function updateDataView() {
+       const total = allStudentsData.length;
+       const checkedIn = allStudentsData.filter(s => s.checkedIn).length;
+       const pending = total - checkedIn;
+
+       document.getElementById('stat-total').textContent = total;
+       document.getElementById('stat-checkedin').textContent = checkedIn;
+       document.getElementById('stat-pending').textContent = pending;
+
+       let filteredData = allStudentsData;
+       if(currentFilter === 'checkedin') filteredData = allStudentsData.filter(s => s.checkedIn);
+       else if(currentFilter === 'pending') filteredData = allStudentsData.filter(s => !s.checkedIn);
+
+       renderData(filteredData);
+    }
+
+    // Stats Card Click Listeners
+    document.querySelectorAll('.stat-card').forEach(card => {
+       card.addEventListener('click', (e) => {
+          document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+          const target = e.currentTarget;
+          target.classList.add('active');
+          currentFilter = target.getAttribute('data-filter');
+          updateDataView();
+       });
+    });
+
     function renderData(dataArray) {
       if(dataArray.length === 0) {
-         studentList.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--gray-400);">No records found.</div>`;
+         studentList.innerHTML = `<div style="text-align:center; padding: 30px; color: var(--gray-400); font-weight: 600; border: 2px dashed var(--gray-200); border-radius: 12px; margin-top: 10px;">No records found.</div>`;
          return;
       }
       
